@@ -4,8 +4,6 @@ import Page from './Page/Page';
 import RightSidebar from './RightSideBar/RightSidebar';
 import LeftSidebar from './LeftSidebar/LeftSidebar';
 import Header from './Header/Header';
-import 'react-grid-layout/css/styles.css'
-import "react-resizable/css/styles.css"
 
 
 const Application: React.FC = () => {

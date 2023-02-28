@@ -13,39 +13,42 @@ const Tool = ({ buttonType, title, icon }: ToolProps) => {
 
 const ToolsPanel = () => {
   return (
-    <div className='tools-panel'>
-      <Tool
-        title='הוספת בלוק טקסט'
-        buttonType='addTextBlock'
-        icon={icons.addQuill}
-      />
-      <Tool
-        title='הוספת בלוק מתמטי'
-        buttonType='addMathBlock'
-        icon={icons.addMathBlock}
-      />
-      <Tool
-        title='הוספת בלוק גרפי'
-        buttonType='addGraphBlock'
-        icon={icons.addGraphBlock}
-      />
-      <Tool
-        title='הוספת בלוק תמונה'
-        buttonType='addPictureBlock'
-        icon={icons.addPicture}
-      />
-      <Tool
-        title='הוספת קבוצה'
-        buttonType='addGroupBlock'
-        icon={icons.addGroup}
-      />
-      <Tool
-        title='הוספת קו מפריד'
-        buttonType='addDividerBlock'
-        icon={icons.addDivider}
-      />
-      <Tool title='ניקוי הדף' buttonType='clearPage' icon={icons.trashCan} />
+    <div className='tools-panel-container'>
+      <div className='tools-panel'>
+        <Tool
+          title='הוספת בלוק טקסט'
+          buttonType='addTextBlock'
+          icon={icons.addQuill}
+        />
+        <Tool
+          title='הוספת בלוק מתמטי'
+          buttonType='addMathBlock'
+          icon={icons.addMathBlock}
+        />
+        <Tool
+          title='הוספת בלוק גרפי'
+          buttonType='addGraphBlock'
+          icon={icons.addGraphBlock}
+        />
+        <Tool
+          title='הוספת בלוק תמונה'
+          buttonType='addPictureBlock'
+          icon={icons.addPicture}
+        />
+        <Tool
+          title='הוספת קבוצה'
+          buttonType='addGroupBlock'
+          icon={icons.addGroup}
+        />
+        <Tool
+          title='הוספת קו מפריד'
+          buttonType='addDividerBlock'
+          icon={icons.addDivider}
+        />
+        <Tool title='ניקוי הדף' buttonType='clearPage' icon={icons.trashCan} />
+      </div>
     </div>
+
   );
 };
 

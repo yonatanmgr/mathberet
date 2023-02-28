@@ -3,8 +3,6 @@ import './Page.scss';
 import '../Application.scss';
 import PageGrid from './Grid/Grid';
 import ToolsPanel from './ToolsPanel';
-import 'react-grid-layout/css/styles.css'
-import "react-resizable/css/styles.css"
 
 
 const Page = () => {

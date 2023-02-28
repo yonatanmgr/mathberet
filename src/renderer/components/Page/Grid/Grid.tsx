@@ -1,6 +1,5 @@
-import 'react-grid-layout/css/styles.css'
-import "react-resizable/css/styles.css"
-
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 import '../Page.scss';
 import React from 'react';
@@ -13,14 +12,14 @@ class PageGrid extends React.Component {
   render() {
     return (
       <ResponsiveGridLayout
-        className="layout"
+        className="page-grid"
         cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
         rowHeight={50}
         isBounded={true}
         resizeHandles={['sw']}
         containerPadding={[0,0]}
         useCSSTransforms={false}
-
+        autoSize={true}
 
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
       >

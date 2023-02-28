@@ -41,24 +41,21 @@
     box-sizing: border-box;
     border-color: #1A2428;
     border-radius: 15px 15px 0px 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
     .page-grid {
         // overflow-y: auto;
         // overflow-x: hidden;
         position: fixed;
-        display: flex;
         flex-direction: column;
         left: 20vw;
         padding-top: 80px;
         width: 60vw;
-        height: calc(100% - 160px);
+        height: calc(100% - 200px);
         align-items: center;
 
         .react-grid-layout {
             width: inherit;
+            direction: rtl;
 
             .react-grid-item {
                 color: white;
@@ -74,28 +71,46 @@
 
     }
 
-    .tools-panel {
+    .tools-panel-container{
         position: fixed;
-        padding: 8px 10px 8px 10px;
-        height: 40px;
-        bottom: 14px;
+        height: 80px;
+        bottom: 0px;
+        width: 60vw;
         z-index: 20;
-        width: max-content;
         display: flex;
-        flex-direction: row-reverse;
-        border-radius: 8px;
-        gap: 8px;
-        background: #1E2D33;
-        box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.25);
+        justify-content: center;
 
-        .tool {
-            border-radius: 5px;
-            width: 40px;
+        .tools-panel{
+            position: fixed;
+            padding: 8px 10px 8px 10px;
             height: 40px;
+            bottom: -50px;
+            width: max-content;
+            display: flex;
+            flex-direction: row-reverse;
+            border-radius: 8px;
+            gap: 8px;
+            background: #1E2D33;
+            box-shadow: 0px 1px 12px rgba(0, 0, 0, 0.25);
+            transition: 0.4s;
+            
+            .tool {
+                border-radius: 5px;
+                width: 40px;
+                height: 40px;
+    
+                &#clearPage {
+                    background-color: #332222;
+                }
+            }
+        }
 
-            &#clearPage {
-                background-color: #332222;
+        &:hover{
+            .tools-panel {
+                bottom: 14px;
             }
         }
     }
+
 }
+
