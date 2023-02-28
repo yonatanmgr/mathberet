@@ -1,7 +1,7 @@
 import React from 'react';
 import '../Application.scss';
 import { icons } from '../Icons';
-import { FilePath } from './FilePath';
+import FilePath from './FilePath';
 import Tag from './Tag';
 import AddTag from './AddTag';
 

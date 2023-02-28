@@ -3,7 +3,7 @@ import './Header.scss';
 
 type FilePathProps = { fileName: string; folderName: string };
 
-export const FilePath = ({ fileName, folderName }: FilePathProps) => {
+const FilePath = ({ fileName, folderName }: FilePathProps) => {
   return (
     <div className='filepath'>
       <span className='filepath-folder'>{folderName} / </span>
@@ -13,3 +13,5 @@ export const FilePath = ({ fileName, folderName }: FilePathProps) => {
     </div>
   );
 };
+
+export default FilePath;
