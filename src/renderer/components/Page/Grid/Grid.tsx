@@ -1,5 +1,5 @@
-import './react-grid-layout.css'
-import './react-resizeable.css'
+import './react-grid-layout.scss'
+import './react-resizeable.scss'
 import '../Page.scss';
 import React from 'react';
 

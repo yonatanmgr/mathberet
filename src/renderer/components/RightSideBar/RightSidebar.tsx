@@ -1,6 +1,6 @@
 import { icons } from '@components/Icons';
 import React from 'react';
-import './RightSideBar.scss';
+import './RightSidebar.scss';
 import SidebarButton from './SidebarButton';
 
 class RightSidebar extends React.Component {

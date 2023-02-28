@@ -4,7 +4,7 @@ import Page from './Page/Page';
 import RightSidebar from './RightSidebar/RightSidebar';
 import LeftSidebar from './LeftSidebar/LeftSidebar';
 import Header from './Header/Header';
-import KBar from './KBar';
+import KBar from './RightSidebar/KBar';
 
 const Application: React.FC = () => {
   const [darkTheme, setDarkTheme] = useState(true);
