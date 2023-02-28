@@ -58,14 +58,13 @@
         align-items: center;
 
         .react-grid-layout {
-            direction: rtl;
             width: inherit;
 
             .react-grid-item {
                 color: white;
                 border-radius: 5px;
                 outline: 1px solid transparent;
-                transition: 0.2s;
+                transition: outline 0.2s;
                 
                 &:hover {
                     outline: 1px solid #2c3d44;

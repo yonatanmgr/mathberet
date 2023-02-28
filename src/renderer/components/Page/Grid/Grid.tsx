@@ -1,5 +1,7 @@
-import '../../../../../node_modules/react-grid-layout/css/styles.css'
-import '../../../../../node_modules/react-resizable/css/styles.css'
+import 'react-grid-layout/css/styles.css'
+import "react-resizable/css/styles.css"
+
+
 import '../Page.scss';
 import React from 'react';
 
@@ -17,6 +19,9 @@ class PageGrid extends React.Component {
         isBounded={true}
         resizeHandles={['sw']}
         containerPadding={[0,0]}
+        useCSSTransforms={false}
+
+
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
       >
         <div key="1" data-grid={{ x: 1, y: 0, w: 8, h: 1, minW: 2, maxW: 8 }}>בדיקה</div>

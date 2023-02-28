@@ -15,14 +15,26 @@
     flex-direction: column;
     direction: rtl;
     align-items: flex-start;
-    gap: 8px;
+    gap: 5px;
     transition: 0.2s;
+
     .sidebar-button {
       transition: 0.2s;
-
+      background-color: transparent;
       width: 45px;
       height: 45px;
       border-radius: 15px;
+      &:hover{
+        transform: scale(1.1);
+      }
+      img {
+        height: 100%;
+        width: 23px;
+        opacity: 0.8;
+        transition: 0.2s;
+
+
+      }
     }
   }
 
