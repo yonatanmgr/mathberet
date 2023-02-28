@@ -4,11 +4,12 @@ import Page from './Page/Page';
 import RightSidebar from './RightSidebar/RightSidebar';
 import LeftSidebar from './LeftSidebar/LeftSidebar';
 import Header from './Header/Header';
-import KBar from './KBar';
+import '../../../node_modules/react-grid-layout/css/styles.css'
+import '../../../node_modules/react-resizable/css/styles.css'
+
 
 const Application: React.FC = () => {
   const [darkTheme, setDarkTheme] = useState(true);
-  const [versions, setVersions] = useState<Record<string, string>>({});
 
   /**
    * On component mount
@@ -22,11 +23,6 @@ const Application: React.FC = () => {
     } else if (useDarkTheme == 0) {
       setDarkTheme(false);
     }
-
-    // Apply verisons
-    const app = document.getElementById('app');
-    const versions = JSON.parse(app.getAttribute('data-versions'));
-    setVersions(versions);
   }, []);
 
   /**
@@ -45,9 +41,9 @@ const Application: React.FC = () => {
   /**
    * Toggle Theme
    */
-  function toggleTheme() {
-    setDarkTheme(!darkTheme);
-  }
+  // function toggleTheme() {
+  //   setDarkTheme(!darkTheme);
+  // }
 
   return (
     <div id='erwt'>
