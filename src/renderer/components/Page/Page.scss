@@ -1,4 +1,6 @@
 @import '../Theme.scss';
+@import '../../../../node_modules/react-grid-layout/css/styles.css';
+@import '../../../../node_modules/react-resizable/css/styles.css';
 
 /**
  *==========================================================================
@@ -58,7 +60,7 @@
         .react-grid-layout {
             direction: rtl;
             width: inherit;
-            
+
             .react-grid-item {
                 color: white;
                 border-radius: 5px;
