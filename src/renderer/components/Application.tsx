@@ -5,7 +5,6 @@ import RightSidebar from './RightSideBar/RightSidebar';
 import LeftSidebar from './LeftSidebar/LeftSidebar';
 import Header from './Header/Header';
 
-
 const Application: React.FC = () => {
   const [darkTheme, setDarkTheme] = useState(true);
 
