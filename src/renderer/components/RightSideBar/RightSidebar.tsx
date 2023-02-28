@@ -1,12 +1,13 @@
 import { icons } from '@components/Icons';
-import React from 'react';
+import React, { useState } from 'react';
 import './RightSidebar.scss';
 import SidebarButton from './SidebarButton';
 
 const RightSidebar = () => {
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+
   const handleOnClickFiles = () => {
-    //todo: should be refactored to React way
-    document.querySelector('.right-sidebar').classList.toggle('open');
+    setIsRightSidebarOpen((isRightSidebarOpen) => !isRightSidebarOpen);
   };
 
   const handleOnClickMathPanel = () => {
@@ -15,7 +16,7 @@ const RightSidebar = () => {
   };
 
   return (
-    <div className='right-sidebar'>
+    <div className={'right-sidebar' + (isRightSidebarOpen ? ' open' : '')}>
       <section id='top'>
         <SidebarButton title='חיפוש' buttonType='search' icon={icons.search} />
         <SidebarButton
