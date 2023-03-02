@@ -1,6 +1,8 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, nativeTheme } from 'electron';
 import path from 'path';
 import { registerTitlebarIpc } from '@misc/window/titlebarIPC';
+import * as fs from 'fs';
+import Store from 'electron-store';
 
 // Electron Forge automatically creates these entry points
 declare const APP_WINDOW_WEBPACK_ENTRY: string;
@@ -50,6 +52,284 @@ export function createAppWindow(): BrowserWindow {
 
   return appWindow;
 }
+
+const schema = {
+  theme: { type: 'string', default: 'light' },
+  color: { type: 'number', maximum: 360, minimum: 1, default: 203 },
+  pageStyle: { type: 'string', default: 'transparent' },
+};
+fs.readdir(app.getPath('userData'), (err, res) => {
+  if (err) {
+    fs.mkdirSync(app.getPath('userData'));
+    if (
+      fs.readFileSync(path.join(app.getPath('userData'), 'config.json')) == ''
+    ) {
+      fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), '{}');
+    }
+  } else if (
+    fs.readFileSync(path.join(app.getPath('userData'), 'config.json')) == ''
+  ) {
+    fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), '{}');
+  }
+});
+
+const store = new Store({ schema });
+nativeTheme.themeSource = store.get('theme');
+
+ipcMain.on('delete', (event, file) => {
+  shell
+    .trashItem(path.resolve(file))
+    .then((res) => {})
+    .catch((err) => {});
+});
+
+ipcMain.on('openFiles', (event) => {
+  shell
+    .openPath(path.resolve(path.join(__dirname, '..', 'files')))
+    .then((res) => {})
+    .catch((err) => {});
+});
+
+ipcMain.on('move', (event, oldDir, newDir) => {
+  fs.renameSync(oldDir, newDir);
+});
+
+ipcMain.on('load', (event, file) => {
+  fs.readFile(file, 'utf-8', (error, data) => {
+    appWindow.webContents.send('fromMain', data);
+  });
+});
+
+ipcMain.on('setUserColor', (event, color) => {
+  store.set('color', color);
+});
+
+ipcMain.on('setPageStyle', (event, style) => {
+  store.set('pageStyle', style);
+});
+
+ipcMain.on('getPageStyle', (event, args) => {
+  appWindow.webContents.send('gotPageStyle', store.get('pageStyle'));
+});
+ipcMain.on('getUserTheme', (event, args) => {
+  appWindow.webContents.send('gotUserTheme', store.get('theme'));
+});
+
+ipcMain.on('getUserColor', (event, args) => {
+  appWindow.webContents.send('gotUserColor', store.get('color'));
+});
+
+ipcMain.on('dark-mode', () => {
+  if (nativeTheme.shouldUseDarkColors) {
+    nativeTheme.themeSource = 'light';
+    store.set('theme', 'light');
+  } else {
+    nativeTheme.themeSource = 'dark';
+    store.set('theme', 'dark');
+  }
+});
+
+ipcMain.on('getNotebooks', (event, args) => {
+  const filesPath = path.join(__dirname, '..', 'files');
+  const all = () =>
+    fs
+      .readdirSync(filesPath, { withFileTypes: true })
+      .filter((file) => {
+        return file.isDirectory() || file.name.split('.')[1] == 'json';
+      })
+      .map(
+        (file) =>
+          (file = {
+            parentFolder: filesPath,
+            path: path.join(filesPath, file.name),
+            name: file.name,
+            files: file.isDirectory()
+              ? fs
+                  .readdirSync(path.join(filesPath, file.name), {
+                    withFileTypes: true,
+                  })
+                  .filter((subfile) => {
+                    return subfile.name.split('.')[1] == 'json';
+                  })
+                  .map(
+                    (subfile) =>
+                      (subfile = {
+                        parentFolder: path.join(filesPath, file.name),
+                        path: path.join(filesPath, file.name, subfile.name),
+                        name: subfile.name,
+                        isOpen: false,
+                      }),
+                  )
+              : null,
+            isOpen: false,
+          }),
+      );
+  appWindow.webContents.send('gotNotebooks', {
+    filesPath: filesPath,
+    allFiles: all(),
+  });
+});
+
+ipcMain.on('getPicture', (event, id) => {
+  const allPics = fs.readdirSync(path.join(__dirname, '..', 'attachments'), {
+    withFileTypes: true,
+  });
+  let foundPath, b64;
+  for (const picture of allPics) {
+    if (picture.name.split('.')[0] == id.toString()) {
+      foundPath = path.join(__dirname, '..', 'attachments', picture.name);
+      b64 = fs.readFileSync(foundPath, 'base64');
+      break;
+    }
+  }
+  appWindow.webContents.send('gotPicture', `data:image/png;base64,${b64}`);
+  return;
+});
+
+ipcMain.on('getAllPictures', (event, file) => {
+  // let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
+  // let allPicsArr = []
+  // let foundPath;
+  // for (const picture of allPics) {
+  //   foundPath = path.join(__dirname, "..", "attachments", picture.name);
+  //   let b64 = fs.readFileSync(foundPath, "base64")
+  //   allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
+  // }
+  let res;
+  if (file == '') {
+    res = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, '..', 'allAttachments.json'),
+        'utf-8',
+      ),
+    );
+  } else {
+    res = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, '..', 'allAttachments.json'),
+        'utf-8',
+      ),
+    ).filter((pic) => pic.filePath == file);
+  }
+  appWindow.webContents.send('gotAllPictures', res);
+});
+
+ipcMain.on('getArchive', (event, args) => {
+  const filesPath = path.join(__dirname, '..', 'files');
+
+  const groupsToFilter = [];
+  function getAllGroups() {
+    const allGroups = [];
+    const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
+    for (const file of allFiles) {
+      if (file.isDirectory()) {
+        const subFiles = fs.readdirSync(path.join(filesPath, file.name), {
+          withFileTypes: true,
+        });
+        for (const subfile of subFiles) {
+          if (subfile.name.split('.')[1] == 'json') {
+            const readFile = fs.readFileSync(
+              path.join(filesPath, file.name, subfile.name),
+              'utf-8',
+            );
+            for (const block of JSON.parse(readFile)) {
+              if (block.type == 'Group') {
+                allGroups.push(block);
+              }
+            }
+          }
+        }
+      } else {
+        if (file.name.split('.')[1] == 'json') {
+          const readFile = fs.readFileSync(
+            path.join(filesPath, file.name),
+            'utf-8',
+          );
+          for (const block of JSON.parse(readFile)) {
+            if (block.type == 'Group') {
+              allGroups.push(block);
+            }
+          }
+        }
+      }
+    }
+    return allGroups;
+  }
+
+  const allGroups = getAllGroups();
+
+  function removeDups(arr) {
+    const uniqueIds = [];
+    const unique = arr.filter((element) => {
+      const isDuplicate = uniqueIds.includes(element);
+      if (!isDuplicate) {
+        uniqueIds.push(element);
+        return true;
+      }
+      return false;
+    });
+    return unique.map(
+      (groupTitle) => (groupTitle = { groupName: groupTitle, subGroups: [] }),
+    );
+  }
+
+  for (const group of allGroups) {
+    groupsToFilter.push(group.groupTitle);
+  }
+
+  const finalArr = [];
+  for (const group of removeDups(groupsToFilter)) {
+    if (group.groupName != 'קבוצה') {
+      for (const subGroup of allGroups) {
+        if (subGroup.groupTitle == group.groupName) {
+          group.subGroups.push(subGroup);
+        }
+      }
+      finalArr.push(group);
+    }
+  }
+
+  appWindow.webContents.send('gotArchive', finalArr);
+});
+
+ipcMain.on('startSearch', (event, args) => {
+  const filesPath = path.join(__dirname, '..', 'files');
+  function getAllBlocks() {
+    const allGroups = [];
+    const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
+    for (const file of allFiles) {
+      if (file.isDirectory()) {
+        const subFiles = fs.readdirSync(path.join(filesPath, file.name), {
+          withFileTypes: true,
+        });
+        for (const subfile of subFiles) {
+          const readFile = fs.readFileSync(
+            path.join(filesPath, file.name, subfile.name),
+            'utf-8',
+          );
+          allGroups.push({
+            filePath: path.join(filesPath, file.name, subfile.name),
+            fileName: subfile.name.replace('.json', ''),
+            blocks: JSON.parse(readFile),
+          });
+        }
+      } else {
+        const readFile = fs.readFileSync(
+          path.join(filesPath, file.name),
+          'utf-8',
+        );
+        allGroups.push({
+          filePath: path.join(filesPath, file.name),
+          fileName: file.name.replace('.json', ''),
+          blocks: JSON.parse(readFile),
+        });
+      }
+    }
+    return allGroups;
+  }
+  const allGroups = getAllBlocks();
+  appWindow.webContents.send('gotAllBlocks', allGroups);
+});
 
 /**
  * Register Inter Process Communication
