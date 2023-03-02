@@ -73,8 +73,8 @@ fs.readdir(app.getPath('userData'), (err, res) => {
   }
 });
 
-// const store = new Store({ schema });
-// nativeTheme.themeSource = store.get('theme');
+const store = new Store({ schema });
+nativeTheme.themeSource = store.get('theme');
 
 ipcMain.on('delete', (event, file) => {
   shell.trashItem(path.resolve(file))
@@ -87,44 +87,44 @@ ipcMain.on('openFiles', () => {
     .catch((error) => {console.error(error)});
 });
 
-// ipcMain.on('move', (event, oldDir, newDir) => {
-//   fs.renameSync(oldDir, newDir);
-// });
+ipcMain.on('move', (event, oldDir, newDir) => {
+  fs.renameSync(oldDir, newDir);
+});
 
-// ipcMain.on('load', (event, file) => {
-//   fs.readFile(file, 'utf-8', (error, data) => {
-//     appWindow.webContents.send('fromMain', data);
-//   });
-// });
+ipcMain.on('load', (event, file) => {
+  fs.readFile(file, 'utf-8', (error, data) => {
+    appWindow.webContents.send('fromMain', data);
+  });
+});
 
-// ipcMain.on('setUserColor', (event, color) => {
-//   store.set('color', color);
-// });
+ipcMain.on('setUserColor', (event, color) => {
+  store.set('color', color);
+});
 
 ipcMain.on('setPageStyle', (event, style) => {
-  // store.set('pageStyle', style);
+  store.set('pageStyle', style);
 });
 
 ipcMain.on('getPageStyle', (event, args) => {
-  // appWindow.webContents.send('gotPageStyle', store.get('pageStyle'));
+  appWindow.webContents.send('gotPageStyle', store.get('pageStyle'));
 });
 ipcMain.on('getUserTheme', (event, args) => {
-  // appWindow.webContents.send('gotUserTheme', store.get('theme'));
+  appWindow.webContents.send('gotUserTheme', store.get('theme'));
 });
 
 ipcMain.on('getUserColor', (event, args) => {
-  // appWindow.webContents.send('gotUserColor', store.get('color'));
+  appWindow.webContents.send('gotUserColor', store.get('color'));
 });
 
-// ipcMain.on('dark-mode', () => {
-//   if (nativeTheme.shouldUseDarkColors) {
-//     nativeTheme.themeSource = 'light';
-//     store.set('theme', 'light');
-//   } else {
-//     nativeTheme.themeSource = 'dark';
-//     store.set('theme', 'dark');
-//   }
-// });
+ipcMain.on('dark-mode', () => {
+  if (nativeTheme.shouldUseDarkColors) {
+    nativeTheme.themeSource = 'light';
+    store.set('theme', 'light');
+  } else {
+    nativeTheme.themeSource = 'dark';
+    store.set('theme', 'dark');
+  }
+});
 
 ipcMain.on('getNotebooks', () => {
   const filesPath = path.join(__dirname, '..', 'files');
@@ -184,14 +184,14 @@ ipcMain.on('getPicture', (event, id) => {
 });
 
 ipcMain.on('getAllPictures', (event, file) => {
-  // let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
-  // let allPicsArr = []
-  // let foundPath;
-  // for (const picture of allPics) {
-  //   foundPath = path.join(__dirname, "..", "attachments", picture.name);
-  //   let b64 = fs.readFileSync(foundPath, "base64")
-  //   allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
-  // }
+  let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
+  let allPicsArr = []
+  let foundPath;
+  for (const picture of allPics) {
+    foundPath = path.join(__dirname, "..", "attachments", picture.name);
+    let b64 = fs.readFileSync(foundPath, "base64")
+    allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
+  }
   let res;
   if (file == '') {
     res = JSON.parse(
@@ -214,46 +214,46 @@ ipcMain.on('getAllPictures', (event, file) => {
 ipcMain.on('getArchive', () => {
   const filesPath = path.join(__dirname, '..', 'files');
 
-//   const groupsToFilter:[] = [];
-//   function getAllGroups() {
-//     const allGroups = [];
-//     const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
-//     for (const file of allFiles) {
-//       if (file.isDirectory()) {
-//         const subFiles = fs.readdirSync(path.join(filesPath, file.name), {
-//           withFileTypes: true,
-//         });
-//         for (const subfile of subFiles) {
-//           if (subfile.name.split('.')[1] == 'json') {
-//             const readFile = fs.readFileSync(
-//               path.join(filesPath, file.name, subfile.name),
-//               'utf-8',
-//             );
-//             for (const block of JSON.parse(readFile)) {
-//               if (block.type == 'Group') {
-//                 allGroups.push(block);
-//               }
-//             }
-//           }
-//         }
-//       } else {
-//         if (file.name.split('.')[1] == 'json') {
-//           const readFile = fs.readFileSync(
-//             path.join(filesPath, file.name),
-//             'utf-8',
-//           );
-//           for (const block of JSON.parse(readFile)) {
-//             if (block.type == 'Group') {
-//               allGroups.push(block);
-//             }
-//           }
-//         }
-//       }
-//     }
-//     return allGroups;
-//   }
+  const groupsToFilter:[] = [];
+  function getAllGroups() {
+    const allGroups = [];
+    const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
+    for (const file of allFiles) {
+      if (file.isDirectory()) {
+        const subFiles = fs.readdirSync(path.join(filesPath, file.name), {
+          withFileTypes: true,
+        });
+        for (const subfile of subFiles) {
+          if (subfile.name.split('.')[1] == 'json') {
+            const readFile = fs.readFileSync(
+              path.join(filesPath, file.name, subfile.name),
+              'utf-8',
+            );
+            for (const block of JSON.parse(readFile)) {
+              if (block.type == 'Group') {
+                allGroups.push(block);
+              }
+            }
+          }
+        }
+      } else {
+        if (file.name.split('.')[1] == 'json') {
+          const readFile = fs.readFileSync(
+            path.join(filesPath, file.name),
+            'utf-8',
+          );
+          for (const block of JSON.parse(readFile)) {
+            if (block.type == 'Group') {
+              allGroups.push(block);
+            }
+          }
+        }
+      }
+    }
+    return allGroups;
+  }
 
-//   const allGroups = getAllGroups();
+  const allGroups = getAllGroups();
 
   function removeDups(arr: any[]) {
     const uniqueIds: any[] = [];
@@ -270,63 +270,63 @@ ipcMain.on('getArchive', () => {
     );
   }
 
-//   for (const group of allGroups) {
-//     groupsToFilter.push(group.groupTitle);
-//   }
+  for (const group of allGroups) {
+    groupsToFilter.push(group.groupTitle);
+  }
 
-//   const finalArr = [];
-//   for (const group of removeDups(groupsToFilter)) {
-//     if (group.groupName != 'קבוצה') {
-//       for (const subGroup of allGroups) {
-//         if (subGroup.groupTitle == group.groupName) {
-//           group.subGroups.push(subGroup);
-//         }
-//       }
-//       finalArr.push(group);
-//     }
-//   }
+  const finalArr = [];
+  for (const group of removeDups(groupsToFilter)) {
+    if (group.groupName != 'קבוצה') {
+      for (const subGroup of allGroups) {
+        if (subGroup.groupTitle == group.groupName) {
+          group.subGroups.push(subGroup);
+        }
+      }
+      finalArr.push(group);
+    }
+  }
 
-//   appWindow.webContents.send('gotArchive', finalArr);
-// });
+  appWindow.webContents.send('gotArchive', finalArr);
+});
 
-// ipcMain.on('startSearch', (event, args) => {
-//   const filesPath = path.join(__dirname, '..', 'files');
-//   function getAllBlocks() {
-//     const allGroups = [];
-//     const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
-//     for (const file of allFiles) {
-//       if (file.isDirectory()) {
-//         const subFiles = fs.readdirSync(path.join(filesPath, file.name), {
-//           withFileTypes: true,
-//         });
-//         for (const subfile of subFiles) {
-//           const readFile = fs.readFileSync(
-//             path.join(filesPath, file.name, subfile.name),
-//             'utf-8',
-//           );
-//           allGroups.push({
-//             filePath: path.join(filesPath, file.name, subfile.name),
-//             fileName: subfile.name.replace('.json', ''),
-//             blocks: JSON.parse(readFile),
-//           });
-//         }
-//       } else {
-//         const readFile = fs.readFileSync(
-//           path.join(filesPath, file.name),
-//           'utf-8',
-//         );
-//         allGroups.push({
-//           filePath: path.join(filesPath, file.name),
-//           fileName: file.name.replace('.json', ''),
-//           blocks: JSON.parse(readFile),
-//         });
-//       }
-//     }
-//     return allGroups;
-//   }
-//   const allGroups = getAllBlocks();
-//   appWindow.webContents.send('gotAllBlocks', allGroups);
-// });
+ipcMain.on('startSearch', (event, args) => {
+  const filesPath = path.join(__dirname, '..', 'files');
+  function getAllBlocks() {
+    const allGroups = [];
+    const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
+    for (const file of allFiles) {
+      if (file.isDirectory()) {
+        const subFiles = fs.readdirSync(path.join(filesPath, file.name), {
+          withFileTypes: true,
+        });
+        for (const subfile of subFiles) {
+          const readFile = fs.readFileSync(
+            path.join(filesPath, file.name, subfile.name),
+            'utf-8',
+          );
+          allGroups.push({
+            filePath: path.join(filesPath, file.name, subfile.name),
+            fileName: subfile.name.replace('.json', ''),
+            blocks: JSON.parse(readFile),
+          });
+        }
+      } else {
+        const readFile = fs.readFileSync(
+          path.join(filesPath, file.name),
+          'utf-8',
+        );
+        allGroups.push({
+          filePath: path.join(filesPath, file.name),
+          fileName: file.name.replace('.json', ''),
+          blocks: JSON.parse(readFile),
+        });
+      }
+    }
+    return allGroups;
+  }
+  const allGroups = getAllBlocks();
+  appWindow.webContents.send('gotAllBlocks', allGroups);
+});
 
 /**
  * Register Inter Process Communication
