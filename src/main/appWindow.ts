@@ -76,19 +76,16 @@ fs.readdir(app.getPath('userData'), (err, res) => {
 // const store = new Store({ schema });
 // nativeTheme.themeSource = store.get('theme');
 
-// ipcMain.on('delete', (event, file) => {
-//   shell
-//     .trashItem(path.resolve(file))
-//     .then((res) => {})
-//     .catch((err) => {});
-// });
+ipcMain.on('delete', (event, file) => {
+  shell.trashItem(path.resolve(file))
+  .catch((error) => {console.error(error)});
+});
 
-// ipcMain.on('openFiles', (event) => {
-//   shell
-//     .openPath(path.resolve(path.join(__dirname, '..', 'files')))
-//     .then((res) => {})
-//     .catch((err) => {});
-// });
+ipcMain.on('openFiles', () => {
+  shell
+    .openPath(path.resolve(path.join(__dirname, '..', 'files')))
+    .catch((error) => {console.error(error)});
+});
 
 // ipcMain.on('move', (event, oldDir, newDir) => {
 //   fs.renameSync(oldDir, newDir);
@@ -129,48 +126,46 @@ ipcMain.on('getUserColor', (event, args) => {
 //   }
 // });
 
-// ipcMain.on('getNotebooks', (event, args) => {
-//   const filesPath = path.join(__dirname, '..', 'files');
-//   const all = () =>
-//     fs
-//       .readdirSync(filesPath, { withFileTypes: true })
-//       .filter((file) => {
-//         return file.isDirectory() || file.name.split('.')[1] == 'json';
-//       })
-//       .map(
-//         (file) =>
-//           {
-//             file = {
-//             parentFolder: filesPath,
-//             path: path.join(filesPath, file.name),
-//             name: file.name,
-//             files: file.isDirectory()
-//               ? fs
-//                   .readdirSync(path.join(filesPath, file.name), {
-//                     withFileTypes: true,
-//                   })
-//                   .filter((subfile) => {
-//                     return subfile.name.split('.')[1] == 'json';
-//                   })
-//                   .map(
-//                     (subfile) =>
-//                       (subfile = {
-//                         parentFolder: path.join(filesPath, file.name),
-//                         path: path.join(filesPath, file.name, subfile.name),
-//                         name: subfile.name,
-//                         isOpen: false,
-//                       }),
-//                   )
-//               : null,
-//             isOpen: false,
-//             }
-//           }
-//       );
-//   appWindow.webContents.send('gotNotebooks', {
-//     filesPath: filesPath,
-//     allFiles: all(),
-//   });
-// });
+ipcMain.on('getNotebooks', () => {
+  const filesPath = path.join(__dirname, '..', 'files');
+  const all = () =>
+    fs
+      .readdirSync(filesPath, { withFileTypes: true })
+      .filter((file) => {
+        return file.isDirectory() || file.name.split('.')[1] == 'json';
+      })
+      .map(
+        (file) =>
+          (file = {
+            parentFolder: filesPath,
+            path: path.join(filesPath, file.name),
+            name: file.name,
+            files: file.isDirectory()
+              ? fs
+                  .readdirSync(path.join(filesPath, file.name), {
+                    withFileTypes: true,
+                  })
+                  .filter((subfile) => {
+                    return subfile.name.split('.')[1] == 'json';
+                  })
+                  .map(
+                    (subfile) =>
+                      (subfile = {
+                        parentFolder: path.join(filesPath, file.name),
+                        path: path.join(filesPath, file.name, subfile.name),
+                        name: subfile.name,
+                        isOpen: false,
+                      }),
+                  )
+              : null,
+            isOpen: false,
+          }),
+      );
+  appWindow.webContents.send('gotNotebooks', {
+    filesPath: filesPath,
+    allFiles: all(),
+  });
+});
 
 ipcMain.on('getPicture', (event, id) => {
   const allPics = fs.readdirSync(path.join(__dirname, '..', 'attachments'), {
@@ -188,36 +183,36 @@ ipcMain.on('getPicture', (event, id) => {
   return;
 });
 
-// ipcMain.on('getAllPictures', (event, file) => {
-//   // let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
-//   // let allPicsArr = []
-//   // let foundPath;
-//   // for (const picture of allPics) {
-//   //   foundPath = path.join(__dirname, "..", "attachments", picture.name);
-//   //   let b64 = fs.readFileSync(foundPath, "base64")
-//   //   allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
-//   // }
-//   // let res;
-//   // if (file == '') {
-//   //   res = JSON.parse(
-//   //     fs.readFileSync(
-//   //       path.join(__dirname, '..', 'allAttachments.json'),
-//   //       'utf-8',
-//   //     ),
-//   //   );
-//   // } else {
-//   //   res = JSON.parse(
-//   //     fs.readFileSync(
-//   //       path.join(__dirname, '..', 'allAttachments.json'),
-//   //       'utf-8',
-//   //     ),
-//   //   ).filter((pic) => pic.filePath == file);
-//   // }
-//   appWindow.webContents.send('gotAllPictures', res);
-// });
+ipcMain.on('getAllPictures', (event, file) => {
+  // let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
+  // let allPicsArr = []
+  // let foundPath;
+  // for (const picture of allPics) {
+  //   foundPath = path.join(__dirname, "..", "attachments", picture.name);
+  //   let b64 = fs.readFileSync(foundPath, "base64")
+  //   allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
+  // }
+  let res;
+  if (file == '') {
+    res = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, '..', 'allAttachments.json'),
+        'utf-8',
+      ),
+    );
+  } else {
+    res = JSON.parse(
+      fs.readFileSync(
+        path.join(__dirname, '..', 'allAttachments.json'),
+        'utf-8',
+      ),
+    ).filter((pic: { filePath: unknown }) => pic.filePath == file);
+  }
+  appWindow.webContents.send('gotAllPictures', res);
+});
 
-// ipcMain.on('getArchive', (event, args) => {
-//   const filesPath = path.join(__dirname, '..', 'files');
+ipcMain.on('getArchive', () => {
+  const filesPath = path.join(__dirname, '..', 'files');
 
 //   const groupsToFilter:[] = [];
 //   function getAllGroups() {
@@ -260,23 +255,20 @@ ipcMain.on('getPicture', (event, id) => {
 
 //   const allGroups = getAllGroups();
 
-//   function removeDups(arr:[]) {
-//     const uniqueIds:[] = [];
-//     const unique = arr.filter((element) => {
-//       const isDuplicate = uniqueIds.includes(element);
-//       if (!isDuplicate) {
-//         uniqueIds.push(element);
-//         return true;
-//       }
-//       return false;
-//     });
-//     return unique.map(
-//       (groupTitle) => {
-//         const temp:string = groupTitle;
-//         return { groupName: temp, subGroups: [] }
-//       },
-//     );
-//   }
+  function removeDups(arr: any[]) {
+    const uniqueIds: any[] = [];
+    const unique = arr.filter((element) => {
+      const isDuplicate = uniqueIds.includes(element);
+      if (!isDuplicate) {
+        uniqueIds.push(element);
+        return true;
+      }
+      return false;
+    });
+    return unique.map(
+      (groupTitle) => (groupTitle = { groupName: groupTitle, subGroups: [] }),
+    );
+  }
 
 //   for (const group of allGroups) {
 //     groupsToFilter.push(group.groupTitle);
