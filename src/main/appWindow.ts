@@ -77,17 +77,14 @@ const store = new Store({ schema });
 nativeTheme.themeSource = store.get('theme');
 
 ipcMain.on('delete', (event, file) => {
-  shell
-    .trashItem(path.resolve(file))
-    .then((res) => {})
-    .catch((err) => {});
+  shell.trashItem(path.resolve(file))
+  .catch((error) => {console.error(error)});
 });
 
-ipcMain.on('openFiles', (event) => {
+ipcMain.on('openFiles', () => {
   shell
     .openPath(path.resolve(path.join(__dirname, '..', 'files')))
-    .then((res) => {})
-    .catch((err) => {});
+    .catch((error) => {console.error(error)});
 });
 
 ipcMain.on('move', (event, oldDir, newDir) => {
@@ -129,7 +126,7 @@ ipcMain.on('dark-mode', () => {
   }
 });
 
-ipcMain.on('getNotebooks', (event, args) => {
+ipcMain.on('getNotebooks', () => {
   const filesPath = path.join(__dirname, '..', 'files');
   const all = () =>
     fs
@@ -209,12 +206,12 @@ ipcMain.on('getAllPictures', (event, file) => {
         path.join(__dirname, '..', 'allAttachments.json'),
         'utf-8',
       ),
-    ).filter((pic) => pic.filePath == file);
+    ).filter((pic: { filePath: unknown }) => pic.filePath == file);
   }
   appWindow.webContents.send('gotAllPictures', res);
 });
 
-ipcMain.on('getArchive', (event, args) => {
+ipcMain.on('getArchive', () => {
   const filesPath = path.join(__dirname, '..', 'files');
 
   const groupsToFilter = [];
@@ -258,8 +255,8 @@ ipcMain.on('getArchive', (event, args) => {
 
   const allGroups = getAllGroups();
 
-  function removeDups(arr) {
-    const uniqueIds = [];
+  function removeDups(arr: any[]) {
+    const uniqueIds: any[] = [];
     const unique = arr.filter((element) => {
       const isDuplicate = uniqueIds.includes(element);
       if (!isDuplicate) {
