@@ -19,9 +19,18 @@
   // Application
   --app-accent-color: #32639f;
   --app-font-size: 16px;
-  --app-font-family: Rubik;
+  --app-font-family: 'Rubik';
   --app-bgcolor: #111415;
   --app-border-color: #3b3f44;
+
+  // Page
+  --page-bgcolor: #111A1D;
+  --page-border: #1A2428;
+
+  // Tools Panel
+  --panel-bgcolor: #1E2D33;
+  --tool-bgcolor: #18282e;
+
 
   // Scrollbar
   --scroll-width: 10px;
@@ -37,13 +46,16 @@
   --button-color: #fff;
   --button-border: 1px solid #222424;
   --button-bgcolor: #111A1D;
-  --pill-bgcolor: #16272c;
   --button-hover-bgcolor: #162225;
   --button-active-bgcolor: #1a282d;
   --button-shadow-color: #00000078;
+  --pill-bgcolor: #16272c;
+  --tag-saturation: 19%;
+  --tag-lightness: 23%;
+  --clear-button-bgcolor: #5F4646;
 
   // Titlebar
-  --titlebar-bgcolor: hsl(0deg 0% 10%);
+  --titlebar-bgcolor: var(--app-bgcolor);
   --titlebar-color: hsl(0, 0%, 85%);
   --titlebar-title-color: hsl(0, 0%, 85%);
   --titlebar-menu-border-color: #2d2c2c;
@@ -76,7 +88,15 @@
 body:not(.dark-mode) {
   // Application
   --app-accent-color: #2f77ca;
-  --app-bgcolor: #f1f0f0;
+  --app-bgcolor: #F7FCFE;
+
+  // Page
+  --page-bgcolor: #ffffff;
+  --page-border: #CAE3EE;
+
+  // Tools Panel
+  --panel-bgcolor: #fff;
+  --tool-bgcolor: #CAE3EE;
 
   // Selection
   --selection-bgcolor: var(--app-accent-color);
@@ -94,9 +114,14 @@ body:not(.dark-mode) {
   --button-shadow-color: white;
   --button-hover-bgcolor: hsl(0, 0%, 98%);
   --button-active-bgcolor: hsl(0, 0%, 96%);
+  --pill-bgcolor: #D2DFE6;
+  --tag-saturation: 47%;
+  --tag-lightness: 93%;
+  --clear-button-bgcolor: #F3E2E2;
+
 
   // Titlebar
-  --titlebar-bgcolor: #dcddde;
+  --titlebar-bgcolor: var(--app-bgcolor);
   --titlebar-color: #1f1f1f;
   --titlebar-title-color: var(--titlebar-color);
   --titlebar-menu-title-hover-bgcolor: #e6e6e6;

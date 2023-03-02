@@ -12,8 +12,8 @@ type Tag = {
 };
 
 const tags: Tag[] = [
-  { text: 'חדוא', id: crypto.randomUUID(), color: '#503636' },
-  { text: 'עוד אחד', id: crypto.randomUUID(), color: '#2F4533' },
+  { text: 'חדוא', id: crypto.randomUUID(), color: '0' },
+  { text: 'עוד אחד', id: crypto.randomUUID(), color: '130' },
 ];
 
 const Header = () => {

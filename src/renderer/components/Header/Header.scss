@@ -1,3 +1,5 @@
+@import '../Theme.scss';
+
 .header {
     width: calc(100% - 20px);
     align-self: center;
@@ -78,7 +80,7 @@
       }
       
       #logo{
-        fill: #d1d1d1;
+        fill: var(--titlebar-color);
         display: block;
         width: 45px;
         height: 55%;      
