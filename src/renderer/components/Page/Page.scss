@@ -94,8 +94,19 @@
             width: 40px;
             height: 40px;
             background-color: var(--tool-bgcolor);
+            
+            .fi {
+                line-height: 1.6;
+                margin: auto;
+                font-size: 20px;
+                color: var(--tool-color);
+                text-shadow: none;
+              }
             &#clearPage {
                 background-color: var(--clear-button-bgcolor);
+                .fi {
+                    color: var(--clear-button-color);
+                }
             }
         }
     }

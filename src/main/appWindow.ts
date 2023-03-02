@@ -74,7 +74,7 @@ fs.readdir(app.getPath('userData'), (err, res) => {
 });
 
 const store = new Store({ schema });
-nativeTheme.themeSource = store.get('theme');
+// nativeTheme.themeSource = store.get('theme');
 
 ipcMain.on('delete', (event, file) => {
   shell.trashItem(path.resolve(file))

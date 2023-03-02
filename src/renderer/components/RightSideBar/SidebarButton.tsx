@@ -15,6 +15,7 @@ const SidebarButton = ({
   icon,
   onClick,
 }: SidebarButtonProps) => {
+  const iconName = `fi fi-rr-${icon}`
   return (
     <div>
       <button
@@ -23,7 +24,7 @@ const SidebarButton = ({
         id={buttonType}
         onClick={onClick}
       >
-        <img src={icon} alt={title} />
+        <i className={iconName}></i>
       </button>
     </div>
   );

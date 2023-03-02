@@ -15,11 +15,12 @@
  * Here we define the Dark Theme (stylesheet) for application.
  */
 
+
 :root {
   // Application
   --app-accent-color: #32639f;
   --app-font-size: 16px;
-  --app-font-family: 'Rubik';
+  --app-font-family: 'Rubik2';
   --app-bgcolor: #111415;
   --app-border-color: #3b3f44;
 
@@ -53,6 +54,10 @@
   --tag-saturation: 19%;
   --tag-lightness: 23%;
   --clear-button-bgcolor: #5F4646;
+  --clear-button-color: #B29D9D;
+  --sidebar-button-color: #4B5A66;
+  --tool-color: #6b8293;
+
 
   // Titlebar
   --titlebar-bgcolor: var(--app-bgcolor);
@@ -118,6 +123,10 @@ body:not(.dark-mode) {
   --tag-saturation: 47%;
   --tag-lightness: 93%;
   --clear-button-bgcolor: #F3E2E2;
+  --clear-button-color: #8A4444;
+  --tool-color: #374957;
+  --sidebar-button-color: #4B5A66;
+
 
 
   // Titlebar

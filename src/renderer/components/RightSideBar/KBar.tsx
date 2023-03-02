@@ -6,8 +6,7 @@ import {
   KBarAnimator,
   KBarResults,
   KBarSearch,
-  useMatches,
-  NO_GROUP
+  useMatches
 } from 'kbar';
 
 function KBar() {
@@ -67,7 +66,7 @@ function KBar() {
     fontSize: "16px",
     width: "100%",
     fontFamily: 'Rubik',
-    direction: 'rtl',
+    direction: 'rtl' as const,
     boxSizing: "border-box" as React.CSSProperties["boxSizing"],
     outline: "none",
     border: "none",

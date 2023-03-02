@@ -79,6 +79,7 @@
     "webpack": "^5.75.0"
   },
   "dependencies": {
+    "@flaticon/flaticon-uicons": "^2.0.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "kbar": "^0.1.0-beta.40",

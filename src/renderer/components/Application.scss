@@ -6,8 +6,9 @@
  * @project : ERWT Boilerplate
  * @package : Application Sass Stylesheet
 */
-
+@import '../../../assets/icons/uicons.css';
 @import './Theme.scss';
+@import './Fonts.css';
 
 /**
  *==========================================================================
@@ -96,13 +97,8 @@ button {
   &:active {
     background: var(--button-active-bgcolor);
   }
-
-  img {
-    height: 80%;
-    width: 22px;
-    opacity: 0.8;
-  }
 }
+
 
 .rotate {
   animation: rotate 4.5s linear infinite;
