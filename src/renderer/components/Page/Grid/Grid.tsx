@@ -1,31 +1,43 @@
-import '../../../../../node_modules/react-grid-layout/css/styles.css'
-import '../../../../../node_modules/react-resizable/css/styles.css'
 import '../Page.scss';
-import React from 'react';
-
-import { Responsive, WidthProvider } from "react-grid-layout";
-
-const ResponsiveGridLayout = WidthProvider(Responsive);
+import React from 'react'
+import { GridStack } from 'gridstack';
+import 'gridstack/dist/gridstack.css';
 
 class PageGrid extends React.Component {
+  grid:GridStack = undefined;
+  state = {
+    items: [
+      { x: 12, y: 1, w: 12, h: 2, content: "a"},
+      // { x: 12, y: 4, w: 12, content: "b"},
+      { x: 12, y: 2, w: 12, content: "c"},
+      { x: 12, y: 1, w: 12, h: 2, content: "d"},
+      { x: 12, y: 6, w: 12, h: 2, content: "e"},
+    ]
+  };
+
+  componentDidMount() {
+    this.grid = GridStack.init({
+      float: false,
+      resizable: { handles: 's,sw,w' },
+      removable: '#clearPage',
+      rtl: true,
+      margin: 5,
+      column: 'auto',
+      cellHeight: 50,
+      children: this.state.items,
+    });
+  }
+
+
   render() {
     return (
-      <ResponsiveGridLayout
-        className="layout"
-        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
-        rowHeight={50}
-        isBounded={true}
-        resizeHandles={['sw']}
-        containerPadding={[0,0]}
-        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
-      >
-        {/* <div key="1" data-grid={{ x: 1, y: 0, w: 8, h: 1, minW: 2, maxW: 8 }}>בדיקה</div>
-        <div key="2" data-grid={{ x: 1, y: 1, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 2</div>
-        <div key="3" data-grid={{ x: 1, y: 2, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 3</div>
-        <div key="4" data-grid={{ x: 1, y: 3, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 4</div> */}
-      </ResponsiveGridLayout>
-    );
+      <div className="grid-container">
+        <div className="grid-stack"></div>
+      </div>
+    )  
   }
+
+  
 }
 
 export default PageGrid

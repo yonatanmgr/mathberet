@@ -3137,6 +3137,11 @@
   "resolved" "https://registry.npmjs.org/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz"
   "version" "1.0.4"
 
+"gridstack@^7.2.3":
+  "integrity" "sha512-1s4Fx+Hr4nKl064q/ygrd41XiZaC2gG6R+yz5nbOibP9vODJ6mOtjIM5x8qKN12FknakaMpVBnCa1T6V7H15hQ=="
+  "resolved" "https://registry.npmjs.org/gridstack/-/gridstack-7.2.3.tgz"
+  "version" "7.2.3"
+
 "handle-thing@^2.0.0":
   "integrity" "sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg=="
   "resolved" "https://registry.npmjs.org/handle-thing/-/handle-thing-2.0.1.tgz"
