@@ -27,11 +27,12 @@
   width: var(--scroll-width);
 
   &-track {
-    background: var(--scroll-track-bgcolor);
+    background: transparent;
   }
 
   &-thumb {
     background: var(--scroll-thumb-bgcolor);
+    border-radius: 50px;
   }
 
   &-thumb:hover {
@@ -47,6 +48,7 @@ body,
 
 body {
   margin: 0;
+  margin-right: 0 !important;
   font-size: var(--app-font-size);
   font-family: var(--app-font-family);
   color: var(--app-color);

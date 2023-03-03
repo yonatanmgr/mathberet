@@ -4,7 +4,9 @@ import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.css';
 
 class PageGrid extends React.Component {
+
   grid:GridStack = undefined;
+
   state = {
     items: [
       { x: 12, y: 1, w: 12, h: 2, content: "a"},
@@ -26,8 +28,8 @@ class PageGrid extends React.Component {
       cellHeight: 50,
       children: this.state.items,
     });
-  }
 
+  }
 
   render() {
     return (
@@ -36,8 +38,10 @@ class PageGrid extends React.Component {
       </div>
     )  
   }
-
   
+  handleAddWidget = () => {
+    this.grid.addWidget({w: 3, content: "new"})
+  }
 }
 
 export default PageGrid

@@ -1,6 +1,4 @@
 @import '../Theme.scss';
-@import '../../../../node_modules/react-grid-layout/css/styles.css';
-@import '../../../../node_modules/react-resizable/css/styles.css';
 
 /**
  *==========================================================================
@@ -9,28 +7,6 @@
  *
  * Here we use the codes to apply application specific style
  */
-
-::selection {
-    background: var(--selection-bgcolor);
-    color: var(--selection-color);
-}
-
-::-webkit-scrollbar {
-    display: none;
-
-    &-track {
-        background: var(--scroll-track-bgcolor);
-    }
-
-    &-thumb {
-        background: var(--scroll-thumb-bgcolor);
-    }
-
-    &-thumb:hover {
-        background: var(--scroll-thumb-hover-bgcolor);
-    }
-}
-
 
 .page {
     width: 100%;
