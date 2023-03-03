@@ -113,7 +113,7 @@ function KBar() {
   
 
   return (
-    <KBarProvider actions={actions}>
+    <KBarProvider actions={actions} options={{ toggleShortcut: "$mod+Shift+p"}}>
       <KBarPortal> 
         <KBarPositioner> 
           <KBarAnimator style={animatorStyle}>
