@@ -16,10 +16,10 @@ const PageGrid = () => {
 
   const state = {
     items: [
-      { x: 12, y: 1, w: 12, content: renderToString(<GridBlock />) },
-      { x: 12, y: 2, w: 12, content: renderToString(<GridBlock />) },
-      { x: 12, y: 3, w: 12, content: renderToString(<GridBlock />) },
-      { x: 12, y: 4, w: 12, h: 2, content: renderToString(<GridBlock />) },
+      { x: 12, y: 1, w: 12, content: renderToString(<GridBlock>1</GridBlock>) },
+      { x: 12, y: 2, w: 12, content: renderToString(<GridBlock>2</GridBlock>) },
+      { x: 12, y: 3, w: 12, content: renderToString(<GridBlock>3</GridBlock>) },
+      { x: 12, y: 4, w: 12, h: 2, content: renderToString(<GridBlock>4</GridBlock>) },
     ],
   };
 
@@ -40,7 +40,13 @@ const PageGrid = () => {
   }, []);
 
   const AddWidget = (newWidget: any) => {
-    grid.addWidget({ w: 3, content: renderToString(<GridBlock />) });
+
+    console.log(newWidget)
+
+    grid.addWidget({
+      w: 3,
+      content: renderToString(<GridBlock>{newWidget.type}</GridBlock>),
+    });
   };
 
   return (

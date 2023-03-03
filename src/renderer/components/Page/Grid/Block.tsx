@@ -1,18 +1,21 @@
-import React from 'react'
-import TextBlockContent from './TextBlock'
+import React from 'react';
+import TextBlockContent from './TextBlock';
 
-class GridBlock extends React.Component {
+type Props = {
+  children?: string | JSX.Element;
+};
 
-    render(): React.ReactNode {
-        return(
-            <div className="block">
-              <div className='block-handle'>
-                <i className='fi fi-rr-menu-dots-vertical' />
-              </div>
-              <div className="block-content"><TextBlockContent /></div>                
-          </div>
-        )
-    }
-  }
+const GridBlock = ({ children }: Props) => {
+  return (
+    <div className='block'>
+      <div className='block-handle'>
+        <i className='fi fi-rr-menu-dots-vertical' />
+      </div>
+      <div className='block-content'>
+        <TextBlockContent>{children}</TextBlockContent>
+      </div>
+    </div>
+  );
+};
 
-export default GridBlock
+export default GridBlock;

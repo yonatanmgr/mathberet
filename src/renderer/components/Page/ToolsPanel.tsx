@@ -7,11 +7,7 @@ const ToolsPanel = () => {
   const { setNewWidget } = useContext(MyContext);
 
   const handleOnClickTool = (toolName: string) => {
-    switch (toolName) {
-      case 'text':
-        setNewWidget({ type: 'text' });
-        break;
-    }
+    setNewWidget({ type: toolName });
   };
 
   return (
@@ -27,6 +23,7 @@ const ToolsPanel = () => {
           title='הוספת בלוק מתמטי'
           buttonType='addMathBlock'
           icon={'square-root'}
+          onClick={() => handleOnClickTool('math')}
         />
         <Tool
           title='הוספת בלוק גרפי'

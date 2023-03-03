@@ -1,10 +1,15 @@
+import React from 'react';
 
-import React from 'react'
+type Props = {
+  children?: string | JSX.Element;
+};
 
-class TextBlockContent extends React.Component {
-    render(): React.ReactNode {
-        return <div className="block-content-edit" contentEditable></div>
-    }
-  }
+const TextBlockContent = ({ children }: Props) => {
+  return (
+    <div className='block-content-edit' contentEditable>
+      {children}
+    </div>
+  );
+};
 
-export default TextBlockContent
+export default TextBlockContent;
