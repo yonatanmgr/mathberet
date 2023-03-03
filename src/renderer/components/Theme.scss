@@ -31,6 +31,8 @@
   // Tools Panel
   --panel-bgcolor: #1E2D33;
   --tool-bgcolor: #18282e;
+  --tool-hover-bgcolor: #2a444b;
+  --tool-active-bgcolor: #21333a;
 
 
   // Scrollbar
@@ -48,7 +50,7 @@
   --button-border: 1px solid #222424;
   --button-bgcolor: #111A1D;
   --button-hover-bgcolor: #162225;
-  --button-active-bgcolor: #1a282d;
+  --button-active-bgcolor: #21333a;
   --button-shadow-color: #00000078;
   --pill-bgcolor: #16272c;
   --tag-saturation: 19%;
@@ -102,6 +104,10 @@ body:not(.dark-mode) {
   // Tools Panel
   --panel-bgcolor: #fff;
   --tool-bgcolor: #CAE3EE;
+  --tool-hover-bgcolor: #b2d1de;
+  --tool-active-bgcolor: #89b6c9;
+
+
 
   // Selection
   --selection-bgcolor: var(--app-accent-color);
