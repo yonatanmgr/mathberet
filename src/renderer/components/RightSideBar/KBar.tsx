@@ -38,8 +38,34 @@ function KBar() {
 
   const actions = [
     {
+      id: "preferences",
+      name: "העדפות משתמש"
+    },
+    {
       id: "theme",
       name: "ערכת נושא",
+      parent: "preferences"
+    },
+    {
+      id: "color",
+      name: "צבע נושא",
+      parent: "preferences"
+    },
+    {
+      id: "blue",
+      name: "כחול",
+      perform: () => {
+        localStorage.setItem('color', 'blue');
+      },
+      parent: 'color'
+    },
+    {
+      id: "red",
+      name: "אדום",
+      perform: () => {
+        localStorage.setItem('color', 'red');
+      },
+      parent: 'color'
     },
     {
       id: "light",

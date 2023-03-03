@@ -94,7 +94,13 @@
             width: 40px;
             height: 40px;
             background-color: var(--tool-bgcolor);
-            
+            &:hover {
+                background-color: var(--tool-hover-bgcolor);
+            }
+            &:active {
+                transform: scale(0.9);
+                background-color: var(--tool-active-bgcolor);
+            }
             .fi {
                 line-height: 1.6;
                 margin: auto;

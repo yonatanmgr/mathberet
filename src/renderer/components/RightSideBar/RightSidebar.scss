@@ -32,7 +32,18 @@
         height: 45px;
         border-radius: 15px;
 
+        &:hover {
+          .fi{
+            color: var(--titlebar-color);
+          }
+        }
+
+        &:active {
+          transform: scale(0.9);
+        }
+
         .fi {
+          transition: 0.2s color;
           margin: auto;
           font-size: 22px;
           color: var(--sidebar-button-color);
