@@ -4,7 +4,10 @@ import './FileSystem.scss';
 function FileSystem() {
   return (
     <div className='file-system'>
-      <span className='header'>מחברות</span>
+      <span className='header'>המחברות שלי</span>
+      <div className='files-tree-container'>
+
+      </div>
     </div>
   );
 }
