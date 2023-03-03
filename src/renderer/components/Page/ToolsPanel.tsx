@@ -16,7 +16,7 @@ const ToolsPanel = () => {
   const handleOnClickTool = (toolName:string) => {
     switch (toolName) {
       case 'text':
-        alert(toolName)
+        PageGrid.call('handleAddWidget')
         break;
 
     }

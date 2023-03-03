@@ -2,18 +2,19 @@ import '../Page.scss';
 import React from 'react'
 import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.css';
+import GridBlock from './Block';
+import { renderToString } from 'react-dom/server'
 
 class PageGrid extends React.Component {
 
-  grid:GridStack = undefined;
+  grid: GridStack = undefined;
 
   state = {
     items: [
-      { x: 12, y: 1, w: 12, h: 2, content: "a"},
-      // { x: 12, y: 4, w: 12, content: "b"},
-      { x: 12, y: 2, w: 12, content: "c"},
-      { x: 12, y: 1, w: 12, h: 2, content: "d"},
-      { x: 12, y: 6, w: 12, h: 2, content: "e"},
+      { x: 12, y: 1, w: 12, content: renderToString(<GridBlock />)},
+      { x: 12, y: 2, w: 12, content: renderToString(<GridBlock />)},
+      { x: 12, y: 3, w: 12, content: renderToString(<GridBlock />)},
+      { x: 12, y: 4, w: 12, h: 2, content: renderToString(<GridBlock />)},
     ]
   };
 
@@ -24,11 +25,11 @@ class PageGrid extends React.Component {
       removable: '#clearPage',
       rtl: true,
       margin: 5,
+      handle: ".block-handle",
       column: 'auto',
       cellHeight: 50,
       children: this.state.items,
     });
-
   }
 
   render() {
@@ -40,7 +41,7 @@ class PageGrid extends React.Component {
   }
   
   handleAddWidget = () => {
-    this.grid.addWidget({w: 3, content: "new"})
+    this.grid.addWidget({w: 3, content: renderToString(<GridBlock />)})
   }
 }
 

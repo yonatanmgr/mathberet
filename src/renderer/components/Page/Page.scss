@@ -42,14 +42,62 @@
                 padding-bottom: 50px;
 
                 .grid-stack-item-content {
-                    color: var(--titlebar-color);
-                    border-radius: 5px;
-                    outline: 1px solid transparent;
                     transition: 0.2s;
-    
-                    &:hover {
-                        outline: 1px solid var(--tool-hover-bgcolor);
+                    
+                    .block {
+                        transition: inherit;
+                        display: flex;
+                        flex-direction: row;  
+                        width: 100%;
+                        height: 100%;
+                        gap: 5px;
+
+                        .block-content{
+                            transition: inherit;
+                            width: 100%;
+                            display: flex;
+                            outline: 1px solid transparent;
+                            border-radius: 5px;
+                            margin: 3px;
+
+                            .block-content-edit {
+                                padding-right: 10px;
+                                padding-left: 10px;
+                                font-size: 20px;
+                                width: 100%;
+                                height: 100%;
+                                color: var(--titlebar-color);
+
+                                &:focus {
+                                    outline: none;
+                                }
+                            }
+                        }
+
+                        .block-handle {
+                            transition: 0.2s;
+                            padding-top: 8px;
+                            font-size: 16px;
+                            opacity: 0%;
+                            color: var(--titlebar-color);
+                        }  
                     }
+
+
+                    &:hover {
+                        .block-content{
+                            outline: 1px solid var(--tool-hover-bgcolor);
+                        }
+                        .block-handle {
+                            opacity: 70%;
+    
+                            &:hover{
+                                cursor: pointer;
+                            }
+                        }
+                    }
+
+
                 }
 
                 .grid-stack-item-removing .grid-stack-item-content {
