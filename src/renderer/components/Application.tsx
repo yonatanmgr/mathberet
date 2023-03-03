@@ -8,9 +8,10 @@ import '../../../node_modules/react-grid-layout/css/styles.css';
 import '../../../node_modules/react-resizable/css/styles.css';
 import KBar from './RightSideBar/KBar';
 import { MyContext } from './ContextApi';
+import { newWidgetRequest } from '@renderer/common/types';
 
 const Application = () => {
-  const [newWidget, setNewWidget] = useState();
+  const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [darkTheme, setDarkTheme] = useState(true);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ const Application = () => {
   }, [darkTheme]);
 
   return (
-    <MyContext.Provider value={{ newWidget, setNewWidget }}>
+    <MyContext.Provider value={{ newWidgetRequest, setNewWidgetRequest }}>
       <div id='erwt'>
         <Header />
         <div className='workspace'>
