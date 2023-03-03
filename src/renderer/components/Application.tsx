@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './Application.scss';
 import Page from './Page/Page';
 import RightSidebar from './RightSideBar/RightSidebar';
 import LeftSidebar from './LeftSidebar/LeftSidebar';
 import Header from './Header/Header';
-import '../../../node_modules/react-grid-layout/css/styles.css'
-import '../../../node_modules/react-resizable/css/styles.css'
+import '../../../node_modules/react-grid-layout/css/styles.css';
+import '../../../node_modules/react-resizable/css/styles.css';
 import KBar from './RightSideBar/KBar';
+import { MyContext } from './ContextApi';
 
-const Application: React.FC = () => {
-
+const Application = () => {
+  const [newWidget, setNewWidget] = useState();
   const [darkTheme, setDarkTheme] = useState(true);
 
   useEffect(() => {
@@ -34,15 +35,17 @@ const Application: React.FC = () => {
   }, [darkTheme]);
 
   return (
-    <div id='erwt'>
-      <Header />
-      <div className='workspace'>
-        <RightSidebar />
-        <KBar />
-        <Page />
-        <LeftSidebar />
+    <MyContext.Provider value={{ newWidget, setNewWidget }}>
+      <div id='erwt'>
+        <Header />
+        <div className='workspace'>
+          <RightSidebar />
+          <KBar />
+          <Page />
+          <LeftSidebar />
+        </div>
       </div>
-    </div>
+    </MyContext.Provider>
   );
 };
 

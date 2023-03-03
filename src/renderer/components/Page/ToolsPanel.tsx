@@ -1,24 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Page.scss';
-import PageGrid from './Grid/Grid';
-
-type ToolProps = { title: string; buttonType: string; icon?: string; onClick?: React.MouseEventHandler<HTMLButtonElement>; };
-const Tool = ({ buttonType, title, icon, onClick }: ToolProps) => {
-  const iconName = `fi fi-rr-${icon}`
-  return (
-    <button title={title} id={buttonType} className='tool' onClick={onClick}>
-      {icon && <i className={iconName} />}
-    </button>
-  );
-};
+import Tool from './Tool';
+import { MyContext } from '@components/ContextApi';
 
 const ToolsPanel = () => {
-  const handleOnClickTool = (toolName:string) => {
+  const { setNewWidget } = useContext(MyContext);
+
+  const handleOnClickTool = (toolName: string) => {
     switch (toolName) {
       case 'text':
-        PageGrid.call('handleAddWidget')
+        setNewWidget({ type: 'text' });
         break;
-
     }
   };
 
@@ -29,7 +21,7 @@ const ToolsPanel = () => {
           title='הוספת בלוק טקסט'
           buttonType='addTextBlock'
           icon={'letter-case'}
-          onClick={()=>handleOnClickTool('text')}
+          onClick={() => handleOnClickTool('text')}
         />
         <Tool
           title='הוספת בלוק מתמטי'
