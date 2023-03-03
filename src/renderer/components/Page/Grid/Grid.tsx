@@ -6,6 +6,7 @@ import GridBlock from './Block';
 import { renderToString } from 'react-dom/server';
 import { MyContext } from '@components/ContextApi';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
+import Geogebra from 'react-geogebra';
 
 function blockData(
   html: string,
@@ -107,16 +108,42 @@ const PageGrid = () => {
   }
 
   function addGgb() {
-    // const id = Date.now();
-    // const html = `$<div class="actionsArea"><div id="ggBox_${id}" class="ggBox"></div></div>`
-    // const block = blockData(html, id, "Graph", 10)
-    // grid.addWidget(block);
-    //const box = document.getElementById(`ggBox_${id.toString()}`)
-    //box.closest(".grid-stack-item").grid.blockContent = createGgb(id, "")
+    const id = Date.now();
+    const html = renderToString(
+      <Geogebra
+        id={id.toString()}
+        width={800}
+        height={600}
+        showMenuBar
+        showToolBar
+        showAlgebraInput
+        appletOnLoad={() => console.log('appletOnLoad')}
+      />,
+    );
+
+    const block = blockData(
+      html,
+      id,
+      'Divider',
+      1,
+      {},
+      12,
+      1000,
+      12,
+      1,
+      1,
+      1,
+      12,
+    );
+    grid.addWidget(block);
   }
 
-  function addMath() {}
-  function addGroup() {}
+  function addMath() {
+    console.error('not implemented');
+  }
+  function addGroup() {
+    console.error('not implemented');
+  }
 
   function addDivider() {
     const id = Date.now();
