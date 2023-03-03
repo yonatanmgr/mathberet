@@ -16,34 +16,34 @@ const ToolsPanel = () => {
         <Tool
           title='הוספת בלוק טקסט'
           buttonType='addTextBlock'
-          icon={'letter-case'}
+          icon='letter-case'
           onClick={() => handleOnClickTool('text')}
         />
         <Tool
           title='הוספת בלוק מתמטי'
           buttonType='addMathBlock'
-          icon={'square-root'}
+          icon='square-root'
           onClick={() => handleOnClickTool('math')}
         />
         <Tool
           title='הוספת בלוק גרפי'
           buttonType='addGraphBlock'
-          icon={'chat-arrow-grow'}
+          icon='chat-arrow-grow'
         />
         <Tool
           title='הוספת בלוק תמונה'
           buttonType='addPictureBlock'
-          icon={'picture'}
+          icon='picture'
         />
         <Tool
           title='הוספת קבוצה'
           buttonType='addGroupBlock'
-          icon={'apps-add'}
+          icon='apps-add'
         />
         <Tool
           title='הוספת קו מפריד'
           buttonType='addDividerBlock'
-          icon={'minus'}
+          icon='minus'
         />
         <Tool title='ניקוי הדף' buttonType='clearPage' icon={'trash'} />
       </div>
