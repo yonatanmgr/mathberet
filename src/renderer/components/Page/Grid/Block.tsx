@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import TextBlockContent from './TextBlock';
 
-type Props = {
-  children?: string | JSX.Element;
-};
-
-const GridBlock = ({ children }: Props) => {
+const GridBlock = ({ children }: PropsWithChildren) => {
   return (
     <div className='block'>
       <div className='block-handle'>

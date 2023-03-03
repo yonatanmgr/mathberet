@@ -1,10 +1,6 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-type Props = {
-  children?: string | JSX.Element;
-};
-
-const TextBlockContent = ({ children }: Props) => {
+const TextBlockContent = ({ children }: PropsWithChildren) => {
   return (
     <div className='block-content-edit' contentEditable>
       {children}
