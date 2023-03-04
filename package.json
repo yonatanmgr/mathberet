@@ -88,6 +88,7 @@
     "react-dom": "^18.2.0",
     "react-geogebra": "^1.2.4",
     "react-grid-layout": "^1.3.4",
+    "react-resizable": "^3.0.4",
     "slate": "^0.91.4",
     "slate-history": "^0.86.0",
     "slate-react": "^0.91.8"

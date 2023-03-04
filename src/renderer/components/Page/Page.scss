@@ -30,6 +30,15 @@
         flex-direction: column;
         align-items: center;
 
+        .layout {
+            direction: rtl;
+            height: 100%;
+
+            .react-grid-item {
+                background-color: var(--panel-bgcolor);
+                border-radius: 8px;
+            }
+        }
         .grid-container {
             padding-top: 80px;
             height: calc(100% + 80px);

@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react';
 import { GridStack, GridStackWidget } from 'gridstack';
 import 'gridstack/dist/gridstack.css';
 import GridBlock from './Block';
-import { renderToString } from 'react-dom/server';
+// import { renderToString } from 'react-dom/server';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
 
+import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
 function blockData(
-  html: string,
+  html: JSX.Element,
   id: number,
   type: string,
   h: number,
@@ -23,7 +26,7 @@ function blockData(
   maxW = 12,
 ) {
   return {
-    idd: id,
+    id: id,
     content: html,
     x: x,
     y: y,
@@ -36,6 +39,29 @@ function blockData(
     maxH: maxH,
     maxW: maxW,
   } as GridStackWidget;
+}
+
+class Grid extends React.Component {
+  render() {
+
+    return (
+      <ResponsiveGridLayout
+        className="layout"
+        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
+        rowHeight={50}
+        isBounded={true}
+        resizeHandles={['sw']}
+        autoSize={true}
+        containerPadding={[0,0]}
+        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
+      >
+        <div key="1" data-grid={{ x: 1, y: 0, w: 8, h: 1, minW: 2, maxW: 8 }}>בדיקה</div>
+        <div key="2" data-grid={{ x: 1, y: 1, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 2</div>
+        <div key="3" data-grid={{ x: 1, y: 2, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 3</div>
+        <div key="4" data-grid={{ x: 1, y: 3, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 4</div>
+      </ResponsiveGridLayout>
+    );
+  }
 }
 
 const PageGrid = () => {
@@ -60,36 +86,21 @@ const PageGrid = () => {
     console.log('page should be cleared');
   }, [clearPageRequest]);
 
-  const state = {
-    items: [
-      { x: 12, y: 1, w: 12, content: renderToString(<GridBlock>1</GridBlock>) },
-      { x: 12, y: 2, w: 12, content: renderToString(<GridBlock>2</GridBlock>) },
-      { x: 12, y: 3, w: 12, content: renderToString(<GridBlock>3</GridBlock>) },
-      {
-        x: 12,
-        y: 4,
-        w: 12,
-        h: 2,
-        content: renderToString(<GridBlock>4</GridBlock>),
-      },
-    ],
-  };
 
-  useEffect(() => {
-    const newGrid = GridStack.init({
-      float: false,
-      resizable: { handles: 's,sw,w' },
-      removable: '#clearPage',
-      rtl: true,
-      margin: 5,
-      handle: '.block-handle',
-      column: 'auto',
-      cellHeight: 50,
-      children: state.items,
-    });
+  // useEffect(() => {
+  //   const newGrid = GridStack.init({
+  //     float: false,
+  //     resizable: { handles: 's,sw,w' },
+  //     removable: '#clearPage',
+  //     rtl: true,
+  //     margin: 5,
+  //     handle: '.block-handle',
+  //     column: 'auto',
+  //     cellHeight: 50
+  //   });
 
-    setGrid(newGrid);
-  }, []);
+  //   setGrid(newGrid);
+  // }, []);
 
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
     console.log(newWidgetRequest);
@@ -100,7 +111,7 @@ const PageGrid = () => {
   function addText() {
     grid.addWidget({
       w: 3,
-      content: renderToString(<GridBlock></GridBlock>),
+      content: <GridBlock></GridBlock>,
     });
   }
 
@@ -114,7 +125,7 @@ const PageGrid = () => {
 
   function addGgb() {
     const id = Date.now();
-    const html = renderToString(
+    const html = 
       <Geogebra
         id={id.toString()}
         width={800}
@@ -123,22 +134,13 @@ const PageGrid = () => {
         showToolBar
         showAlgebraInput
         appletOnLoad={() => console.log('appletOnLoad')}
-      />,
-    );
+      />
 
     const block = blockData(
       html,
       id,
-      'Divider',
-      1,
-      {},
-      12,
-      1000,
-      12,
-      1,
-      1,
-      1,
-      12,
+      'Graph',
+      1
     );
     grid.addWidget(block);
   }
@@ -152,7 +154,7 @@ const PageGrid = () => {
 
   function addDivider() {
     const id = Date.now();
-    const html = renderToString(<hr className='pageDivider' />);
+    const html = <hr className='pageDivider' />;
     const block = blockData(
       html,
       id,
@@ -172,7 +174,8 @@ const PageGrid = () => {
 
   return (
     <div className='grid-container'>
-      <div className='grid-stack'></div>
+      <Grid />
+      {/* <div className='grid-stack'></div> */}
     </div>
   );
 };
