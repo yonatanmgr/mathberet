@@ -1,14 +1,18 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import './Page.scss';
 import Tool from './Tool';
-import { MyContext } from '@components/ContextApi';
+import { useGeneralContext } from '@components/GeneralContext';
 import { WidgetType } from '@renderer/common/types';
 
 const ToolsPanel = () => {
-  const { setNewWidgetRequest } = useContext(MyContext);
+  const { setNewWidgetRequest, setClearPageRequest } = useGeneralContext();
 
   const handleOnClickTool = (widgetType: WidgetType) => {
     setNewWidgetRequest({ widgetType });
+  };
+
+  const clearPage = () => {
+    setClearPageRequest({});
   };
 
   return (
@@ -45,7 +49,12 @@ const ToolsPanel = () => {
           icon='minus'
           onClick={() => handleOnClickTool(WidgetType.Divider)}
         />
-        <Tool title='ניקוי הדף' buttonType='clearPage' icon={'trash'} />
+        <Tool
+          title='ניקוי הדף'
+          buttonType='clearPage'
+          icon={'trash'}
+          onClick={() => clearPage()}
+        />
       </div>
     </div>
   );

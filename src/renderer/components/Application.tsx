@@ -7,11 +7,9 @@ import Header from './Header/Header';
 import '../../../node_modules/react-grid-layout/css/styles.css';
 import '../../../node_modules/react-resizable/css/styles.css';
 import KBar from './RightSideBar/KBar';
-import { MyContext } from './ContextApi';
-import { newWidgetRequest } from '@renderer/common/types';
+import { GeneralContextProvider } from './GeneralContext';
 
 const Application = () => {
-  const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [darkTheme, setDarkTheme] = useState(true);
 
   useEffect(() => {
@@ -36,7 +34,7 @@ const Application = () => {
   }, [darkTheme]);
 
   return (
-    <MyContext.Provider value={{ newWidgetRequest, setNewWidgetRequest }}>
+    <GeneralContextProvider>
       <div id='erwt'>
         <Header />
         <div className='workspace'>
@@ -46,7 +44,7 @@ const Application = () => {
           <LeftSidebar />
         </div>
       </div>
-    </MyContext.Provider>
+    </GeneralContextProvider>
   );
 };
 

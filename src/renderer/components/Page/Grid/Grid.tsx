@@ -1,10 +1,10 @@
 import '../Page.scss';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GridStack, GridStackWidget } from 'gridstack';
 import 'gridstack/dist/gridstack.css';
 import GridBlock from './Block';
 import { renderToString } from 'react-dom/server';
-import { MyContext } from '@components/ContextApi';
+import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
 
@@ -40,7 +40,7 @@ function blockData(
 
 const PageGrid = () => {
   const [grid, setGrid] = useState<GridStack>();
-  const { newWidgetRequest } = useContext(MyContext);
+  const { newWidgetRequest, clearPageRequest } = useGeneralContext();
 
   const addWidgetHandlersMap = new Map<WidgetType, () => void>([
     [WidgetType.Divider, addDivider],
@@ -54,6 +54,11 @@ const PageGrid = () => {
   useEffect(() => {
     if (newWidgetRequest) AddWidget(newWidgetRequest);
   }, [newWidgetRequest]);
+
+  useEffect(() => {
+    // todo: clear page
+    console.log('page should be cleared');
+  }, [clearPageRequest]);
 
   const state = {
     items: [
