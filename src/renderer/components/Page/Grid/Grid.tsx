@@ -10,10 +10,22 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const PageGrid = () => {
+  
+  const { newWidgetRequest, clearPageRequest } = useGeneralContext();
+
   const [state, setState] = useState({
     items: [],
     newCounter: 0,
   });
+
+  useEffect(() => {
+    if (newWidgetRequest) AddWidget(newWidgetRequest);
+  }, [newWidgetRequest]);
+
+  useEffect(() => {
+    // todo: clear page
+    console.log('page should be cleared');
+  }, [clearPageRequest]);
 
   const createElement = (el) => {
     const i = el.add ? '+' : el.i;
@@ -46,23 +58,11 @@ const PageGrid = () => {
   };
 
   const onRemoveItem = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(e)
     setState((prev) => ({
       ...prev,
       items: prev.items.filter((item) => item.i !== e.target.name),
     }));
   };
-
-  const { newWidgetRequest, clearPageRequest } = useGeneralContext();
-
-  useEffect(() => {
-    if (newWidgetRequest) AddWidget(newWidgetRequest);
-  }, [newWidgetRequest]);
-
-  useEffect(() => {
-    // todo: clear page
-    console.log('page should be cleared');
-  }, [clearPageRequest]);
 
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
     console.log(newWidgetRequest);
