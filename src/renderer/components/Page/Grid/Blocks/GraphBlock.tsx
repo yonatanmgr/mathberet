@@ -2,7 +2,7 @@ import { Mafs, Coordinates, Plot, Theme } from "mafs"
 const math = require('mathjs')
 import React, { useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
-
+import ML_SHORTCUTS from "@common/shortcuts";
 
 function latex2function(latex: string, i: number){
     const parser = math.parser()
@@ -18,6 +18,7 @@ function GraphBlockContent() {
 
         return <MathView
             ref={ref}
+            inlineShortcuts={ML_SHORTCUTS}
             className='math-field-element'
             onMathFieldBlur={() => {setValue(ref.current?.getValue('latex'))}}
             value={value}
