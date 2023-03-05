@@ -15,7 +15,7 @@
     }
     
     .block {
-        transition: 0.1s;
+        transition: 0.2s;
         display: flex;
         flex-direction: row;  
         width: 100%;
@@ -62,6 +62,14 @@
             }
         }
 
+        .block-content{
+            outline: 1px solid transparent;
+            transition: 0.2s;
+            &:has(.MafsView){
+                outline: 1px solid var(--tool-hover-bgcolor);
+            }
+        }
+
         &:hover {
             .block-content{
                 outline: 1px solid var(--tool-hover-bgcolor);
@@ -69,6 +77,7 @@
                     display: flex;
                 }
             }
+
 
             .block-handle {
                 opacity: 70%;

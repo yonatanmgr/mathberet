@@ -73,13 +73,13 @@ fs.readdir(app.getPath('userData'), (err, res) => {
   }
 });
 
-const store = new Store({ schema });
+// const store = new Store({ schema });
 // nativeTheme.themeSource = store.get('theme');
 
-ipcMain.on('delete', (event, file) => {
-  shell.trashItem(path.resolve(file))
-  .catch((error) => {console.error(error)});
-});
+// ipcMain.on('delete', (event, file) => {
+//   shell.trashItem(path.resolve(file))
+//   .catch((error) => {console.error(error)});
+// });
 
 ipcMain.on('openFiles', () => {
   shell
@@ -97,75 +97,75 @@ ipcMain.on('load', (event, file) => {
   });
 });
 
-ipcMain.on('setUserColor', (event, color) => {
-  store.set('color', color);
-});
+// ipcMain.on('setUserColor', (event, color) => {
+//   store.set('color', color);
+// });
 
-ipcMain.on('setPageStyle', (event, style) => {
-  store.set('pageStyle', style);
-});
+// ipcMain.on('setPageStyle', (event, style) => {
+//   store.set('pageStyle', style);
+// });
 
-ipcMain.on('getPageStyle', (event, args) => {
-  appWindow.webContents.send('gotPageStyle', store.get('pageStyle'));
-});
-ipcMain.on('getUserTheme', (event, args) => {
-  appWindow.webContents.send('gotUserTheme', store.get('theme'));
-});
+// ipcMain.on('getPageStyle', (event, args) => {
+//   appWindow.webContents.send('gotPageStyle', store.get('pageStyle'));
+// });
+// ipcMain.on('getUserTheme', (event, args) => {
+//   appWindow.webContents.send('gotUserTheme', store.get('theme'));
+// });
 
-ipcMain.on('getUserColor', (event, args) => {
-  appWindow.webContents.send('gotUserColor', store.get('color'));
-});
+// ipcMain.on('getUserColor', (event, args) => {
+//   appWindow.webContents.send('gotUserColor', store.get('color'));
+// });
 
-ipcMain.on('dark-mode', () => {
-  if (nativeTheme.shouldUseDarkColors) {
-    nativeTheme.themeSource = 'light';
-    store.set('theme', 'light');
-  } else {
-    nativeTheme.themeSource = 'dark';
-    store.set('theme', 'dark');
-  }
-});
+// ipcMain.on('dark-mode', () => {
+//   if (nativeTheme.shouldUseDarkColors) {
+//     nativeTheme.themeSource = 'light';
+//     store.set('theme', 'light');
+//   } else {
+//     nativeTheme.themeSource = 'dark';
+//     store.set('theme', 'dark');
+//   }
+// });
 
-ipcMain.on('getNotebooks', () => {
-  const filesPath = path.join(__dirname, '..', 'files');
-  const all = () =>
-    fs
-      .readdirSync(filesPath, { withFileTypes: true })
-      .filter((file) => {
-        return file.isDirectory() || file.name.split('.')[1] == 'json';
-      })
-      .map(
-        (file) =>
-          (file = {
-            parentFolder: filesPath,
-            path: path.join(filesPath, file.name),
-            name: file.name,
-            files: file.isDirectory()
-              ? fs
-                  .readdirSync(path.join(filesPath, file.name), {
-                    withFileTypes: true,
-                  })
-                  .filter((subfile) => {
-                    return subfile.name.split('.')[1] == 'json';
-                  })
-                  .map(
-                    (subfile) =>
-                      (subfile = {
-                        parentFolder: path.join(filesPath, file.name),
-                        path: path.join(filesPath, file.name, subfile.name),
-                        name: subfile.name,
-                        isOpen: false,
-                      }),
-                  )
-              : null,
-            isOpen: false,
-          }),
-      );
-  appWindow.webContents.send('gotNotebooks', {
-    filesPath: filesPath,
-    allFiles: all(),
-  });
-});
+// ipcMain.on('getNotebooks', () => {
+//   const filesPath = path.join(__dirname, '..', 'files');
+//   const all = () =>
+//     fs
+//       .readdirSync(filesPath, { withFileTypes: true })
+//       .filter((file) => {
+//         return file.isDirectory() || file.name.split('.')[1] == 'json';
+//       })
+//       .map(
+//         (file) =>
+//           (file = {
+//             parentFolder: filesPath,
+//             path: path.join(filesPath, file.name),
+//             name: file.name,
+//             files: file.isDirectory()
+//               ? fs
+//                   .readdirSync(path.join(filesPath, file.name), {
+//                     withFileTypes: true,
+//                   })
+//                   .filter((subfile) => {
+//                     return subfile.name.split('.')[1] == 'json';
+//                   })
+//                   .map(
+//                     (subfile) =>
+//                       (subfile = {
+//                         parentFolder: path.join(filesPath, file.name),
+//                         path: path.join(filesPath, file.name, subfile.name),
+//                         name: subfile.name,
+//                         isOpen: false,
+//                       }),
+//                   )
+//               : null,
+//             isOpen: false,
+//           }),
+//       );
+//   appWindow.webContents.send('gotNotebooks', {
+//     filesPath: filesPath,
+//     allFiles: all(),
+//   });
+// });
 
 ipcMain.on('getPicture', (event, id) => {
   const allPics = fs.readdirSync(path.join(__dirname, '..', 'attachments'), {
@@ -183,33 +183,33 @@ ipcMain.on('getPicture', (event, id) => {
   return;
 });
 
-ipcMain.on('getAllPictures', (event, file) => {
-  let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
-  let allPicsArr = []
-  let foundPath;
-  for (const picture of allPics) {
-    foundPath = path.join(__dirname, "..", "attachments", picture.name);
-    let b64 = fs.readFileSync(foundPath, "base64")
-    allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
-  }
-  let res;
-  if (file == '') {
-    res = JSON.parse(
-      fs.readFileSync(
-        path.join(__dirname, '..', 'allAttachments.json'),
-        'utf-8',
-      ),
-    );
-  } else {
-    res = JSON.parse(
-      fs.readFileSync(
-        path.join(__dirname, '..', 'allAttachments.json'),
-        'utf-8',
-      ),
-    ).filter((pic: { filePath: unknown }) => pic.filePath == file);
-  }
-  appWindow.webContents.send('gotAllPictures', res);
-});
+// ipcMain.on('getAllPictures', (event, file) => {
+//   let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
+//   let allPicsArr = []
+//   let foundPath;
+//   for (const picture of allPics) {
+//     foundPath = path.join(__dirname, "..", "attachments", picture.name);
+//     let b64 = fs.readFileSync(foundPath, "base64")
+//     allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
+//   }
+//   let res;
+//   if (file == '') {
+//     res = JSON.parse(
+//       fs.readFileSync(
+//         path.join(__dirname, '..', 'allAttachments.json'),
+//         'utf-8',
+//       ),
+//     );
+//   } else {
+//     res = JSON.parse(
+//       fs.readFileSync(
+//         path.join(__dirname, '..', 'allAttachments.json'),
+//         'utf-8',
+//       ),
+//     ).filter((pic: { filePath: unknown }) => pic.filePath == file);
+//   }
+//   appWindow.webContents.send('gotAllPictures', res);
+// });
 
 ipcMain.on('getArchive', () => {
   const filesPath = path.join(__dirname, '..', 'files');
@@ -270,9 +270,9 @@ ipcMain.on('getArchive', () => {
     );
   }
 
-  for (const group of allGroups) {
-    groupsToFilter.push(group.groupTitle);
-  }
+  // for (const group of allGroups) {
+  //   groupsToFilter.push(group.groupTitle);
+  // }
 
   const finalArr = [];
   for (const group of removeDups(groupsToFilter)) {

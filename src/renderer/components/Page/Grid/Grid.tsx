@@ -8,9 +8,9 @@ import './Blocks/Blocks.scss';
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 
-import Geogebra from 'react-geogebra';
 import TextBlockContent from './Blocks/TextBlock';
-// import MathBlockContent from './Blocks/MathBlock';
+import MathBlockContent from './Blocks/MathBlock';
+import GraphBlockContent from './Blocks/GraphBlock';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -31,11 +31,11 @@ const PageGrid = () => {
         break;
 
       case 'Math':
-        block = <></>
+        block = <MathBlockContent />
         break;
 
       case 'Graph':
-        block = <Geogebra id={i.toString()} appletOnLoad={() => console.log('appletOnLoad')}/>
+        block = <GraphBlockContent />
         break;
 
       case 'Divider':
