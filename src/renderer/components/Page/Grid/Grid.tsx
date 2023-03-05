@@ -1,11 +1,12 @@
 import '../Page.scss';
+import './Grid.scss';
+import './Blocks/Blocks.scss';
 import React, { useEffect, useState } from 'react';
-import 'gridstack/dist/gridstack.css';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
-import TextBlockContent from './TextBlock';
-import MathBlockContent from './MathBlock';
+import TextBlockContent from './Blocks/TextBlock';
+// import MathBlockContent from './Blocks/MathBlock';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -32,7 +33,11 @@ const PageGrid = () => {
       case 'Graph':
         block = <Geogebra id={i.toString()} appletOnLoad={() => console.log('appletOnLoad')}/>
         break;
-    
+
+      case 'Divider':
+        block = <hr className='pageDivider'></hr>
+        break;
+
       default:
         break;
     }
@@ -154,7 +159,23 @@ const PageGrid = () => {
   }
 
   function addDivider() {
-    console.error('not implemented');
+    console.log('adding', 'n' + state.newCounter);
+    setState((prev) => ({
+      // Add a new item. It must have a unique key!
+      items: [
+        ...prev.items,
+        {
+          type: 'Divider',
+          maxH: 1,
+          i: 'n' + prev.newCounter,
+          x: Infinity,
+          y: Infinity, // puts it at the bottom
+          w: 8,
+          h: 1,
+        },
+      ],
+      newCounter: prev.newCounter + 1,
+    })); 
   }
 
   const addWidgetHandlersMap = new Map<WidgetType, () => void>([

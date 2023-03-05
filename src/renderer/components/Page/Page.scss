@@ -1,17 +1,9 @@
 @import '../Theme.scss';
 
-/**
- *==========================================================================
- * Application Specific Stylesheet
- *==========================================================================
- *
- * Here we use the codes to apply application specific style
- */
-
-
- ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 0;
-  }  
+}  
+
 .page {
     width: 100%;
     height: 100%;
@@ -40,110 +32,6 @@
             width: 60vw;
             overflow-y: auto;
             overflow-x: hidden;
-
-            .layout {
-                height: 100%;
-                direction: ltr;
-                width: inherit;
-                padding-bottom: 50px;
-
-                    .block {
-                        transition: 0.1s;
-                        display: flex;
-                        flex-direction: row;  
-                        width: 100%;
-                        height: 100%;
-                        gap: 5px;
-                        direction: rtl;
-                        
-                        .react-resizable-handle::after {
-                            opacity: 40%;
-                            border-right: 2px solid var(--titlebar-color);
-                            border-bottom: 2px solid var(--titlebar-color);
-                            border-radius: 0 0 5px 0;
-                        }
-
-                        .block-content{
-                            transition: inherit;
-                            width: 100%;
-                            display: flex;
-                            outline: 1px solid transparent;
-                            border-radius: 5px;
-                            margin: 3px;
-                            direction: rtl;
-                            background-color: var(--tool-bgcolor);
-                            overflow-y: auto;
-                            overflow-x: hidden;
-
-                            .math-field-element{
-                                width: 100%;
-                                height: 100%;
-                            }
-                            .textbox{
-                                padding: 10px;
-                                color: var(--titlebar-color);
-                                width: 100%;
-                                height: inherit;
-
-                                p:first-child{
-                                    margin-top: 0 !important;
-                                }
-                            }
-
-                            .block-remove-button {
-                                display: none;
-                                position: absolute;
-                                z-index: 10;
-                                left: 1px;
-                                top: 1px;
-                                background-color: transparent;
-                                height: 30px;
-                                width: 30px;
-                                border-radius: 5px;
-                                cursor: pointer;
-                                align-items: center;
-                                justify-content: center;
-                                
-                                .fi {
-                                    color: var(--titlebar-color);
-                                    font-size: 10px;    
-                                }
-                            }
-                        }
-
-                        .block-handle {
-                            transition: 0.2s;
-                            padding-top: 8px;
-                            font-size: 16px;
-                            opacity: 0%;
-                            color: var(--titlebar-color);
-                        }
-                        &:hover {
-                            .block-content{
-                                outline: 1px solid var(--tool-hover-bgcolor);
-                                .block-remove-button{
-                                    display: flex;
-                                }
-                            }
-                            .block-handle {
-                                opacity: 70%;
-        
-                                &:hover{
-                                    cursor: pointer;
-                                }
-                            }
-                        }  
-                    }
-                
-                    .react-grid-placeholder{
-                        transition: 0.2s;
-                        background-color: var(--tool-bgcolor);
-                        opacity: 20%;
-                        border-radius: 5px;
-                    }
-
-            }
-    
         }
         
         .tools-panel-container {
@@ -211,15 +99,3 @@
     }
 
 }
-
-.pageDivider{
-    background: gray;
-    opacity: 40%;
-    direction: rtl;
-    margin-right: 0px;
-    max-width: 100%;
-    width: 100%;
-    height: 1px;
-    border: none;
-    transition: 0.2s;
-  }

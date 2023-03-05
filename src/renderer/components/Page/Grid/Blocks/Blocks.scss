@@ -1,0 +1,47 @@
+@import '../../../Theme.scss';
+@import '../../Page.scss';
+@import '../Grid.scss';
+
+.block-content{
+    width: 100%;
+    display: flex;
+    outline: 1px solid transparent;
+    border-radius: 5px;
+    margin: 3px;
+    direction: rtl;
+    background-color: var(--tool-bgcolor);
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // Math
+    .math-field-element{
+        width: 100%;
+        height: 100%;
+    }
+
+    // Text
+    .textbox{
+        padding: 10px;
+        color: var(--titlebar-color);
+        width: 100%;
+        height: inherit;
+
+        p:first-child{
+            margin-top: 0 !important;
+        }
+    }
+    
+    // Divider
+    &:has(.pageDivider){
+        background: gray;
+        opacity: 40%;
+        direction: rtl;
+        margin-right: 0px;
+        max-width: 100%;
+        width: 100%;
+        height: 1px;
+        border: none;
+        transition: 0.2s;
+        align-self: center;
+    }
+}
