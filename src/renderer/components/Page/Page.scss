@@ -71,7 +71,7 @@
                             border-radius: 5px;
                             margin: 3px;
                             direction: rtl;
-                            background-color: var(--panel-bgcolor);
+                            background-color: var(--tool-bgcolor);
                             overflow-y: auto;
                             overflow-x: hidden;
 
@@ -93,13 +93,20 @@
                             .block-remove-button {
                                 display: none;
                                 position: absolute;
-                                left: 5px;
-                                top: 0;
+                                z-index: 10;
+                                left: 1px;
+                                top: 1px;
+                                background-color: transparent;
+                                height: 30px;
+                                width: 30px;
+                                border-radius: 5px;
                                 cursor: pointer;
-
+                                align-items: center;
+                                justify-content: center;
+                                
                                 .fi {
                                     color: var(--titlebar-color);
-                                    font-size: 10px;
+                                    font-size: 10px;    
                                 }
                             }
                         }
@@ -115,7 +122,7 @@
                             .block-content{
                                 outline: 1px solid var(--tool-hover-bgcolor);
                                 .block-remove-button{
-                                    display: block;
+                                    display: flex;
                                 }
                             }
                             .block-handle {

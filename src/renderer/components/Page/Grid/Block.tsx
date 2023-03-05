@@ -8,7 +8,7 @@ const GridBlock = ({ children }: PropsWithChildren, key: number) => {
         <i className='fi fi-rr-menu-dots-vertical' />
       </div>
       <div className='block-content'>
-        <TextBlockContent>{children}</TextBlockContent>
+        {/* <TextBlockContent>{children}</TextBlockContent> */}
       </div>
     </div>
   );
