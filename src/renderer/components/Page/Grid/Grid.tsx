@@ -6,22 +6,11 @@ import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
 import TextBlockContent from './TextBlock';
-import _ from 'lodash';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const PageGrid = (props) => {
-  const {
-    className = 'layout',
-    cols = { lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 },
-    rowHeight = 50,
-    isBounded = true,
-    resizeHandles = ['sw'],
-    containerPadding = [0, 0],
-    breakpoints = { lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 },
-  } = props;
-
+const PageGrid = () => {
   const [state, setState] = useState({
     items: [],
     newCounter: 0,
@@ -47,12 +36,11 @@ const PageGrid = (props) => {
     );
   };
 
-  // We're using the cols coming back from this to calculate where to add new items.
-  const onBreakpointChange = (breakpoint, cols) => {
+  const onBreakpointChange = (breakpoint: string, cols: number) => {
     setState((prev) => ({ ...prev, breakpoint, cols }));
   };
 
-  const onLayoutChange = (layout) => {
+  const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
     setState((prev) => ({ ...prev, layout }));
   };
 
@@ -90,20 +78,21 @@ const PageGrid = (props) => {
   };
 
   function addText() {
-    /*eslint no-console: 0*/
     console.log('adding', 'n' + state.newCounter);
-    setState({
+    setState((prev) => ({
       // Add a new item. It must have a unique key!
-      items: state.items.concat({
-        i: 'n' + state.newCounter,
-        x: Infinity,
-        y: Infinity, // puts it at the bottom
-        w: 8,
-        h: 2,
-      }),
-      // Increment the counter to ensure key is always unique.
-      newCounter: state.newCounter + 1,
-    });
+      items: [
+        ...prev.items,
+        {
+          i: 'n' + prev.newCounter,
+          x: Infinity,
+          y: Infinity, // puts it at the bottom
+          w: 8,
+          h: 2,
+        },
+      ],
+      newCounter: prev.newCounter + 1,
+    }));
   }
 
   function addPicture() {
@@ -126,16 +115,19 @@ const PageGrid = (props) => {
   }
 
   return (
-    <div>
-      <button onClick={addText}>Add Item</button>
-      <ResponsiveGridLayout
-        onLayoutChange={onLayoutChange}
-        onBreakpointChange={onBreakpointChange}
-        {...props}
-      >
-        {_.map(state.items, (el) => createElement(el))}
-      </ResponsiveGridLayout>
-    </div>
+    <ResponsiveGridLayout
+      onLayoutChange={onLayoutChange}
+      onBreakpointChange={onBreakpointChange}
+      className='layout'
+      cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
+      rowHeight={50}
+      isBounded={true}
+      resizeHandles={['sw']}
+      containerPadding={[0, 0]}
+      breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
+    >
+      {state.items.map((el) => createElement(el))}
+    </ResponsiveGridLayout>
   );
 };
 
