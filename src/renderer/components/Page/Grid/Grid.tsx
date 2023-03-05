@@ -15,22 +15,41 @@ const PageGrid = () => {
     newCounter: 0,
   });
 
-  const createElement = (el) => {
-    const i = el.add ? '+' : el.i;
+  const createElement = (el, type: string) => {
+    const i = el.i;
+    let block;
+
+    switch (type) {
+      case 'Text':
+        block = <TextBlockContent />
+        break;
+
+      case 'Math':
+        block = <></>
+        break;
+
+      case 'Graph':
+        block = <Geogebra id={i.toString()} appletOnLoad={() => console.log('appletOnLoad')}/>
+        break;
+    
+      default:
+        break;
+    }
+
     return (
       <div className='block' data-grid={el} key={i}>
         <div className='block-handle'>
           <i className='fi fi-rr-menu-dots-vertical' />
         </div>
         <div className='block-content'>
-          <TextBlockContent></TextBlockContent>
+         {block}
           <button
+            title='x'
             name={el.i}
             className='block-remove-button'
             onClick={onRemoveItem}
           >
-            {/* <i className='fi fi-rr-x' name={el.i}/> */}
-            X
+            <i className='fi fi-rr-x'></i>
           </button>
         </div>
       </div>
@@ -77,6 +96,7 @@ const PageGrid = () => {
       items: [
         ...prev.items,
         {
+          type: 'Text',
           i: 'n' + prev.newCounter,
           x: Infinity,
           y: Infinity, // puts it at the bottom
@@ -93,7 +113,21 @@ const PageGrid = () => {
   }
 
   function addGgb() {
-    console.error('not implemented');
+    setState((prev) => ({
+      // Add a new item. It must have a unique key!
+      items: [
+        ...prev.items,
+        {
+          type: 'Graph',
+          i: 'n' + prev.newCounter,
+          x: Infinity,
+          y: Infinity, // puts it at the bottom
+          w: 8,
+          h: 6,
+        },
+      ],
+      newCounter: prev.newCounter + 1,
+    }));
   }
 
   function addMath() {
@@ -130,7 +164,7 @@ const PageGrid = () => {
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
         draggableHandle='.block-handle'
       >
-        {state.items.map((el) => createElement(el))}
+        {state.items.map((el) => createElement(el, el.type))}
       </ResponsiveGridLayout>
     </div>
   );
