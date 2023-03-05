@@ -51,6 +51,7 @@ const PageGrid = () => {
       rowHeight:50,
       isBounded:true,
       resizeHandles:['sw'],
+      draggableHandle: '.block-handle',
       containerPadding:[0,0],
       breakpoints:{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 },
       onLayoutChange: function () {}
@@ -69,33 +70,17 @@ const PageGrid = () => {
     }
   
     createElement(el) {
-      const removeStyle = {
-        position: "absolute",
-        left: "5px",
-        top: 0,
-        cursor: "pointer"
-      };
       const i = el.add ? "+" : el.i;
       return (
-        <div key={i} data-grid={el}>
-          {el.add ? (
-            <span
-              className="add text"
-              onClick={this.onAddItem}
-              title="You can add an item by clicking here, too."
-            >
-              Add +
+        <div className='block' data-grid={el} key={i}>
+          <div className='block-handle'>
+            <i className='fi fi-rr-menu-dots-vertical' />
+          </div>
+          <div className='block-content'>
+            <span className="block-remove-button" onClick={this.onRemoveItem.bind(this, i)}>
+              <i className='fi fi-rr-x'></i>
             </span>
-          ) : (
-            <span className="text">{i}</span>
-          )}
-          <span
-            className="remove"
-            style={removeStyle}
-            onClick={this.onRemoveItem.bind(this, i)}
-          >
-            x
-          </span>
+          </div>
         </div>
       );
     }
@@ -107,9 +92,9 @@ const PageGrid = () => {
         // Add a new item. It must have a unique key!
         items: this.state.items.concat({
           i: "n" + this.state.newCounter,
-          x: (this.state.items.length * 2) % (this.state.cols || 12),
+          x: Infinity,
           y: Infinity, // puts it at the bottom
-          w: 2,
+          w: 8,
           h: 2
         }),
         // Increment the counter to ensure key is always unique.
