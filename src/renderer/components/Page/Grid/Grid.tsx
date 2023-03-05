@@ -1,7 +1,6 @@
 import '../Page.scss';
 import React, { useEffect, useState } from 'react';
 import 'gridstack/dist/gridstack.css';
-// import { renderToString } from 'react-dom/server';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
@@ -115,19 +114,22 @@ const PageGrid = () => {
   }
 
   return (
-    <ResponsiveGridLayout
-      onLayoutChange={onLayoutChange}
-      onBreakpointChange={onBreakpointChange}
-      className='layout'
-      cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
-      rowHeight={50}
-      isBounded={true}
-      resizeHandles={['sw']}
-      containerPadding={[0, 0]}
-      breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
-    >
-      {state.items.map((el) => createElement(el))}
-    </ResponsiveGridLayout>
+    <div className='grid-container'>
+      <ResponsiveGridLayout
+        onLayoutChange={onLayoutChange}
+        onBreakpointChange={onBreakpointChange}
+        className='layout'
+        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
+        rowHeight={50}
+        isBounded={true}
+        resizeHandles={['sw']}
+        containerPadding={[0, 0]}
+        draggableHandle='.block-handle'
+        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
+      >
+        {state.items.map((el) => createElement(el))}
+      </ResponsiveGridLayout>
+    </div>
   );
 };
 
