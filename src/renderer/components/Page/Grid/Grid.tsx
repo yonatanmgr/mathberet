@@ -7,6 +7,7 @@ import GridBlock from './Block';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
+import _ from "lodash";
 
 import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -41,31 +42,115 @@ function blockData(
   } as GridStackWidget;
 }
 
-class Grid extends React.Component {
-  render() {
-
-    return (
-      <ResponsiveGridLayout
-        className="layout"
-        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
-        rowHeight={50}
-        isBounded={true}
-        resizeHandles={['sw']}
-        autoSize={true}
-        containerPadding={[0,0]}
-        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
-      >
-        <div key="1" data-grid={{ x: 1, y: 0, w: 8, h: 1, minW: 2, maxW: 8 }}>בדיקה</div>
-        <div key="2" data-grid={{ x: 1, y: 1, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 2</div>
-        <div key="3" data-grid={{ x: 1, y: 2, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 3</div>
-        <div key="4" data-grid={{ x: 1, y: 3, w: 8, h: 2, minW: 2, maxW: 8 }}>בדיקה 4</div>
-      </ResponsiveGridLayout>
-    );
-  }
-}
 
 const PageGrid = () => {
-  const [grid, setGrid] = useState<GridStack>();
+  class Grid extends React.PureComponent {
+    static defaultProps = {
+      className:"layout",
+      cols:{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 },
+      rowHeight:50,
+      isBounded:true,
+      resizeHandles:['sw'],
+      containerPadding:[0,0],
+      breakpoints:{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 },
+      onLayoutChange: function () {}
+    };
+  
+    constructor(props: object) {
+      super(props);
+  
+      this.state = {
+        items: [],
+        newCounter: 0
+      };
+  
+      this.onAddItem = this.onAddItem.bind(this);
+      this.onBreakpointChange = this.onBreakpointChange.bind(this);
+    }
+  
+    createElement(el) {
+      const removeStyle = {
+        position: "absolute",
+        left: "5px",
+        top: 0,
+        cursor: "pointer"
+      };
+      const i = el.add ? "+" : el.i;
+      return (
+        <div key={i} data-grid={el}>
+          {el.add ? (
+            <span
+              className="add text"
+              onClick={this.onAddItem}
+              title="You can add an item by clicking here, too."
+            >
+              Add +
+            </span>
+          ) : (
+            <span className="text">{i}</span>
+          )}
+          <span
+            className="remove"
+            style={removeStyle}
+            onClick={this.onRemoveItem.bind(this, i)}
+          >
+            x
+          </span>
+        </div>
+      );
+    }
+  
+    onAddItem() {
+      /*eslint no-console: 0*/
+      console.log("adding", "n" + this.state.newCounter);
+      this.setState({
+        // Add a new item. It must have a unique key!
+        items: this.state.items.concat({
+          i: "n" + this.state.newCounter,
+          x: (this.state.items.length * 2) % (this.state.cols || 12),
+          y: Infinity, // puts it at the bottom
+          w: 2,
+          h: 2
+        }),
+        // Increment the counter to ensure key is always unique.
+        newCounter: this.state.newCounter + 1
+      });
+    }
+  
+    // We're using the cols coming back from this to calculate where to add new items.
+    onBreakpointChange(breakpoint, cols) {
+      this.setState({
+        breakpoint: breakpoint,
+        cols: cols
+      });
+    }
+  
+    onLayoutChange(layout) {
+      this.props.onLayoutChange(layout);
+      this.setState({ layout: layout });
+    }
+  
+    onRemoveItem(i) {
+      console.log("removing", i);
+      this.setState({ items: _.reject(this.state.items, { i: i }) });
+    }
+  
+    render() {
+      return (
+        <div>
+          <button onClick={this.onAddItem}>Add Item</button>
+          <ResponsiveGridLayout
+            onLayoutChange={this.onLayoutChange}
+            onBreakpointChange={this.onBreakpointChange}
+            {...this.props}
+          >
+            {_.map(this.state.items, el => this.createElement(el))}
+          </ResponsiveGridLayout>
+        </div>
+      );
+    }
+  }
+
   const { newWidgetRequest, clearPageRequest } = useGeneralContext();
 
   const addWidgetHandlersMap = new Map<WidgetType, () => void>([
@@ -87,21 +172,6 @@ const PageGrid = () => {
   }, [clearPageRequest]);
 
 
-  // useEffect(() => {
-  //   const newGrid = GridStack.init({
-  //     float: false,
-  //     resizable: { handles: 's,sw,w' },
-  //     removable: '#clearPage',
-  //     rtl: true,
-  //     margin: 5,
-  //     handle: '.block-handle',
-  //     column: 'auto',
-  //     cellHeight: 50
-  //   });
-
-  //   setGrid(newGrid);
-  // }, []);
-
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
     console.log(newWidgetRequest);
     const handler = addWidgetHandlersMap.get(newWidgetRequest.widgetType);
@@ -109,40 +179,26 @@ const PageGrid = () => {
   };
 
   function addText() {
-    grid.addWidget({
-      w: 3,
-      content: <GridBlock></GridBlock>,
-    });
+    console.error('not implemented');
   }
 
   function addPicture() {
-    // const id = Date.now();
-    // const html = `<div class="actionsArea"><input type="file" class="picturePicker" accept="image/*"></div>`;
-    // const block = blockData(html, id, 'Picture', 6);
-    // grid.addWidget(block);
-    //createPicture(id, '');
+    console.error('not implemented');
   }
 
   function addGgb() {
-    const id = Date.now();
-    const html = 
-      <Geogebra
-        id={id.toString()}
-        width={800}
-        height={600}
-        showMenuBar
-        showToolBar
-        showAlgebraInput
-        appletOnLoad={() => console.log('appletOnLoad')}
-      />
-
-    const block = blockData(
-      html,
-      id,
-      'Graph',
-      1
-    );
-    grid.addWidget(block);
+    console.error('not implemented');
+    // const id = Date.now();
+    // const html = 
+    //   <Geogebra
+    //     id={id.toString()}
+    //     width={800}
+    //     height={600}
+    //     showMenuBar
+    //     showToolBar
+    //     showAlgebraInput
+    //     appletOnLoad={() => console.log('appletOnLoad')}
+    //   />
   }
 
   function addMath() {
@@ -153,31 +209,26 @@ const PageGrid = () => {
   }
 
   function addDivider() {
-    const id = Date.now();
-    const html = <hr className='pageDivider' />;
-    const block = blockData(
-      html,
-      id,
-      'Divider',
-      1,
-      {},
-      12,
-      1000,
-      12,
-      1,
-      1,
-      1,
-      12,
-    );
-    grid.addWidget(block);
+    console.error('not implemented');
+    // const id = Date.now();
+    // const html = <hr className='pageDivider' />;
+    // const block = blockData(
+    //   html,
+    //   id,
+    //   'Divider',
+    //   1,
+    //   {},
+    //   12,
+    //   1000,
+    //   12,
+    //   1,
+    //   1,
+    //   1,
+    //   12,
+    // );
   }
 
-  return (
-    <div className='grid-container'>
-      <Grid />
-      {/* <div className='grid-stack'></div> */}
-    </div>
-  );
+  return <div className='grid-container'><Grid /></div>;
 };
 
 export default PageGrid;

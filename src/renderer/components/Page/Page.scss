@@ -31,10 +31,11 @@
         align-items: center;
 
         .layout {
-            direction: rtl;
             height: 100%;
-
+            direction: ltr;
             .react-grid-item {
+                direction: rtl;
+
                 background-color: var(--panel-bgcolor);
                 border-radius: 8px;
             }
