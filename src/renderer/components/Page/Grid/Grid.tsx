@@ -42,13 +42,15 @@ const PageGrid = () => {
           <i className='fi fi-rr-menu-dots-vertical' />
         </div>
         <div className='block-content'>
-          <span
+          <TextBlockContent></TextBlockContent>
+          <button
+            name={el.i}
             className='block-remove-button'
-            onClick={onRemoveItem.bind(this, i)}
+            onClick={onRemoveItem}
           >
             <i className='fi fi-rr-x'></i>
           </span>
-          {block}
+          <TextBlockContent></TextBlockContent>
         </div>
       </div>
     );
@@ -62,23 +64,15 @@ const PageGrid = () => {
     setState((prev) => ({ ...prev, layout }));
   };
 
-  const onRemoveItem = (i) => {
-    console.log('removing', i);
-    // setItems({ items: _.reject(state.items, { i: i }) });
-    //Todo: not implemented
-    setState((prev) => ({ ...prev, items: [] }));
+  const onRemoveItem = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log(e)
+    setState((prev) => ({
+      ...prev,
+      items: prev.items.filter((item) => item.i !== e.target.name),
+    }));
   };
 
   const { newWidgetRequest, clearPageRequest } = useGeneralContext();
-
-  const addWidgetHandlersMap = new Map<WidgetType, () => void>([
-    [WidgetType.Divider, addDivider],
-    [WidgetType.Ggb, addGgb],
-    [WidgetType.Group, addGroup],
-    [WidgetType.Text, addText],
-    [WidgetType.Math, addMath],
-    [WidgetType.Picture, addPicture],
-  ]);
 
   useEffect(() => {
     if (newWidgetRequest) AddWidget(newWidgetRequest);
@@ -147,6 +141,15 @@ const PageGrid = () => {
     console.error('not implemented');
   }
 
+  const addWidgetHandlersMap = new Map<WidgetType, () => void>([
+    [WidgetType.Divider, addDivider],
+    [WidgetType.Ggb, addGgb],
+    [WidgetType.Group, addGroup],
+    [WidgetType.Text, addText],
+    [WidgetType.Math, addMath],
+    [WidgetType.Picture, addPicture],
+  ]);
+
   return (
     <div className='grid-container'>
       <ResponsiveGridLayout
@@ -158,8 +161,8 @@ const PageGrid = () => {
         isBounded={true}
         resizeHandles={['sw']}
         containerPadding={[0, 0]}
-        draggableHandle='.block-handle'
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
+        draggableHandle='.block-handle'
       >
         {state.items.map((el) => createElement(el, el.type))}
       </ResponsiveGridLayout>
