@@ -49,7 +49,8 @@ const PageGrid = () => {
             className='block-remove-button'
             onClick={onRemoveItem}
           >
-            <i className='fi fi-rr-x'></i>
+            {/* <i className='fi fi-rr-x'></i> */}
+            X
           </button>
         </div>
       </div>
