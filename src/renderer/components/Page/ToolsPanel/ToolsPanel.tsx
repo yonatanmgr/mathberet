@@ -1,5 +1,5 @@
 import React from 'react';
-import './Page.scss';
+import '../Page.scss';
 import Tool from './Tool';
 import { useGeneralContext } from '@components/GeneralContext';
 import { WidgetType } from '@renderer/common/types';

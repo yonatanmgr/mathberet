@@ -1,9 +1,13 @@
-import '../Page.scss';
-import './Grid.scss';
-import './Blocks/Blocks.scss';
 import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
+
+import '../Page.scss';
+import './Grid.scss';
+import './Blocks/Blocks.scss';
+import 'react-grid-layout/css/styles.css'
+import 'react-resizable/css/styles.css'
+
 import Geogebra from 'react-geogebra';
 import TextBlockContent from './Blocks/TextBlock';
 // import MathBlockContent from './Blocks/MathBlock';
