@@ -24,13 +24,15 @@ const PageGrid = () => {
           <i className='fi fi-rr-menu-dots-vertical' />
         </div>
         <div className='block-content'>
-          <span
-            className='block-remove-button'
-            onClick={onRemoveItem.bind(this, i)}
-          >
-            <i className='fi fi-rr-x'></i>
-          </span>
           <TextBlockContent></TextBlockContent>
+          <button
+            name={el.i}
+            className='block-remove-button'
+            onClick={onRemoveItem}
+          >
+            {/* <i className='fi fi-rr-x' name={el.i}/> */}
+            X
+          </button>
         </div>
       </div>
     );
@@ -44,23 +46,15 @@ const PageGrid = () => {
     setState((prev) => ({ ...prev, layout }));
   };
 
-  const onRemoveItem = (i) => {
-    console.log('removing', i);
-    // setItems({ items: _.reject(state.items, { i: i }) });
-    //Todo: not implemented
-    setState((prev) => ({ ...prev, items: [] }));
+  const onRemoveItem = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    console.log(e)
+    setState((prev) => ({
+      ...prev,
+      items: prev.items.filter((item) => item.i !== e.target.name),
+    }));
   };
 
   const { newWidgetRequest, clearPageRequest } = useGeneralContext();
-
-  const addWidgetHandlersMap = new Map<WidgetType, () => void>([
-    [WidgetType.Divider, addDivider],
-    [WidgetType.Ggb, addGgb],
-    [WidgetType.Group, addGroup],
-    [WidgetType.Text, addText],
-    [WidgetType.Math, addMath],
-    [WidgetType.Picture, addPicture],
-  ]);
 
   useEffect(() => {
     if (newWidgetRequest) AddWidget(newWidgetRequest);
@@ -114,20 +108,32 @@ const PageGrid = () => {
     console.error('not implemented');
   }
 
+  const addWidgetHandlersMap = new Map<WidgetType, () => void>([
+    [WidgetType.Divider, addDivider],
+    [WidgetType.Ggb, addGgb],
+    [WidgetType.Group, addGroup],
+    [WidgetType.Text, addText],
+    [WidgetType.Math, addMath],
+    [WidgetType.Picture, addPicture],
+  ]);
+
   return (
-    <ResponsiveGridLayout
-      onLayoutChange={onLayoutChange}
-      onBreakpointChange={onBreakpointChange}
-      className='layout'
-      cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
-      rowHeight={50}
-      isBounded={true}
-      resizeHandles={['sw']}
-      containerPadding={[0, 0]}
-      breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
-    >
-      {state.items.map((el) => createElement(el))}
-    </ResponsiveGridLayout>
+    <div className='grid-container'>
+      <ResponsiveGridLayout
+        onLayoutChange={onLayoutChange}
+        onBreakpointChange={onBreakpointChange}
+        className='layout'
+        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
+        rowHeight={50}
+        isBounded={true}
+        resizeHandles={['sw']}
+        containerPadding={[0, 0]}
+        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
+        draggableHandle='.block-handle'
+      >
+        {state.items.map((el) => createElement(el))}
+      </ResponsiveGridLayout>
+    </div>
   );
 };
 
