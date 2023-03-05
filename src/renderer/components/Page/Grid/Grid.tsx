@@ -1,7 +1,6 @@
 import '../Page.scss';
 import React, { useEffect, useState } from 'react';
 import 'gridstack/dist/gridstack.css';
-// import { renderToString } from 'react-dom/server';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
