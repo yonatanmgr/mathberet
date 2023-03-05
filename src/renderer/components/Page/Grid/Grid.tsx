@@ -42,15 +42,15 @@ const PageGrid = () => {
           <i className='fi fi-rr-menu-dots-vertical' />
         </div>
         <div className='block-content'>
-          <TextBlockContent></TextBlockContent>
+         {block}
           <button
+            title='x'
             name={el.i}
             className='block-remove-button'
             onClick={onRemoveItem}
           >
             <i className='fi fi-rr-x'></i>
-          </span>
-          <TextBlockContent></TextBlockContent>
+          </button>
         </div>
       </div>
     );
