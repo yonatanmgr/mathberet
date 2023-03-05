@@ -5,6 +5,7 @@ import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
 import TextBlockContent from './TextBlock';
+import MathBlockContent from './MathBlock';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -131,7 +132,22 @@ const PageGrid = () => {
   }
 
   function addMath() {
-    console.error('not implemented');
+    console.log('adding', 'n' + state.newCounter);
+    setState((prev) => ({
+      // Add a new item. It must have a unique key!
+      items: [
+        ...prev.items,
+        {
+          type: 'Math',
+          i: 'n' + prev.newCounter,
+          x: Infinity,
+          y: Infinity, // puts it at the bottom
+          w: 8,
+          h: 2,
+        },
+      ],
+      newCounter: prev.newCounter + 1,
+    }));  
   }
   function addGroup() {
     console.error('not implemented');
