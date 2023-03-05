@@ -72,7 +72,20 @@
                             margin: 3px;
                             direction: rtl;
                             background-color: var(--panel-bgcolor);
-                            
+                            overflow-y: auto;
+                            overflow-x: hidden;
+
+                            .textbox{
+                                padding: 10px;
+                                color: var(--titlebar-color);
+                                width: 100%;
+                                height: inherit;
+
+                                p:first-child{
+                                    padding-top: 0 !important;
+                                }
+                            }
+
                             .block-remove-button {
                                 display: none;
                                 position: absolute;

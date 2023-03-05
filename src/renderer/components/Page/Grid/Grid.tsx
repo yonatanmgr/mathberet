@@ -7,6 +7,7 @@ import GridBlock from './Block';
 import { useGeneralContext } from '@components/GeneralContext';
 import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import Geogebra from 'react-geogebra';
+import TextBlockContent from './TextBlock';
 import _ from "lodash";
 
 import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
@@ -80,6 +81,7 @@ const PageGrid = () => {
             <span className="block-remove-button" onClick={this.onRemoveItem.bind(this, i)}>
               <i className='fi fi-rr-x'></i>
             </span>
+            <TextBlockContent></TextBlockContent>
           </div>
         </div>
       );
