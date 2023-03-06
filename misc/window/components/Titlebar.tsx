@@ -33,7 +33,7 @@ const Titlebar: React.FC<Props> = (props) => {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.repeat) return; // Prevent repeatation of toggle when key holding
-      if (e.altKey) {
+      if (e.altKey && e.ctrlKey) {
         // Hiding menus? close active menu popup
         if (menusVisible) {
           closeActiveMenu();

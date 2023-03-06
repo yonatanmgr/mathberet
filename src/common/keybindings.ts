@@ -225,8 +225,7 @@ const DEFAULT_KEYBINDINGS: Array<Keybinding> = [
     },
     // ??
     // Accessibility
-    { key: "shift+alt+k", command: "toggleKeystrokeCaption" },
-    { key: "alt+[Space]", command: "toggleVirtualKeyboard" },
+    { key: "alt+k", command: "toggleVirtualKeyboard" },
     // Note: On Mac OS (as of 10.12), there is a bug/behavior that causes
     // a beep to be generated with certain command+control key combinations.
     // The workaround is to create a default binding file to silence them.
@@ -237,14 +236,14 @@ const DEFAULT_KEYBINDINGS: Array<Keybinding> = [
     //    "^@\UF702" = "noop:";
     //      "^@\UF703" = "noop:";
     //  }
-    {
-      key: "alt+ctrl+[ArrowUp]",
-      command: ["speak", "all", { withHighlighting: false }]
-    },
-    {
-      key: "alt+ctrl+[ArrowDown]",
-      command: ["speak", "selection", { withHighlighting: false }]
-    },
+    // {
+    //   key: "alt+ctrl+[ArrowUp]",
+    //   command: ["speak", "all", { withHighlighting: false }]
+    // },
+    // {
+    //   key: "alt+ctrl+[ArrowDown]",
+    //   command: ["speak", "selection", { withHighlighting: false }]
+    // },
     //
     // Punctuations and some non-alpha key combinations
     // only work with specific keyboard layouts
@@ -291,12 +290,12 @@ const DEFAULT_KEYBINDINGS: Array<Keybinding> = [
       command: ["insert", "\\left\\lbrack #0 \\right\\rbrack"]
     },
     // ??
-    {
-      key: "ctrl+[Minus]",
-      ifLayout: ["apple.en-intl", "windows.en-intl", "linux.en"],
-      ifMode: "math",
-      command: "moveToSubscript"
-    },
+    // {
+    //   key: "ctrl+[Minus]",
+    //   ifLayout: ["apple.en-intl", "windows.en-intl", "linux.en"],
+    //   ifMode: "math",
+    //   command: "moveToSubscript"
+    // },
     // ??
     {
       key: "shift+alt+[BracketLeft]",
@@ -427,10 +426,50 @@ const DEFAULT_KEYBINDINGS: Array<Keybinding> = [
 
 const CUSTOM_KEYBINDINGS: Array<Keybinding> = [
     {
-        key: 'ctrl+[Digit2]',
+        key: 'alt+[Equal]',
         ifMode: 'math',
-        command: ['insert', '\\sqrt{#0}'],
-    }
+        command: ['insert', '\\approx']
+    },
+    {
+        key: 'alt+[Comma]',
+        ifMode: 'math',
+        command: ['insert', '\\measuredangle']
+    },
+    {
+        key: 'alt+[Digit0]',
+        ifMode: 'math',
+        command: ['insert', '\\emptyset']
+    },
+    {
+        key: 'alt+[Enter]',
+        ifMode: 'math',
+        command: ['insert', '\\begin{gathered} {#?} \\end{gathered}']
+    },
+    {
+        key: 'alt+shift+c',
+        ifMode: 'math',
+        command: ['insert', '\\complement']
+    },
+    {
+        key: 'alt+shift+t',
+        ifMode: 'math',
+        command: ['insert', '\\triangle']
+    },
+    {
+        key: 'shift+[Enter]',
+        ifMode: 'math',
+        command: 'addRowAfter'
+    },
+    {
+        key: 'ctrl+[Equal]',
+        ifMode: 'math',
+        command: 'addColumnAfter'
+    },
+    {
+        key: 'ctrl+[Minus]',
+        ifMode: 'math',
+        command: 'removeColumn'
+    },
 ]
 
 const ML_KEYBINDINGS = [DEFAULT_KEYBINDINGS, CUSTOM_KEYBINDINGS].flat()

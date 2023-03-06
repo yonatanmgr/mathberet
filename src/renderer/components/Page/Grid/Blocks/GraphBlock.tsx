@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
 import { parseTex } from 'tex-math-parser'
 import ML_SHORTCUTS from "@common/shortcuts";
+import ML_KEYBINDINGS from '@common/keybindings';
 
 function latex2function(latex: string, i: number){
     if (latex != "") {
@@ -25,6 +26,7 @@ function GraphBlockContent() {
         return <MathView
             ref={ref}
             inlineShortcuts={ML_SHORTCUTS}
+            keybindings={ML_KEYBINDINGS}
             className='math-field-element'
             onExport={(ref, latex) => latex}
             onMathFieldBlur={() => {setValue(ref.current?.getValue('latex'))}}
