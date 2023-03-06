@@ -19,6 +19,9 @@
 
     // Math
     .math-field-element{
+        --hue: var(--theme-hue);
+        --selection-background-color: var(--math-block-selection-bg);
+        --selection-color: var(--math-block-selection);
         font-size: 25px;
         color: var(--titlebar-color);
         width: 100%;
@@ -66,7 +69,8 @@
         height: 100%;
         display: flex;
         flex-direction: column-reverse;
-
+        justify-content: space-between;
+    
         .math-field-element{
             border-top: 1px solid var(--tool-hover-bgcolor);
             height: 50px;
@@ -79,10 +83,13 @@
         }
 
         .MafsView {
+            font-family: 'CMU Serif';
             direction: ltr;
             --mafs-line-color: var(--page-border);
             --mafs-bg: var(--page-bgcolor);
             --mafs-fg: var(--titlebar-color);
+            --mafs-blue: var(--mafs-plot-color);
+
         }
     }
 

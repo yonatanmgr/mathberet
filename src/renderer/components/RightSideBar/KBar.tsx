@@ -25,7 +25,8 @@ function KBar() {
               padding: "14px 10px",
               borderRadius: "8px",
               fontSize: 16,
-              background: active ? "var(--pill-bgcolor)" : "transparent"
+              userSelect: "none",
+              background: active ? "hsla(var(--theme-hue), 50%, 50%, 0.1)" : "transparent"
               }}>
               {item.name}
             </div>
@@ -56,6 +57,25 @@ function KBar() {
       name: "כחול",
       perform: () => {
         localStorage.setItem('color', 'blue');
+        document.documentElement.style.setProperty('--theme-hue', '200')  
+      },
+      parent: 'color'
+    },
+    {
+      id: "yellow",
+      name: "צהוב",
+      perform: () => {
+        localStorage.setItem('color', 'yellow');
+        document.documentElement.style.setProperty('--theme-hue', '35')  
+      },
+      parent: 'color'
+    },
+    {
+      id: "purple",
+      name: "סגול",
+      perform: () => {
+        localStorage.setItem('color', 'purple');
+        document.documentElement.style.setProperty('--theme-hue', '245')  
       },
       parent: 'color'
     },
@@ -64,6 +84,16 @@ function KBar() {
       name: "אדום",
       perform: () => {
         localStorage.setItem('color', 'red');
+        document.documentElement.style.setProperty('--theme-hue', '0')  
+      },
+      parent: 'color'
+    },
+    {
+      id: "green",
+      name: "ירוק",
+      perform: () => {
+        localStorage.setItem('color', 'green');
+        document.documentElement.style.setProperty('--theme-hue', '140')  
       },
       parent: 'color'
     },
@@ -96,7 +126,7 @@ function KBar() {
     boxSizing: "border-box" as React.CSSProperties["boxSizing"],
     outline: "none",
     border: "none",
-    background: "var(--app-bgcolor)",
+    background: "transparent",
     color: "var(--titlebar-color)",
   };
   
@@ -105,9 +135,11 @@ function KBar() {
     width: "100%",
     padding: "10px 8px",
     outline: "1px solid var(--page-border)",
-    background: "var(--app-bgcolor)",
+    backdropFilter: "blur(5px)",
+    background: "var(--kbar-bg)",
     color: "var(--titlebar-color)",
     borderRadius: "12px",
+    boxShadow: "0 0 10px 1px rgba(0, 0, 0, .25)",
     overflow: "hidden",
   };
   

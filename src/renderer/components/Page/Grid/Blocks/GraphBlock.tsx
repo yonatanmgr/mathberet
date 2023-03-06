@@ -1,4 +1,4 @@
-import { Mafs, Coordinates, Plot, Theme } from "mafs"
+import { Mafs, Coordinates, Plot, Point, Theme } from "mafs"
 import React, { useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
 import { parseTex } from 'tex-math-parser'
@@ -17,6 +17,8 @@ function latex2function(latex: string, i: number){
 
 function GraphBlockContent() {    
     const [value, setValue] = useState("")
+    // const [points, setPoints] = useState([])
+
     function GraphBlockSetter(){
         const ref = useRef<MathViewRef>(null);
 
@@ -34,12 +36,21 @@ function GraphBlockContent() {
     return (
         <div className='graph-block-wrapper'>
             <GraphBlockSetter />
-            <Mafs zoom={{ min: 0.3, max: 2 }}>
+            <Mafs
+                zoom={{ min: 0.5, max: 2 }}
+                // onClick={
+                //     (point)=> {                        
+                //         const fixedPoint = {x: point[0], y: point[1]}
+                //         setPoints([...points, <Point key={JSON.stringify(fixedPoint)} x={fixedPoint.x} y={fixedPoint.y} />])
+                //     }
+                // }
+            >
                 <Coordinates.Cartesian/>
                 <Plot.OfX
                     y={(x: number) => latex2function(value, x)}
                     color={Theme.blue}
                 />
+                {/* {points} */}
             </Mafs>
         </div>
 

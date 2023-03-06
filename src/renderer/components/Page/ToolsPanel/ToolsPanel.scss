@@ -50,6 +50,9 @@
             &#clearPage {
                 background-color: var(--clear-button-bgcolor);
 
+                &:hover {
+                    background-color: var(--clear-button-hover-bgcolor);
+                }
                 .fi {
                     color: var(--clear-button-color);
                 }

@@ -42,22 +42,23 @@
 
         &:hover{
           cursor: pointer;
-          background-color: var(--button-hover-bgcolor);
+          background-color: var(--pill-hover-bgcolor);
         }
         &:active{
           cursor: pointer;
-          background-color: var(--button-active-bgcolor);
+          background-color: var(--pill-hover-bgcolor);
         }
 
         &.new{
           background-color: var(--pill-bgcolor);
           &:hover{
             cursor: pointer;
-            background-color: var(--button-hover-bgcolor);
+            background-color: var(--pill-hover-bgcolor);
           }
           &:active{
             cursor: pointer;
-            background-color: var(--button-active-bgcolor);
+            background-color: var(--pill-active-bgcolor);
+            transform: scale(0.98);
           }
         }
       }
@@ -83,7 +84,8 @@
         fill: var(--titlebar-color);
         display: block;
         width: 45px;
-        height: 55%;      
+        height: 55%;
+        filter: var(--logo-filter);   
       }
 
       .logo{

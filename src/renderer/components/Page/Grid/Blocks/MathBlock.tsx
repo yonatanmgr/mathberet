@@ -9,7 +9,6 @@ function MathBlockContent() {
       onExport={(mf, latex) => `${latex}`}
       plonkSound={null}
       keypressSound={null}
-
     />;
   }
 
