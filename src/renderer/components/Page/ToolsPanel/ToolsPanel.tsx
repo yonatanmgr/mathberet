@@ -41,8 +41,14 @@ const ToolsPanel = () => {
           buttonType='addPictureBlock'
           icon='picture'
           onClick={() => handleOnClickTool(WidgetType.Picture)}
+        /> */}
+        <Tool
+          title='הוספת בלוק ציור'
+          buttonType='addDrawBlock'
+          icon='pencil'
+          onClick={() => handleOnClickTool(WidgetType.Draw)}
         />
-        <Tool title='הוספת קבוצה' buttonType='addGroupBlock' icon='apps-add' /> */}
+        {/* <Tool title='הוספת קבוצה' buttonType='addGroupBlock' icon='apps-add' /> */}
         <Tool
           title='הוספת קו מפריד'
           buttonType='addDividerBlock'

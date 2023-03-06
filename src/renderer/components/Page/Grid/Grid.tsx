@@ -13,6 +13,7 @@ import MathBlockContent from './Blocks/MathBlock';
 import GraphBlockContent from './Blocks/GraphBlock';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import DrawBlockContent from './Blocks/DrawBlock';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const PageGrid = () => {
@@ -40,6 +41,10 @@ const PageGrid = () => {
 
       case 'Divider':
         block = <hr className='pageDivider'></hr>
+        break;
+
+      case 'Draw':
+        block = <DrawBlockContent />
         break;
 
       default:
@@ -117,6 +122,27 @@ const PageGrid = () => {
     }));
   }
 
+  function addDraw() {
+    console.log('adding', 'n' + state.newCounter);
+    setState((prev) => ({
+      // Add a new item. It must have a unique key!
+      items: [
+        ...prev.items,
+        {
+          type: 'Draw',
+          i: 'n' + prev.newCounter,
+          x: Infinity,
+          y: Infinity, // puts it at the bottom
+          w: 8,
+          h: 6,
+          minH: 4,
+          minW: 4
+        },
+      ],
+      newCounter: prev.newCounter + 1,
+    }));
+  }
+
   function addPicture() {
     console.error('not implemented');
   }
@@ -188,6 +214,7 @@ const PageGrid = () => {
     [WidgetType.Text, addText],
     [WidgetType.Math, addMath],
     [WidgetType.Picture, addPicture],
+    [WidgetType.Draw, addDraw],
   ]);
 
   return (

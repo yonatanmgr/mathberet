@@ -81,6 +81,7 @@
   "dependencies": {
     "@cortex-js/compute-engine": "^0.12.2",
     "@flaticon/flaticon-uicons": "^2.0.1",
+    "@tldraw/tldraw": "^1.28.0",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.1.0",
     "gridstack": "^7.2.3",

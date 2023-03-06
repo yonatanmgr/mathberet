@@ -22,12 +22,16 @@
         height: 100%;
         gap: 5px;
         direction: rtl;
-        
-        .react-resizable-handle::after {
-            opacity: 20%;
-            border-right: 2px solid var(--titlebar-color);
-            border-bottom: 2px solid var(--titlebar-color);
-            border-radius: 0 0 5px 0;
+
+        .react-resizable-handle {
+            z-index: 100;
+
+            &::after {
+                opacity: 20%;
+                border-right: 2px solid var(--titlebar-color);
+                border-bottom: 2px solid var(--titlebar-color);
+                border-radius: 0 0 5px 0;
+            }
         }
 
         .block-content {
