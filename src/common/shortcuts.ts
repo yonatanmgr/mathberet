@@ -1,4 +1,6 @@
-const ML_SHORTCUTS: object = {
+import { InlineShortcutDefinition } from "mathlive";
+
+const ML_SHORTCUTS: Record<string, InlineShortcutDefinition> = {
     'sr': {after: 'letter+digit', value: '^2'},
     'cu': {after: 'letter+digit', value: '^3'},
     '&': '\\&',
