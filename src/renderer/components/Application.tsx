@@ -11,6 +11,7 @@ import { GeneralContextProvider } from './GeneralContext';
 
 const Application = () => {
   const [darkTheme, setDarkTheme] = useState(true);
+  const [colorTheme, setColorTheme] = useState("");
 
   useEffect(() => {
     const useDarkTheme = parseInt(localStorage.getItem('dark-mode'));
@@ -24,6 +25,10 @@ const Application = () => {
   }, []);
 
   useEffect(() => {
+    setColorTheme(localStorage.getItem('color'));
+  }, []);
+
+  useEffect(() => {
     if (darkTheme) {
       localStorage.setItem('dark-mode', '1');
       document.body.classList.add('dark-mode');
@@ -32,6 +37,39 @@ const Application = () => {
       document.body.classList.remove('dark-mode');
     }
   }, [darkTheme]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    switch (colorTheme) {
+      case 'blue':
+        localStorage.setItem('color', 'blue');
+        root.style.setProperty('--theme-hue', '200')  
+        break;
+
+      case 'red':
+        localStorage.setItem('color', 'red');
+        root.style.setProperty('--theme-hue', '0')  
+        break;
+
+      case 'yellow':
+        localStorage.setItem('color', 'yellow');
+        root.style.setProperty('--theme-hue', '35')  
+        break;
+
+      case 'green':
+        localStorage.setItem('color', 'green');
+        root.style.setProperty('--theme-hue', '140')  
+        break;
+
+      case 'purple':
+        localStorage.setItem('color', 'purple');
+        root.style.setProperty('--theme-hue', '245')  
+        break;
+
+      default:
+        break;
+    }
+  }, [colorTheme]);
 
   return (
     <GeneralContextProvider>

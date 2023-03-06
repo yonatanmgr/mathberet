@@ -5,6 +5,7 @@ export enum WidgetType {
   Text,
   Math,
   Picture,
+  Draw,
 }
 
 export type newWidgetRequest = {

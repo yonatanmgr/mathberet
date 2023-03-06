@@ -1,5 +1,5 @@
 import React from 'react';
-import './Page.scss';
+import '../Page.scss';
 import Tool from './Tool';
 import { useGeneralContext } from '@components/GeneralContext';
 import { WidgetType } from '@renderer/common/types';
@@ -36,13 +36,19 @@ const ToolsPanel = () => {
           icon='chat-arrow-grow'
           onClick={() => handleOnClickTool(WidgetType.Ggb)}
         />
-        <Tool
+        {/* <Tool
           title='הוספת בלוק תמונה'
           buttonType='addPictureBlock'
           icon='picture'
           onClick={() => handleOnClickTool(WidgetType.Picture)}
+        /> */}
+        <Tool
+          title='הוספת בלוק ציור'
+          buttonType='addDrawBlock'
+          icon='pencil'
+          onClick={() => handleOnClickTool(WidgetType.Draw)}
         />
-        <Tool title='הוספת קבוצה' buttonType='addGroupBlock' icon='apps-add' />
+        {/* <Tool title='הוספת קבוצה' buttonType='addGroupBlock' icon='apps-add' /> */}
         <Tool
           title='הוספת קו מפריד'
           buttonType='addDividerBlock'

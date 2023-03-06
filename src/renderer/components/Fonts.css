@@ -1,5 +1,7 @@
+@import "../../../node_modules/computer-modern/cmu-serif.css";
 @font-face {
     font-family: 'Rubik2';
     src: url('../../../assets/webfonts/Rubik-VariableFont_wght.woff2') format('woff2-variations');
     font-weight: 100 900;
 }
+

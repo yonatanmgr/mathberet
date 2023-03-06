@@ -1,10 +1,14 @@
 import React from 'react';
-import './Page.scss';
 import '../Application.scss';
+
 import PageGrid from './Grid/Grid';
-import ToolsPanel from './ToolsPanel';
-import '../../../../node_modules/react-grid-layout/css/styles.css'
-import '../../../../node_modules/react-resizable/css/styles.css'
+import './Page.scss';
+
+
+
+import ToolsPanel from './ToolsPanel/ToolsPanel';
+import './ToolsPanel/ToolsPanel.scss'
+
 
 
 const Page = () => {
