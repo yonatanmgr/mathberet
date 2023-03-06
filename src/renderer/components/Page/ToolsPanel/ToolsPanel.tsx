@@ -36,13 +36,13 @@ const ToolsPanel = () => {
           icon='chat-arrow-grow'
           onClick={() => handleOnClickTool(WidgetType.Ggb)}
         />
-        <Tool
+        {/* <Tool
           title='הוספת בלוק תמונה'
           buttonType='addPictureBlock'
           icon='picture'
           onClick={() => handleOnClickTool(WidgetType.Picture)}
         />
-        <Tool title='הוספת קבוצה' buttonType='addGroupBlock' icon='apps-add' />
+        <Tool title='הוספת קבוצה' buttonType='addGroupBlock' icon='apps-add' /> */}
         <Tool
           title='הוספת קו מפריד'
           buttonType='addDividerBlock'
