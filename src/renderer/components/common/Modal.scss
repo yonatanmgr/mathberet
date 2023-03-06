@@ -1,29 +1,85 @@
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-}
-.modal {
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 2%;
-  z-index: 1000;
-  border-radius: 10px;
+@import '../Theme.scss';
 
-  .actions-container {
-    margin-top: 2rem;
+#portal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .overlay {
+    position: fixed;
+    height: calc(100% - 33px);
+    animation: blurPage 0.2s ease-in forwards;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  .modal {
+    transform-origin: center;
+    direction: rtl;
+    font-size: larger;
+    animation: popup 0.1s ease-in forwards;
+    color: var(--titlebar-color);
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+    flex-direction: column;
+    position: absolute;
+    top: 40%;
+    background-color: var(--page-bgcolor);
+    padding: 2rem;
+    z-index: 1000;
+    border-radius: 10px;
+    border: 1px solid var(--page-border);
+    text-shadow: none;
+  
+    .actions-container {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+  
+      button{
+        background-color: var(--tool-bgcolor);
+        border-radius: 8px;
+        width: 45%;
+        font-size: medium;
+        font-weight: 300;
+        transition: 0.05s;
+        text-shadow: none;
+
+        &:hover{
+          transform: scale(1.04);
+          font-weight: 700;
+          background-color: var(--tool-hover-bgcolor);
+        }
+        &:active{
+          transform: scale(0.98);
+          font-weight: 700;
+          background-color: var(--tool-active-bgcolor);
+        }
+      }
+    }
+  }
+}
+
+
+
+@keyframes blurPage {
+  to {
+    -webkit-backdrop-filter: blur(5px);
+    -moz-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+  }
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
