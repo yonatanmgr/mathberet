@@ -10,6 +10,7 @@ console.log('[ERWT] : Renderer execution started');
 const app = (
   <WindowFrame title='מתברת' platform='windows'>
     <Application />
+    <div id="portal"></div>
   </WindowFrame>
 );
 

@@ -14,12 +14,16 @@ import GraphBlockContent from './Blocks/GraphBlock';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import DrawBlockContent from './Blocks/DrawBlock';
+import Modal from '@components/common/Modal';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const PageGrid = () => {
   const [state, setState] = useState({
     items: [],
   });
+
+  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
+    useState(false);
 
   const createElement = (el, type: WidgetType) => {
     const i = el.i;
@@ -92,15 +96,22 @@ const PageGrid = () => {
   }, [newWidgetRequest]);
 
   useEffect(() => {
-    //todo: show alert message before delete
+    if (clearPageRequest) setAreYouSureDeleteDialogOpen(true);
+  }, [clearPageRequest]);
+
+  const handleConfirm = () => {
+    setAreYouSureDeleteDialogOpen(false);
     setState((prev) => ({
       ...prev,
       items: [],
     }));
-  }, [clearPageRequest]);
+  };
+
+  const handleCancel = () => {
+    setAreYouSureDeleteDialogOpen(false);
+  };
 
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
-    console.log(newWidgetRequest);
     const handler = addWidgetHandlersMap.get(newWidgetRequest.widgetType);
     if (handler) handler();
   };
@@ -222,6 +233,14 @@ const PageGrid = () => {
       >
         {state.items.map((el) => createElement(el, el.type))}
       </ResponsiveGridLayout>
+
+      <Modal
+        open={areYouSureDeleteDialogOpen}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      >
+        האם למחוק את תכולת הדף?
+      </Modal>
     </div>
   );
 };
