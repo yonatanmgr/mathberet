@@ -6,8 +6,12 @@ import ML_SHORTCUTS from "@common/shortcuts";
 
 function latex2function(latex: string, i: number){
     if (latex != "") {
-        const parsed = parseTex(String.raw`${latex}`);
-        return parsed.compile().evaluate({x: i})    
+        try {
+            const parsed = parseTex(String.raw`${latex}`);
+            return parsed.compile().evaluate({x: i})        
+        } catch (error) {
+            return
+        }
     }
 }
 

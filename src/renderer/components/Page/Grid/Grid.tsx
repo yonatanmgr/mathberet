@@ -75,7 +75,6 @@ const PageGrid = () => {
   };
 
   const onRemoveItem = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(e)
     setState((prev) => ({
       ...prev,
       items: prev.items.filter((item) => item.i !== e.target.name),

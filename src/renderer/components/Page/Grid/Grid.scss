@@ -57,6 +57,7 @@
             justify-content: center;
             
             .fi {
+                pointer-events: none;
                 color: var(--titlebar-color);
                 font-size: 10px;    
             }
