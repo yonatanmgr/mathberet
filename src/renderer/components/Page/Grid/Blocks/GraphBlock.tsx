@@ -26,6 +26,7 @@ function GraphBlockContent() {
             ref={ref}
             inlineShortcuts={ML_SHORTCUTS}
             className='math-field-element'
+            onExport={(ref, latex) => latex}
             onMathFieldBlur={() => {setValue(ref.current?.getValue('latex'))}}
             value={value}
             plonkSound={null}
