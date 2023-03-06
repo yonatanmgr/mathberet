@@ -28,6 +28,9 @@
   --page-bgcolor: #111A1D;
   --page-border: #1A2428;
 
+  // Blocks
+  --math-block-bgcolor: #1A2428;
+
   // Tools Panel
   --panel-bgcolor: #1E2D33;
   --tool-bgcolor: #18282e;
@@ -101,13 +104,15 @@ body:not(.dark-mode) {
   --page-bgcolor: #ffffff;
   --page-border: #CAE3EE;
 
+  // Blocks
+  --math-block-bgcolor: #ebf6fa;
+
+
   // Tools Panel
   --panel-bgcolor: #fff;
   --tool-bgcolor: #CAE3EE;
   --tool-hover-bgcolor: #b2d1de;
   --tool-active-bgcolor: #89b6c9;
-
-
 
   // Selection
   --selection-bgcolor: var(--app-accent-color);

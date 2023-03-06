@@ -97,6 +97,7 @@
     "react-resizable": "^3.0.4",
     "slate": "^0.91.4",
     "slate-history": "^0.86.0",
-    "slate-react": "^0.91.8"
+    "slate-react": "^0.91.8",
+    "tex-math-parser": "^2.0.4"
   }
 }

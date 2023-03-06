@@ -1,15 +1,15 @@
 import { Mafs, Coordinates, Plot, Theme } from "mafs"
-const math = require('mathjs')
 import React, { useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
+import { parseTex } from 'tex-math-parser'
 import ML_SHORTCUTS from "@common/shortcuts";
 
 function latex2function(latex: string, i: number){
-    const parser = math.parser()
-    parser.set('x', i)
-    return parser.evaluate(latex)
+    if (latex != "") {
+        const parsed = parseTex(String.raw`${latex}`);
+        return parsed.compile().evaluate({x: i})    
+    }
 }
-
 
 function GraphBlockContent() {    
     const [value, setValue] = useState("")
@@ -27,13 +27,15 @@ function GraphBlockContent() {
         />;
     }
 
-    const f = (x: number) => latex2function(value, x);
     return (
         <div className='graph-block-wrapper'>
             <GraphBlockSetter />
             <Mafs zoom={{ min: 0.3, max: 2 }}>
                 <Coordinates.Cartesian/>
-                <Plot.OfX y={f} color={Theme.blue} />
+                <Plot.OfX
+                    y={(x: number) => latex2function(value, x)}
+                    color={Theme.blue}
+                />
             </Mafs>
         </div>
 

@@ -26,6 +26,10 @@
         outline: none;
         display: flex;
         justify-content: center;
+        background-color: var(--math-block-bgcolor);
+        &::part(content){
+            margin-top: 5px;
+        }
     }
 
 
@@ -69,7 +73,9 @@
             min-height: 50px;
             max-height: max-content;
             align-items: center;
-
+            &::part(content){
+                margin-top: unset;
+            }
         }
 
         .MafsView {
