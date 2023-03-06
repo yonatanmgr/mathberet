@@ -1,6 +1,6 @@
 export enum WidgetType {
   Divider,
-  Ggb,
+  Graph,
   Group,
   Text,
   Math,

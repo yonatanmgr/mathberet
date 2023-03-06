@@ -34,7 +34,7 @@ const ToolsPanel = () => {
           title='הוספת בלוק גרפי'
           buttonType='addGraphBlock'
           icon='chat-arrow-grow'
-          onClick={() => handleOnClickTool(WidgetType.Ggb)}
+          onClick={() => handleOnClickTool(WidgetType.Graph)}
         />
         {/* <Tool
           title='הוספת בלוק תמונה'

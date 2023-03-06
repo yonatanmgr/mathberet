@@ -5,8 +5,8 @@ import { newWidgetRequest, WidgetType } from '@renderer/common/types';
 import '../Page.scss';
 import './Grid.scss';
 import './Blocks/Blocks.scss';
-import 'react-grid-layout/css/styles.css'
-import 'react-resizable/css/styles.css'
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 import TextBlockContent from './Blocks/TextBlock';
 import MathBlockContent from './Blocks/MathBlock';
@@ -19,32 +19,31 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 const PageGrid = () => {
   const [state, setState] = useState({
     items: [],
-    newCounter: 0,
   });
 
-  const createElement = (el, type: string) => {
+  const createElement = (el, type: WidgetType) => {
     const i = el.i;
     let block;
 
     switch (type) {
-      case 'Text':
-        block = <TextBlockContent />
+      case WidgetType.Text:
+        block = <TextBlockContent />;
         break;
 
-      case 'Math':
-        block = <MathBlockContent />
+      case WidgetType.Math:
+        block = <MathBlockContent />;
         break;
 
-      case 'Graph':
-        block = <GraphBlockContent />
+      case WidgetType.Graph:
+        block = <GraphBlockContent />;
         break;
 
-      case 'Divider':
-        block = <hr className='pageDivider'></hr>
+      case WidgetType.Divider:
+        block = <hr className='pageDivider'></hr>;
         break;
 
-      case 'Draw':
-        block = <DrawBlockContent />
+      case WidgetType.Draw:
+        block = <DrawBlockContent />;
         break;
 
       default:
@@ -57,7 +56,7 @@ const PageGrid = () => {
           <i className='fi fi-rr-menu-dots-vertical' />
         </div>
         <div className='block-content'>
-         {block}
+          {block}
           <button
             title='x'
             name={el.i}
@@ -79,7 +78,7 @@ const PageGrid = () => {
     setState((prev) => ({ ...prev, layout }));
   };
 
-  const onRemoveItem = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setState((prev) => ({
       ...prev,
       items: prev.items.filter((item) => item.i !== e.target.name),
@@ -93,8 +92,11 @@ const PageGrid = () => {
   }, [newWidgetRequest]);
 
   useEffect(() => {
-    // todo: clear page
-    console.log('page should be cleared');
+    //todo: show alert message before delete
+    setState((prev) => ({
+      ...prev,
+      items: [],
+    }));
   }, [clearPageRequest]);
 
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
@@ -104,42 +106,36 @@ const PageGrid = () => {
   };
 
   function addText() {
-    console.log('adding', 'n' + state.newCounter);
     setState((prev) => ({
-      // Add a new item. It must have a unique key!
       items: [
         ...prev.items,
         {
-          type: 'Text',
-          i: 'n' + prev.newCounter,
+          type: WidgetType.Text,
+          i: crypto.randomUUID(),
           x: Infinity,
-          y: Infinity, // puts it at the bottom
+          y: Infinity,
           w: 8,
           h: 2,
         },
       ],
-      newCounter: prev.newCounter + 1,
     }));
   }
 
   function addDraw() {
-    console.log('adding', 'n' + state.newCounter);
     setState((prev) => ({
-      // Add a new item. It must have a unique key!
       items: [
         ...prev.items,
         {
-          type: 'Draw',
-          i: 'n' + prev.newCounter,
+          type: WidgetType.Draw,
+          i: crypto.randomUUID(),
           x: Infinity,
-          y: Infinity, // puts it at the bottom
+          y: Infinity,
           w: 8,
           h: 6,
           minH: 4,
-          minW: 4
+          minW: 4,
         },
       ],
-      newCounter: prev.newCounter + 1,
     }));
   }
 
@@ -149,67 +145,60 @@ const PageGrid = () => {
 
   function addGgb() {
     setState((prev) => ({
-      // Add a new item. It must have a unique key!
       items: [
         ...prev.items,
         {
-          type: 'Graph',
-          i: 'n' + prev.newCounter,
+          type: WidgetType.Graph,
+          i: crypto.randomUUID(),
           x: Infinity,
-          y: Infinity, // puts it at the bottom
+          y: Infinity,
           w: 8,
           h: 6,
         },
       ],
-      newCounter: prev.newCounter + 1,
     }));
   }
 
   function addMath() {
-    console.log('adding', 'n' + state.newCounter);
     setState((prev) => ({
-      // Add a new item. It must have a unique key!
       items: [
         ...prev.items,
         {
-          type: 'Math',
-          i: 'n' + prev.newCounter,
+          type: WidgetType.Math,
+          i: crypto.randomUUID(),
           x: Infinity,
-          y: Infinity, // puts it at the bottom
+          y: Infinity,
           w: 8,
           h: 2,
         },
       ],
-      newCounter: prev.newCounter + 1,
-    }));  
+    }));
   }
+
   function addGroup() {
     console.error('not implemented');
   }
 
   function addDivider() {
-    console.log('adding', 'n' + state.newCounter);
     setState((prev) => ({
-      // Add a new item. It must have a unique key!
       items: [
         ...prev.items,
         {
-          type: 'Divider',
+          type: WidgetType.Divider,
           maxH: 1,
-          i: 'n' + prev.newCounter,
+          i: crypto.randomUUID(),
           x: Infinity,
           y: Infinity, // puts it at the bottom
           w: 8,
           h: 1,
         },
       ],
-      newCounter: prev.newCounter + 1,
-    })); 
+    }));
   }
 
   const addWidgetHandlersMap = new Map<WidgetType, () => void>([
     [WidgetType.Divider, addDivider],
-    [WidgetType.Ggb, addGgb],
+    [WidgetType.Graph, addGgb],
     [WidgetType.Group, addGroup],
     [WidgetType.Text, addText],
     [WidgetType.Math, addMath],
