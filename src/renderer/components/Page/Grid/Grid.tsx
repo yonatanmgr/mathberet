@@ -40,11 +40,11 @@ const PageGrid = () => {
   }, [clearPageRequest]);
 
   useEffect(() => {
-    console.log(2222);
+    console.log("Loading...");
     window.api.receive('gotLoadedDataX', (data: string) => {
       const x = JSON.parse(data);
       console.log(x);
-      setState((prev) => ({ ...prev, items: [x] }));
+      setState((prev) => ({ ...prev, items: x }));
     });
   }, []);
 
