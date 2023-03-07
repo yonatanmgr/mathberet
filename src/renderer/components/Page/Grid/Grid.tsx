@@ -12,22 +12,27 @@ import './Blocks/Blocks.scss';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
-import ReactGridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
+import { Responsive, WidthProvider } from 'react-grid-layout';
 import Modal from '@components/common/Modal';
 import GridElement from './GridElement';
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 type PageGridState = {
   items: BlockElement[];
+  breakpoint: string;
+  cols: number;
 };
 
 const PageGrid = () => {
+
   const [state, setState] = useState<PageGridState>({
     items: [],
+    breakpoint: 'lg',
+    cols: 8
   });
 
-  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
-    useState(false);
+  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] = useState(false);
 
   const { newWidgetRequest, clearPageRequest } = useGeneralContext();
 
@@ -40,11 +45,15 @@ const PageGrid = () => {
   }, [clearPageRequest]);
 
   useEffect(() => {
-    console.log("Loading...");
     window.api.receive('gotLoadedDataX', (data: string) => {
-      const x = JSON.parse(data);
-      console.log(x);
-      setState((prev) => ({ ...prev, items: x }));
+
+      const loadedData: Array<BlockElement> = JSON.parse(data);
+      loadedData.map((block: BlockElement) => {
+        if (block.y == null) { block.y = Infinity }
+        if (block.x == null) { block.x = Infinity }
+      })
+      // console.log(loadedData);
+      setState((prev) => ({ ...prev, items: loadedData }));
     });
   }, []);
 
@@ -52,8 +61,13 @@ const PageGrid = () => {
     setState((prev) => ({ ...prev, breakpoint, cols }));
   };
 
-  const onLayoutChange = (layout: ReactGridLayout.Layout[]) => {
-    setState((prev) => ({ ...prev, layout }));
+  const onLayoutChange = (layout: Array<BlockElement>) => { 
+    layout.map((block) => {
+      block.type = state.items.find(item => {return item.i == block.i}).type
+      block.metaData = {}
+    })  
+    
+    setState((prev) => ({ ...prev, items: layout }));
   };
 
   const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -65,15 +79,10 @@ const PageGrid = () => {
 
   const handleConfirm = () => {
     setAreYouSureDeleteDialogOpen(false);
-    setState((prev) => ({
-      ...prev,
-      items: [],
-    }));
+    setState((prev) => ({...prev, items: []}));
   };
 
-  const handleCancel = () => {
-    setAreYouSureDeleteDialogOpen(false);
-  };
+  const handleCancel = () => setAreYouSureDeleteDialogOpen(false);
 
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
     const handler = addWidgetHandlersMap.get(newWidgetRequest.widgetType);
@@ -187,12 +196,13 @@ const PageGrid = () => {
   ]);
 
   const loadGridData = () => {
-    window.api.loadX();
+    setState(prev=>({...prev, items: []}))
+    window.api.loadX()
   };
 
   const saveGridData = () => {
     const data = JSON.stringify(state.items);
-    console.log(data);
+    // console.log(data);
 
     window.api.saveX(data);
   };
@@ -214,19 +224,11 @@ const PageGrid = () => {
         draggableHandle='.block-handle'
       >
         {state.items.map((element) => (
-          <GridElement
-            blockElement={element}
-            onRemoveItem={onRemoveItem}
-            key={element.i}
-          />
+          <GridElement blockElement={element} onRemoveItem={onRemoveItem} key={element.i} data-grid={element}/>
         ))}
       </ResponsiveGridLayout>
 
-      <Modal
-        open={areYouSureDeleteDialogOpen}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
-      >
+      <Modal open={areYouSureDeleteDialogOpen} onConfirm={handleConfirm} onCancel={handleCancel}>
         האם למחוק את תכולת הדף?
       </Modal>
     </div>
