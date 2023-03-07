@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
-import { BlockElement, newWidgetRequest, WidgetType } from '@renderer/common/types';
+import {
+  BlockElement,
+  newWidgetRequest,
+  WidgetType,
+} from '@renderer/common/types';
 
 import '../Page.scss';
 import './Grid.scss';
@@ -25,6 +29,24 @@ const PageGrid = () => {
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
 
+  const { newWidgetRequest, clearPageRequest } = useGeneralContext();
+
+  useEffect(() => {
+    if (newWidgetRequest) AddWidget(newWidgetRequest);
+  }, [newWidgetRequest]);
+
+  useEffect(() => {
+    if (clearPageRequest?.cmd === 'clear') setAreYouSureDeleteDialogOpen(true);
+  }, [clearPageRequest]);
+
+  useEffect(() => {
+    window.api.receive('gotLoadedDataX', (data) => {
+      const x = JSON.parse(data);
+      console.log(x);
+      setState((prev) => ({ ...prev, items: [x] }));
+    });
+  }, []);
+
   const onBreakpointChange = (breakpoint: string, cols: number) => {
     setState((prev) => ({ ...prev, breakpoint, cols }));
   };
@@ -39,16 +61,6 @@ const PageGrid = () => {
       items: prev.items.filter((item) => item.i !== e.target.name),
     }));
   };
-
-  const { newWidgetRequest, clearPageRequest } = useGeneralContext();
-
-  useEffect(() => {
-    if (newWidgetRequest) AddWidget(newWidgetRequest);
-  }, [newWidgetRequest]);
-
-  useEffect(() => {
-    if (clearPageRequest?.cmd === 'clear') setAreYouSureDeleteDialogOpen(true);
-  }, [clearPageRequest]);
 
   const handleConfirm = () => {
     setAreYouSureDeleteDialogOpen(false);
@@ -69,6 +81,7 @@ const PageGrid = () => {
 
   function addText() {
     setState((prev) => ({
+      ...prev,
       items: [
         ...prev.items,
         {
@@ -85,6 +98,7 @@ const PageGrid = () => {
 
   function addDraw() {
     setState((prev) => ({
+      ...prev,
       items: [
         ...prev.items,
         {
@@ -107,6 +121,7 @@ const PageGrid = () => {
 
   function addGgb() {
     setState((prev) => ({
+      ...prev,
       items: [
         ...prev.items,
         {
@@ -123,6 +138,7 @@ const PageGrid = () => {
 
   function addMath() {
     setState((prev) => ({
+      ...prev,
       items: [
         ...prev.items,
         {
@@ -143,6 +159,7 @@ const PageGrid = () => {
 
   function addDivider() {
     setState((prev) => ({
+      ...prev,
       items: [
         ...prev.items,
         {
@@ -178,14 +195,6 @@ const PageGrid = () => {
 
     window.api.saveX(data);
   };
-
-  useEffect(() => {
-    window.api.receive('gotLoadedDataX', (data) => {
-      const x = JSON.parse(data);
-      console.log(x);
-      setState((prev) => ({ ...prev, items: [x] }));
-    });
-  }, []);
 
   return (
     <div className='grid-container'>
