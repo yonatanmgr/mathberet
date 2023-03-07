@@ -4,6 +4,7 @@ import MathBlockContent from './Blocks/MathBlock';
 import GraphBlockContent from './Blocks/GraphBlock';
 import { WidgetType } from '@renderer/common/types';
 import DrawBlockContent from './Blocks/DrawBlock';
+import './Grid.scss'
 
 interface GridElementProps {
   el: any;
@@ -12,7 +13,8 @@ interface GridElementProps {
 }
 
 const GridElement = ({ el, widgetType, onRemoveItem }: GridElementProps) => {
-  console.log(1);
+
+  console.log(1)
 
   function Switcher(widgetType: WidgetType) {
     switch (widgetType) {

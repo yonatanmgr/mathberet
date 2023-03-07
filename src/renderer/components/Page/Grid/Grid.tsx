@@ -8,12 +8,7 @@ import './Blocks/Blocks.scss';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
-import TextBlockContent from './Blocks/TextBlock';
-import MathBlockContent from './Blocks/MathBlock';
-import GraphBlockContent from './Blocks/GraphBlock';
-
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import DrawBlockContent from './Blocks/DrawBlock';
 import Modal from '@components/common/Modal';
 import GridElement from './GridElement';
 const ResponsiveGridLayout = WidthProvider(Responsive);
@@ -25,55 +20,6 @@ const PageGrid = () => {
 
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
-
-  const createElement = (el, type: WidgetType) => {
-    const i = el.i;
-    let block;
-
-    switch (type) {
-      case WidgetType.Text:
-        block = <TextBlockContent />;
-        break;
-
-      case WidgetType.Math:
-        block = <MathBlockContent />;
-        break;
-
-      case WidgetType.Graph:
-        block = <GraphBlockContent />;
-        break;
-
-      case WidgetType.Divider:
-        block = <hr className='pageDivider'></hr>;
-        break;
-
-      case WidgetType.Draw:
-        block = <DrawBlockContent />;
-        break;
-
-      default:
-        break;
-    }
-
-    return (
-      <div className='block' data-grid={el} key={i}>
-        <div className='block-handle'>
-          <i className='fi fi-rr-menu-dots-vertical' />
-        </div>
-        <div className='block-content'>
-          {block}
-          <button
-            title='x'
-            name={el.i}
-            className='block-remove-button'
-            onClick={onRemoveItem}
-          >
-            <i className='fi fi-rr-x'></i>
-          </button>
-        </div>
-      </div>
-    );
-  };
 
   const onBreakpointChange = (breakpoint: string, cols: number) => {
     setState((prev) => ({ ...prev, breakpoint, cols }));
@@ -97,7 +43,7 @@ const PageGrid = () => {
   }, [newWidgetRequest]);
 
   useEffect(() => {
-    if (clearPageRequest) setAreYouSureDeleteDialogOpen(true);
+    if (clearPageRequest?.cmd === 'clear') setAreYouSureDeleteDialogOpen(true);
   }, [clearPageRequest]);
 
   const handleConfirm = () => {

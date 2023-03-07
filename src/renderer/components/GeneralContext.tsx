@@ -10,7 +10,7 @@ const GeneralContext = createContext(null);
 
 function GeneralContextProvider({ children }: PropsWithChildren) {
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
-  const [clearPageRequest, setClearPageRequest] = useState();
+  const [clearPageRequest, setClearPageRequest] = useState({cmd:{}});
 
   return (
     <GeneralContext.Provider

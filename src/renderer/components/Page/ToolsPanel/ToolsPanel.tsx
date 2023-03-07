@@ -12,7 +12,7 @@ const ToolsPanel = () => {
   };
 
   const clearPage = () => {
-    setClearPageRequest({});
+    setClearPageRequest({ cmd: 'clear' });
   };
 
   return (
