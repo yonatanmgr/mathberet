@@ -29,6 +29,7 @@
         height: 100%;
 
         .rct-tree-item-button {
+          white-space: nowrap;
           height: 100%;
           direction: rtl;
           background-color: transparent;
@@ -69,23 +70,33 @@
             border-radius: unset;
 
             // Custom
-            content: "F";
+            font-family: 'uicons-regular-rounded';
+            font-weight: 300;
+            font-size: large;
+            content: "\f35d";
             padding-left: 10px;
           }
 
           &.rct-tree-item-button-isFolder {
+
             &::after {
               display: none;
             }
 
             &.rct-tree-item-button-expanded {
               &::before {
-                content: "O";
+                font-family: 'uicons-regular-rounded';
+                font-weight: 300;
+                font-size: large;
+                content: "\f1de";
               }
             }
 
             &::before {
-              content: "C";
+              font-family: 'uicons-regular-rounded';
+              font-weight: 300;
+              font-size: large;
+              content: "\f1e6";
             }
           }
         }
