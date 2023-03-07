@@ -2,17 +2,16 @@ import React from 'react';
 import TextBlockContent from './Blocks/TextBlock';
 import MathBlockContent from './Blocks/MathBlock';
 import GraphBlockContent from './Blocks/GraphBlock';
-import { WidgetType } from '@renderer/common/types';
+import { BlockElement, WidgetType } from '@renderer/common/types';
 import DrawBlockContent from './Blocks/DrawBlock';
 import './Grid.scss'
 
-interface GridElementProps {
-  el: any;
-  widgetType: WidgetType;
+type GridElementProps = {
+  blockElement: BlockElement;
   onRemoveItem: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-const GridElement = ({ el, widgetType, onRemoveItem }: GridElementProps) => {
+const GridElement = ({ blockElement, onRemoveItem }: GridElementProps) => {
 
   function Switcher(widgetType: WidgetType) {
     switch (widgetType) {
@@ -32,15 +31,15 @@ const GridElement = ({ el, widgetType, onRemoveItem }: GridElementProps) => {
   }
 
   return (
-    <div className='block' data-grid={el} key={el.i}>
+    <div className='block' data-grid={blockElement} key={blockElement.i}>
       <div className='block-handle'>
         <i className='fi fi-rr-menu-dots-vertical' />
       </div>
       <div className='block-content'>
-        {Switcher(widgetType)}
+        {Switcher(blockElement.type)}
         <button
           title='x'
-          name={el.i}
+          name={blockElement.i}
           className='block-remove-button'
           onClick={onRemoveItem}
         >

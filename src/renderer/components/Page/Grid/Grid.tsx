@@ -40,7 +40,8 @@ const PageGrid = () => {
   }, [clearPageRequest]);
 
   useEffect(() => {
-    window.api.receive('gotLoadedDataX', (data) => {
+    console.log(2222);
+    window.api.receive('gotLoadedDataX', (data: string) => {
       const x = JSON.parse(data);
       console.log(x);
       setState((prev) => ({ ...prev, items: [x] }));
@@ -212,12 +213,11 @@ const PageGrid = () => {
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
         draggableHandle='.block-handle'
       >
-        {state.items.map((el) => (
+        {state.items.map((element) => (
           <GridElement
-            el={el}
-            widgetType={el.type}
+            blockElement={element}
             onRemoveItem={onRemoveItem}
-            key={el.i}
+            key={element.i}
           />
         ))}
       </ResponsiveGridLayout>
