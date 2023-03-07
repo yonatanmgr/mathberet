@@ -44,10 +44,11 @@ function FileSystem() {
           getItemTitle={(item) => item.data}
           viewState={{}}
           canReorderItems={true}
+          canDragAndDrop={true}
+          canDropOnFolder={true}
         >
           <Tree treeId='tree-2' rootItem='root' treeLabel='Tree Example' />
         </UncontrolledTreeEnvironment>
-        ;
       </div>
     </div>
   );

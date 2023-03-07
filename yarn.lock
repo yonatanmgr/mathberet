@@ -5899,6 +5899,11 @@
   dependencies:
     "cross-spawn-windows-exe" "^1.1.0"
 
+"react-complex-tree@^2.1.1":
+  "integrity" "sha512-dSL3J6MpyoRvkiILPXBPKHdVndGPs7bLhXrKTl9f3NmlSsSV0h7ux/sG9CiPAHgIzzZqozM152sHV4ikSf0Ygg=="
+  "resolved" "https://registry.npmjs.org/react-complex-tree/-/react-complex-tree-2.1.1.tgz"
+  "version" "2.1.1"
+
 "react-dom@^16.0.0 || ^17.0.0 || ^18.0.0", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^18.2.0", "react-dom@>= 16.3.0", "react-dom@>=16.8", "react-dom@>=16.8.0", "react-dom@>=16.8.1", "react-dom@>=17.0.1", "react-dom@16.13.1", "react-dom@16.8.0 - 18":
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"

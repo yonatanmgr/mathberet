@@ -10,7 +10,7 @@ export enum WidgetType {
 
 export type BlockElement = {
   type: WidgetType;
-  metaData?: any;
+  metaData?: object;
 } & ReactGridLayout.Layout;
 
 export type newWidgetRequest = {
