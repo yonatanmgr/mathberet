@@ -3,6 +3,7 @@ import path from 'path';
 import { registerTitlebarIpc } from '@misc/window/titlebarIPC';
 import * as fs from 'fs';
 import Store from 'electron-store';
+const { resolve } = require('path');
 
 // Electron Forge automatically creates these entry points
 declare const APP_WINDOW_WEBPACK_ENTRY: string;
@@ -64,12 +65,18 @@ fs.readdir(app.getPath('userData'), (err, res) => {
   if (err) {
     fs.mkdirSync(app.getPath('userData'));
     if (
-      fs.readFileSync(path.join(app.getPath('userData'), 'config.json'), 'utf8') == ''
+      fs.readFileSync(
+        path.join(app.getPath('userData'), 'config.json'),
+        'utf8',
+      ) == ''
     ) {
       fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), '{}');
     }
   } else if (
-    fs.readFileSync(path.join(app.getPath('userData'), 'config.json'), 'utf8') == ''
+    fs.readFileSync(
+      path.join(app.getPath('userData'), 'config.json'),
+      'utf8',
+    ) == ''
   ) {
     fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), '{}');
   }
@@ -83,35 +90,42 @@ fs.readdir(app.getPath('userData'), (err, res) => {
 //   .catch((error) => {console.error(error)});
 // });
 
-
 ipcMain.on('saveX', (event, data) => {
-  const filesPath = path.join(app.getPath("documents"), "Mathberet", "files");
-  
+  const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
+
   if (fs.existsSync(filesPath)) {
-    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8')
+    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8');
   } else {
-    fs.mkdirSync(filesPath, {recursive: true});
-    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8')
+    fs.mkdirSync(filesPath, { recursive: true });
+    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8');
   }
-})
+});
 
 ipcMain.on('loadX', (event, args) => {
   const fileName = '7777.json';
-  const filesPath = path.join(app.getPath("documents"), "Mathberet", "files");
+  const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
 
-  fs.existsSync(filesPath) ? null : fs.mkdirSync(filesPath, {recursive: true});
-  
+  fs.existsSync(filesPath)
+    ? null
+    : fs.mkdirSync(filesPath, { recursive: true });
+
   if (fs.existsSync(path.join(filesPath, fileName))) {
     fs.readFile(path.join(filesPath, fileName), 'utf-8', (error, data) => {
-      error ? console.error("Error Reading file: ", error) : appWindow.webContents.send('gotLoadedDataX', data);
-    })
-  } else {console.error("File not found!")}
-})
+      error
+        ? console.error('Error Reading file: ', error)
+        : appWindow.webContents.send('gotLoadedDataX', data);
+    });
+  } else {
+    console.error('File not found!');
+  }
+});
 
 ipcMain.on('openFiles', () => {
   shell
     .openPath(path.resolve(path.join(__dirname, '..', 'files')))
-    .catch((error) => {console.error(error)});
+    .catch((error) => {
+      console.error(error);
+    });
 });
 
 ipcMain.on('move', (event, oldDir, newDir) => {
@@ -153,46 +167,43 @@ ipcMain.on('load', (event, file) => {
 //   }
 // });
 
-// ipcMain.on('getNotebooks', () => {
-//   const filesPath = path.join(__dirname, '..', 'files');
-//   const all = () =>
-//     fs
-//       .readdirSync(filesPath, { withFileTypes: true })
-//       .filter((file) => {
-//         return file.isDirectory() || file.name.split('.')[1] == 'json';
-//       })
-//       .map(
-//         (file) =>
-//           (file = {
-//             parentFolder: filesPath,
-//             path: path.join(filesPath, file.name),
-//             name: file.name,
-//             files: file.isDirectory()
-//               ? fs
-//                   .readdirSync(path.join(filesPath, file.name), {
-//                     withFileTypes: true,
-//                   })
-//                   .filter((subfile) => {
-//                     return subfile.name.split('.')[1] == 'json';
-//                   })
-//                   .map(
-//                     (subfile) =>
-//                       (subfile = {
-//                         parentFolder: path.join(filesPath, file.name),
-//                         path: path.join(filesPath, file.name, subfile.name),
-//                         name: subfile.name,
-//                         isOpen: false,
-//                       }),
-//                   )
-//               : null,
-//             isOpen: false,
-//           }),
-//       );
-//   appWindow.webContents.send('gotNotebooks', {
-//     filesPath: filesPath,
-//     allFiles: all(),
-//   });
-// });
+let firstTime = true;
+
+function buildTree(dir: string, root: any) {
+  const stats = fs.statSync(dir);
+  let name = path.basename(dir).split('.')[0];
+
+  if (firstTime) {
+    name = 'root';
+    firstTime = false;
+  }
+
+  if (!stats.isDirectory()) {
+    root[name] = { index: name, data: name, children: [] };
+    return name;
+  }
+
+  const children = fs
+    .readdirSync(dir)
+    .map((child) => buildTree(path.join(dir, child), root));
+
+  root[name] = {
+    index: name,
+    isFolder: true,
+    data: name,
+    children,
+  };
+
+  return name;
+}
+
+ipcMain.on('getNotebooks', () => {
+  const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
+  const root = {};
+  buildTree(filesPath, root);
+  firstTime = true;
+  appWindow.webContents.send('gotNotebooks', { filesPath, root });
+});
 
 ipcMain.on('getPicture', (event, id) => {
   const allPics = fs.readdirSync(path.join(__dirname, '..', 'attachments'), {
@@ -241,7 +252,7 @@ ipcMain.on('getPicture', (event, id) => {
 ipcMain.on('getArchive', () => {
   const filesPath = path.join(__dirname, '..', 'files');
 
-  const groupsToFilter:[] = [];
+  const groupsToFilter: [] = [];
   function getAllGroups() {
     const allGroups = [];
     const allFiles = fs.readdirSync(filesPath, { withFileTypes: true });
