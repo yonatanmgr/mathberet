@@ -85,18 +85,28 @@ fs.readdir(app.getPath('userData'), (err, res) => {
 
 
 ipcMain.on('saveX', (event, data) => {
-  console.log(data)
-  const filePath = path.join('C:\\temp\\7777.json');
-  fs.writeFileSync(filePath, data, 'utf-8');
+  const filesPath = path.join(app.getPath("documents"), "Mathberet", "files");
+  
+  if (fs.existsSync(filesPath)) {
+    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8')
+  } else {
+    fs.mkdirSync(filesPath, {recursive: true});
+    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8')
+  }
 })
 
-ipcMain.on('loadX', (event,args) => {
-  const filePath = path.join('C:\\temp\\7777.json');
-  fs.readFile(filePath, 'utf-8', (error, data) => {
-    appWindow.webContents.send('gotLoadedDataX', data);
-  });
-})
+ipcMain.on('loadX', (event, args) => {
+  const fileName = '7777.json';
+  const filesPath = path.join(app.getPath("documents"), "Mathberet", "files");
 
+  fs.existsSync(filesPath) ? null : fs.mkdirSync(filesPath, {recursive: true});
+  
+  if (fs.existsSync(path.join(filesPath, fileName))) {
+    fs.readFile(path.join(filesPath, fileName), 'utf-8', (error, data) => {
+      error ? console.error("Error Reading file: ", error) : appWindow.webContents.send('gotLoadedDataX', data);
+    })
+  } else {console.error("File not found!")}
+})
 
 ipcMain.on('openFiles', () => {
   shell
