@@ -73,13 +73,20 @@
   --sidebar-button-color: hsl(var(--theme-hue), 15%, 35%);
   --tool-color: hsl(var(--theme-hue), 16%, 67%);
 
-    // KBar
-    --kbar-bg: linear-gradient(
-      120deg,
+  // File System
+  --file-bgcolor: hsl(var(--theme-hue), 25%, 10%);
+  --file-hover-bgcolor: hsl(var(--theme-hue), 25%, 12%);
+  --file-active-bgcolor: hsl(var(--theme-hue), 25%, 14%);
+  --selected-bgcolor: hsl(var(--theme-hue), 25%, 12%);
+  --selected-hover-bgcolor: hsl(var(--theme-hue), 25%, 14%);
+  --selected-active-bgcolor: hsl(var(--theme-hue), 25%, 16%);
+
+
+  // KBar
+  --kbar-bg: linear-gradient(120deg,
       hsla(var(--theme-hue), 10%, 12%, 0.2),
-      hsla(var(--theme-hue), 10%, 12%, 0.7), 70%, 
-      hsla(var(--theme-hue), 10%, 12%, 0.2)
-    );
+      hsla(var(--theme-hue), 10%, 12%, 0.7), 70%,
+      hsla(var(--theme-hue), 10%, 12%, 0.2));
 
   // Titlebar
   --titlebar-bgcolor: var(--app-bgcolor);
@@ -165,13 +172,19 @@ body:not(.dark-mode) {
   --tool-color: hsl(var(--theme-hue), 23%, 28%);
   --sidebar-button-color: hsl(var(--theme-hue), 15%, 35%);
 
+  // File System
+  --file-bgcolor: hsl(var(--theme-hue), 25%, 90%);
+  --file-hover-bgcolor: hsl(var(--theme-hue), 25%, 88%);
+  --file-active-bgcolor: hsl(var(--theme-hue), 25%, 86%);
+  --selected-bgcolor: hsl(var(--theme-hue), 25%, 88%);
+  --selected-hover-bgcolor: hsl(var(--theme-hue), 25%, 86%);
+  --selected-active-bgcolor: hsl(var(--theme-hue), 25%, 84%);
+
   // KBar
-  --kbar-bg: linear-gradient(
-    120deg,
-    hsla(var(--theme-hue), 30%, 90%, 0.7),
-    hsla(var(--theme-hue), 30%, 90%, 0.2), 70%, 
-    hsla(var(--theme-hue), 30%, 90%, 0.7)
-  );
+  --kbar-bg: linear-gradient(120deg,
+      hsla(var(--theme-hue), 30%, 90%, 0.7),
+      hsla(var(--theme-hue), 30%, 90%, 0.2), 70%,
+      hsla(var(--theme-hue), 30%, 90%, 0.7));
 
   // Titlebar
   --titlebar-bgcolor: var(--app-bgcolor);
@@ -209,7 +222,7 @@ body:not(.dark-mode) {
     background: hsl(0, 0%, 100%);
     box-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.02);
 
-    & > span {
+    &>span {
       color: hsl(0, 0%, 60%);
     }
   }
