@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
-import { newWidgetRequest, WidgetType } from '@renderer/common/types';
+import { BlockElement, newWidgetRequest, WidgetType } from '@renderer/common/types';
 
 import '../Page.scss';
 import './Grid.scss';
@@ -8,13 +8,17 @@ import './Blocks/Blocks.scss';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import ReactGridLayout, { Responsive, WidthProvider } from 'react-grid-layout';
 import Modal from '@components/common/Modal';
 import GridElement from './GridElement';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
+type PageGridState = {
+  items: BlockElement[];
+};
+
 const PageGrid = () => {
-  const [state, setState] = useState({
+  const [state, setState] = useState<PageGridState>({
     items: [],
   });
 
@@ -74,7 +78,7 @@ const PageGrid = () => {
           y: Infinity,
           w: 8,
           h: 2,
-        },
+        } as BlockElement,
       ],
     }));
   }
@@ -92,7 +96,7 @@ const PageGrid = () => {
           h: 6,
           minH: 4,
           minW: 4,
-        },
+        } as BlockElement,
       ],
     }));
   }
@@ -112,7 +116,7 @@ const PageGrid = () => {
           y: Infinity,
           w: 8,
           h: 6,
-        },
+        } as BlockElement,
       ],
     }));
   }
@@ -128,7 +132,7 @@ const PageGrid = () => {
           y: Infinity,
           w: 8,
           h: 2,
-        },
+        } as BlockElement,
       ],
     }));
   }
@@ -149,7 +153,7 @@ const PageGrid = () => {
           y: Infinity, // puts it at the bottom
           w: 8,
           h: 1,
-        },
+        } as BlockElement,
       ],
     }));
   }
@@ -170,6 +174,8 @@ const PageGrid = () => {
 
   const saveGridData = () => {
     const data = JSON.stringify(state.items);
+    console.log(data);
+
     window.api.saveX(data);
   };
 

@@ -8,6 +8,11 @@ export enum WidgetType {
   Draw,
 }
 
+export type BlockElement = {
+  type: WidgetType;
+  metaData?: any;
+} & ReactGridLayout.Layout;
+
 export type newWidgetRequest = {
   widgetType: WidgetType;
 };

@@ -14,8 +14,6 @@ interface GridElementProps {
 
 const GridElement = ({ el, widgetType, onRemoveItem }: GridElementProps) => {
 
-  console.log(1)
-
   function Switcher(widgetType: WidgetType) {
     switch (widgetType) {
       case WidgetType.Text:
