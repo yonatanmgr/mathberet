@@ -46,6 +46,7 @@ const PageGrid = () => {
 
   useEffect(() => {
     window.api.receive('gotLoadedDataX', (data: string) => {
+
       const loadedData: Array<BlockElement> = JSON.parse(data);
       loadedData.map((block: BlockElement) => {
         if (block.y == null) { block.y = Infinity }
@@ -78,15 +79,10 @@ const PageGrid = () => {
 
   const handleConfirm = () => {
     setAreYouSureDeleteDialogOpen(false);
-    setState((prev) => ({
-      ...prev,
-      items: [],
-    }));
+    setState((prev) => ({...prev, items: []}));
   };
 
-  const handleCancel = () => {
-    setAreYouSureDeleteDialogOpen(false);
-  };
+  const handleCancel = () => setAreYouSureDeleteDialogOpen(false);
 
   const AddWidget = (newWidgetRequest: newWidgetRequest) => {
     const handler = addWidgetHandlersMap.get(newWidgetRequest.widgetType);
@@ -199,7 +195,10 @@ const PageGrid = () => {
     [WidgetType.Draw, addDraw],
   ]);
 
-  const loadGridData = () => window.api.loadX();
+  const loadGridData = () => {
+    setState(prev=>({...prev, items: []}))
+    window.api.loadX()
+  };
 
   const saveGridData = () => {
     const data = JSON.stringify(state.items);
