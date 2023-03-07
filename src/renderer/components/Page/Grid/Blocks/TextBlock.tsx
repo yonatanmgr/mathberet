@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {
   createEditor,
   Descendant,
@@ -11,6 +11,7 @@ import {
 } from 'slate'
 import { withHistory } from 'slate-history'
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react'
+import { ValueProps } from '@renderer/common/types'
 
 type BulletedListElement = {
   type: 'bulleted-list'
@@ -31,12 +32,18 @@ const SHORTCUTS = {
   '######': 'heading-six',
 }
 
-const TextBlockContent = () => {
+const TextBlockContent = ({content}: ValueProps) => {
   const renderElement = useCallback(props => <Element {...props} />, [])
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
     []
   )
+  const [value, setValue] = useState(content ? content.text : [{
+    type: 'paragraph',
+    children: [{ text: '' }],  
+  }])
+
+
 
   const handleDOMBeforeInput = useCallback((e: InputEvent) => {
     queueMicrotask(() => {
@@ -72,7 +79,11 @@ const TextBlockContent = () => {
   }, [])
 
   return (
-    <Slate editor={editor} value={initialValue}>
+    <Slate
+      editor={editor}
+      value={value}
+      onChange={currentValue=>setValue((currentValue))}
+    >
       <Editable className="textbox"
         onDOMBeforeInput={handleDOMBeforeInput}
         renderElement={renderElement}
@@ -203,9 +214,5 @@ const Element = ({ attributes, children, element }) => {
   }
 }
 
-const initialValue: Descendant[] = [ {
-  type: 'paragraph',
-  children: [{ text: '' }],
-}]
 
 export default TextBlockContent

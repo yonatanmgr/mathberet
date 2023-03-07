@@ -4,6 +4,7 @@ import MathView, { MathViewRef } from 'react-math-view';
 import { parseTex } from 'tex-math-parser'
 import ML_SHORTCUTS from "@common/shortcuts";
 import ML_KEYBINDINGS from '@common/keybindings';
+import { ValueProps } from "@renderer/common/types";
 
 function latex2function(latex: string, i: number){
     if (latex != "") {
@@ -16,21 +17,20 @@ function latex2function(latex: string, i: number){
     }
 }
 
-function GraphBlockContent() {    
-    const [value, setValue] = useState("")
-    // const [points, setPoints] = useState([])
+function GraphBlockContent({content}: ValueProps) {    
+    const [value, setValue] = useState(content ? content.plots[0] : "")    
 
     function GraphBlockSetter(){
         const ref = useRef<MathViewRef>(null);
 
         return <MathView
             ref={ref}
+            value={value}
             inlineShortcuts={ML_SHORTCUTS}
             keybindings={ML_KEYBINDINGS}
             className='math-field-element'
             onExport={(ref, latex) => latex}
             onMathFieldBlur={() => {setValue(ref.current?.getValue('latex'))}}
-            value={value}
             plonkSound={null}
             keypressSound={null}
         />;

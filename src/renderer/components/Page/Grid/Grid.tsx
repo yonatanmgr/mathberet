@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Node } from 'slate';
 import { useGeneralContext } from '@components/GeneralContext';
 import {
   BlockElement,
@@ -64,7 +65,7 @@ const PageGrid = () => {
   const onLayoutChange = (layout: Array<BlockElement>) => { 
     layout.map((block) => {
       block.type = state.items.find(item => {return item.i == block.i}).type
-      block.metaData = {}
+      block.metaData = state.items.find(item => {return item.i == block.i}).metaData
     })  
     
     setState((prev) => ({ ...prev, items: layout }));
@@ -97,6 +98,7 @@ const PageGrid = () => {
         {
           type: WidgetType.Text,
           i: crypto.randomUUID(),
+          metaData: {},
           x: Infinity,
           y: Infinity,
           w: 8,
@@ -113,6 +115,7 @@ const PageGrid = () => {
         ...prev.items,
         {
           type: WidgetType.Draw,
+          metaData: {},
           i: crypto.randomUUID(),
           x: Infinity,
           y: Infinity,
@@ -136,6 +139,7 @@ const PageGrid = () => {
         ...prev.items,
         {
           type: WidgetType.Graph,
+          metaData: {},
           i: crypto.randomUUID(),
           x: Infinity,
           y: Infinity,
@@ -153,6 +157,7 @@ const PageGrid = () => {
         ...prev.items,
         {
           type: WidgetType.Math,
+          metaData: {},
           i: crypto.randomUUID(),
           x: Infinity,
           y: Infinity,
@@ -200,9 +205,32 @@ const PageGrid = () => {
     window.api.loadX()
   };
 
+  const saveMetaData = (block: BlockElement) => {
+    const foundContent = document.getElementById(block.i)    
+
+    function saveSwitcher(widgetType: WidgetType) {
+      switch (widgetType) {
+        case WidgetType.Text:
+          return {text: [{}]};
+        case WidgetType.Math:
+          return {latex: foundContent.querySelector(".math-field-element").getValue()};
+        case WidgetType.Graph:
+          return {plots: [foundContent.querySelector(".math-field-element").getValue()]};
+        case WidgetType.Draw:
+          return null;
+        default:
+          return null;
+      }
+    }
+
+    block.metaData = {content: saveSwitcher(block.type)}
+    // if (block.type == WidgetType.Text) console.log(block.metaData);
+  }
+
   const saveGridData = () => {
-    const data = JSON.stringify(state.items);
-    // console.log(data);
+    const currentItems = state.items
+    currentItems.map(saveMetaData)
+    const data = JSON.stringify(currentItems);
 
     window.api.saveX(data);
   };
@@ -224,7 +252,13 @@ const PageGrid = () => {
         draggableHandle='.block-handle'
       >
         {state.items.map((element) => (
-          <GridElement blockElement={element} onRemoveItem={onRemoveItem} key={element.i} data-grid={element}/>
+          <GridElement 
+            blockElement={element} 
+            onRemoveItem={onRemoveItem} 
+            key={element.i} 
+            data-grid={element}
+            blockValue={element.metaData}
+          />
         ))}
       </ResponsiveGridLayout>
 
