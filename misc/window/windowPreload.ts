@@ -12,6 +12,7 @@ contextBridge.exposeInMainWorld('api', {
   },
   receive: (channel: string, func: () => void) => {
     const validChannels = [
+      'gotLoadedDataX',
       'Home',
       'Picture',
       'gotAllPictures',
@@ -60,6 +61,12 @@ contextBridge.exposeInMainWorld('api', {
   },
   load: (file: string) => {
     ipcRenderer.send('load', file);
+  },
+  saveX: (data: string) => {
+    ipcRenderer.send('saveX', data);
+  },
+  loadX: () => {
+    ipcRenderer.send('loadX');
   },
   maximize: () => {
     ipcRenderer.send('maximize');

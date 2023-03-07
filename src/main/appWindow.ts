@@ -83,6 +83,21 @@ fs.readdir(app.getPath('userData'), (err, res) => {
 //   .catch((error) => {console.error(error)});
 // });
 
+
+ipcMain.on('saveX', (event, data) => {
+  console.log(data)
+  const filePath = path.join('C:\\temp\\7777.json');
+  fs.writeFileSync(filePath, data, 'utf-8');
+})
+
+ipcMain.on('loadX', (event,args) => {
+  const filePath = path.join('C:\\temp\\7777.json');
+  fs.readFile(filePath, 'utf-8', (error, data) => {
+    appWindow.webContents.send('gotLoadedDataX', data);
+  });
+})
+
+
 ipcMain.on('openFiles', () => {
   shell
     .openPath(path.resolve(path.join(__dirname, '..', 'files')))

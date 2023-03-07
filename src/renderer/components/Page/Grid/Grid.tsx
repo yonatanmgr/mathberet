@@ -15,6 +15,7 @@ import GraphBlockContent from './Blocks/GraphBlock';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import DrawBlockContent from './Blocks/DrawBlock';
 import Modal from '@components/common/Modal';
+import GridElement from './GridElement';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const PageGrid = () => {
@@ -217,8 +218,27 @@ const PageGrid = () => {
     [WidgetType.Draw, addDraw],
   ]);
 
+  const loadGridData = () => {
+    window.api.loadX();
+  };
+
+  const saveGridData = () => {
+    const data = JSON.stringify(state.items);
+    window.api.saveX(data);
+  };
+
+  useEffect(() => {
+    window.api.receive('gotLoadedDataX', (data) => {
+      const x = JSON.parse(data);
+      console.log(x);
+      setState((prev) => ({ ...prev, items: [x] }));
+    });
+  }, []);
+
   return (
     <div className='grid-container'>
+      <button onClick={saveGridData}>Save</button>
+      <button onClick={loadGridData}>Load</button>
       <ResponsiveGridLayout
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
@@ -231,7 +251,14 @@ const PageGrid = () => {
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
         draggableHandle='.block-handle'
       >
-        {state.items.map((el) => createElement(el, el.type))}
+        {state.items.map((el) => (
+          <GridElement
+            el={el}
+            widgetType={el.type}
+            onRemoveItem={onRemoveItem}
+            key={el.i}
+          />
+        ))}
       </ResponsiveGridLayout>
 
       <Modal
