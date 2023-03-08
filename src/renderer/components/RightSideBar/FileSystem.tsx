@@ -30,41 +30,43 @@ function FileSystem() {
     });
   }, []);
 
-  const updateItemsPosition = (
-    prev: [],
-    items: Array<TreeItem>,
-    target: DraggingPositionItem | DraggingPositionBetweenItems,
-  ) => {
-    const item = items[0];
-
-    if (prev[target.parentItem].data != 'root') {
-      const dragToSameTarget = prev[target.parentItem].children.includes(
-        item.index,
-      );
-      if (dragToSameTarget) return prev;
-    } else if (target.targetItem == 'root') {
-      const dragToSameTarget = prev[target.targetItem].children.includes(
-        item.index,
-      );
-      if (dragToSameTarget) return prev;
-    }
-
+  const deleteItemFromItsPreviousParent = (prev, item: TreeItem) => {
     for (const [key, value] of Object.entries(prev)) {
       if (value.children.includes(item.index)) {
         value.children = value.children.filter((child) => child !== item.index);
       }
     }
+  };
 
-    if (target.targetItem != 'root') {
-      if (target.targetType != 'item') {
-        prev[target.parentItem].children.push(item.index);
-      } else if (
-        prev[target.targetItem].isFolder &&
-        target.targetType == 'item'
-      ) {
-        if (target.targetType == 'item') {
-          prev[target.targetItem].children.push(item.index);
-        }
+  const draggedToTheSameParent = (
+    prev,
+    item: TreeItem,
+    target: DraggingPositionItem | DraggingPositionBetweenItems,
+  ): boolean => {
+    let draggedToSameParent;
+
+    if (prev[target.parentItem].data != 'root') {
+      draggedToSameParent = prev[target.parentItem].children.includes(
+        item.index,
+      );
+    } else if (target.targetItem == 'root') {
+      draggedToSameParent = prev[target.targetItem].children.includes(
+        item.index,
+      );
+    }
+    return draggedToSameParent;
+  };
+
+  const addItemToNewParent = (
+    target: DraggingPositionItem | DraggingPositionBetweenItems,
+    prev: any,
+    item: TreeItem,
+  ) => {
+    if (target.targetType != 'item') {
+      prev[target.parentItem].children.push(item.index);
+    } else {
+      if (prev[target.targetItem].isFolder) {
+        prev[target.targetItem].children.push(item.index);
       } else {
         for (const [key, value] of Object.entries(prev)) {
           if (value.children.includes(target.targetItem)) {
@@ -73,7 +75,24 @@ function FileSystem() {
         }
       }
     }
-    
+  };
+
+  const updateItemsPosition = (
+    prev: any,
+    items: Array<TreeItem>,
+    target: DraggingPositionItem | DraggingPositionBetweenItems,
+  ) => {
+    // Handle D&D intentionally only for one item
+    const item = items[0];
+
+    if (draggedToTheSameParent(prev, item, target)) return prev;
+
+    deleteItemFromItsPreviousParent(prev, item);
+
+    if (target.targetItem == 'root') return prev;
+
+    addItemToNewParent(target, prev, item);
+
     return prev;
   };
 
