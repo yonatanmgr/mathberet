@@ -58,7 +58,6 @@ function FileSystem() {
   };
 
   const changeItemPath = (item, newPath) => {
-    console.log(item.path + ' ----> ' + newPath);
     window.api.move(item.path, newPath);
     item.path = newPath;
   };
@@ -72,9 +71,10 @@ function FileSystem() {
       prev[target.parentItem].children.push(item.index);
       changeItemPath(
         item,
-        prev[target.parentItem].path + '\\' + item.index + (item.isFolder
-          ? ''
-          : '.json'),
+        prev[target.parentItem].path +
+          '\\' +
+          item.index +
+          (item.isFolder ? '' : '.json'),
       );
     } else {
       if (prev[target.targetItem].isFolder) {
@@ -114,9 +114,70 @@ function FileSystem() {
     });
   };
 
+  const addFolder = () => {
+    console.log('addfolder');
+  };
+
+  const newFileKey = 'קובץ חדש';
+
+  const generateStateWithNewFile = (prev) => {
+    let parentValue;
+    let parentKey;
+
+    for (const [key, value] of Object.entries(prev)) {
+      if (value.children.includes(focusedItem)) {
+        parentValue = value;
+        parentKey = key;
+      }
+    }
+
+    parentValue.children.push(newFileKey);
+
+    const newState = {
+      ...prev,
+      [parentKey]: parentValue,
+      [newFileKey]: { index: newFileKey, data: newFileKey, children: [] },
+    };
+
+    return newState;
+  };
+
+  const addFile = () => {
+    if (items[newFileKey]) {
+      alert('קובץ חדש כבר קיים');
+      return;
+    }
+    setItems((prev) => generateStateWithNewFile(prev));
+  };
+
+  const handleRenameItem = (item: TreeItem, name: string): void => {
+    if (items[name]) {
+      alert('כבר קיים שם כזה');
+    } else {
+
+      const index = item.path.length - (item.data + '.json').length;
+      const dirName = item.path.slice(0, index);
+      const newPath = dirName + name + '.json';
+      changeItemPath(item, newPath);
+
+      setItems((prev) => ({
+        ...prev,
+        [item.index]: { ...prev[item.index], data: name, path: newPath },
+      }));
+    }
+  };
+
   return (
     <div className='file-system'>
       <span className='header'>המחברות שלי</span>
+      <div>
+        <button onClick={addFolder}>
+          <i className='fi fi-rr-add-folder'></i>
+        </button>
+        <button onClick={addFile}>
+          <i className='fi-rr-add-document'></i>
+        </button>
+      </div>
       <div className='files-tree-container'>
         <ControlledTreeEnvironment
           items={items}
@@ -132,9 +193,7 @@ function FileSystem() {
               selectedItems,
             },
           }}
-          onDrop={(items, target) => {
-            handleOnDrop(items, target);
-          }}
+          onDrop={handleOnDrop}
           onFocusItem={(item) => setFocusedItem(item.index)}
           onExpandItem={(item) =>
             setExpandedItems([...expandedItems, item.index])
@@ -146,7 +205,8 @@ function FileSystem() {
               ),
             )
           }
-          onSelectItems={(items) => setSelectedItems(items)}
+          onSelectItems={setSelectedItems}
+          onRenameItem={handleRenameItem}
         >
           <Tree treeId='tree-2' rootItem='root' treeLabel='Tree Example' />
         </ControlledTreeEnvironment>
