@@ -5,6 +5,8 @@
 }
 
 .left-sidebar.open{
+    min-width: max-content;
+
     .actions-group {
         display: flex;
         flex-direction: column;
