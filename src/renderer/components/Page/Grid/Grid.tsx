@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Node } from 'slate';
 import { useGeneralContext } from '@components/GeneralContext';
 import {
   BlockElement,
@@ -16,6 +15,7 @@ import 'react-resizable/css/styles.css';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import Modal from '@components/common/Modal';
 import GridElement from './GridElement';
+import { any } from 'prop-types';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -26,14 +26,16 @@ type PageGridState = {
 };
 
 const PageGrid = () => {
-
   const [state, setState] = useState<PageGridState>({
     items: [],
     breakpoint: 'lg',
-    cols: 8
+    cols: 8,
   });
 
-  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] = useState(false);
+  const [allValues, setAllValues] = useState([{}]);
+
+  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
+    useState(false);
 
   const { newWidgetRequest, clearPageRequest } = useGeneralContext();
 
@@ -47,12 +49,15 @@ const PageGrid = () => {
 
   useEffect(() => {
     window.api.receive('gotLoadedDataX', (data: string) => {
-
       const loadedData: Array<BlockElement> = JSON.parse(data);
       loadedData.map((block: BlockElement) => {
-        if (block.y == null) { block.y = Infinity }
-        if (block.x == null) { block.x = Infinity }
-      })
+        if (block.y == null) {
+          block.y = Infinity;
+        }
+        if (block.x == null) {
+          block.x = Infinity;
+        }
+      });
       // console.log(loadedData);
       setState((prev) => ({ ...prev, items: loadedData }));
     });
@@ -62,12 +67,16 @@ const PageGrid = () => {
     setState((prev) => ({ ...prev, breakpoint, cols }));
   };
 
-  const onLayoutChange = (layout: Array<BlockElement>) => { 
+  const onLayoutChange = (layout: Array<BlockElement>) => {
     layout.map((block) => {
-      block.type = state.items.find(item => {return item.i == block.i}).type
-      block.metaData = state.items.find(item => {return item.i == block.i}).metaData
-    })  
-    
+      block.type = state.items.find((item) => {
+        return item.i == block.i;
+      }).type;
+      block.metaData = state.items.find((item) => {
+        return item.i == block.i;
+      }).metaData;
+    });
+
     setState((prev) => ({ ...prev, items: layout }));
   };
 
@@ -76,11 +85,14 @@ const PageGrid = () => {
       ...prev,
       items: prev.items.filter((item) => item.i !== e.target.name),
     }));
+
+    setAllValues(allValues.filter((value) => value.i !== e.target.name));
   };
 
   const handleConfirm = () => {
     setAreYouSureDeleteDialogOpen(false);
-    setState((prev) => ({...prev, items: []}));
+    setState((prev) => ({ ...prev, items: [] }));
+    setAllValues([]);
   };
 
   const handleCancel = () => setAreYouSureDeleteDialogOpen(false);
@@ -201,21 +213,21 @@ const PageGrid = () => {
   ]);
 
   const loadGridData = () => {
-    setState(prev=>({...prev, items: []}))
-    window.api.loadX()
+    setState((prev) => ({ ...prev, items: [] }));
+    window.api.loadX();
   };
 
   const saveMetaData = (block: BlockElement) => {
-    const foundContent = document.getElementById(block.i)    
+    const found = allValues.find((state) => state.id == block.i).metaData;
 
     function saveSwitcher(widgetType: WidgetType) {
       switch (widgetType) {
         case WidgetType.Text:
-          return {text: [{}]};
+          return { text: found };
         case WidgetType.Math:
-          return {latex: foundContent.querySelector(".math-field-element").getValue()};
+          return { latex: found };
         case WidgetType.Graph:
-          return {plots: [foundContent.querySelector(".math-field-element").getValue()]};
+          return { plots: found };
         case WidgetType.Draw:
           return null;
         default:
@@ -223,13 +235,15 @@ const PageGrid = () => {
       }
     }
 
-    block.metaData = {content: saveSwitcher(block.type)}
-    // if (block.type == WidgetType.Text) console.log(block.metaData);
-  }
+    block.metaData = {
+      content: saveSwitcher(block.type),
+      blockStateFunction: () => any,
+    };
+  };
 
   const saveGridData = () => {
-    const currentItems = state.items
-    currentItems.map(saveMetaData)
+    const currentItems = state.items;
+    currentItems.map(saveMetaData);
     const data = JSON.stringify(currentItems);
 
     window.api.saveX(data);
@@ -252,17 +266,23 @@ const PageGrid = () => {
         draggableHandle='.block-handle'
       >
         {state.items.map((element) => (
-          <GridElement 
-            blockElement={element} 
-            onRemoveItem={onRemoveItem} 
-            key={element.i} 
+          <GridElement
+            blockElement={element}
+            onRemoveItem={onRemoveItem}
+            key={element.i}
             data-grid={element}
             blockValue={element.metaData}
+            setValuesFunction={setAllValues}
+            allValues={allValues}
           />
         ))}
       </ResponsiveGridLayout>
 
-      <Modal open={areYouSureDeleteDialogOpen} onConfirm={handleConfirm} onCancel={handleCancel}>
+      <Modal
+        open={areYouSureDeleteDialogOpen}
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      >
         האם למחוק את תכולת הדף?
       </Modal>
     </div>

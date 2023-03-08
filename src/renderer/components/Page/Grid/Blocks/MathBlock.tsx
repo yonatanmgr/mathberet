@@ -1,11 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
 import ML_SHORTCUTS from '@common/shortcuts';
 import ML_KEYBINDINGS from '@common/keybindings';
 import { ValueProps } from '@renderer/common/types';
 
-function MathBlockContent({content}: ValueProps) {
+function MathBlockContent({content, blockStateFunction}: ValueProps) {
   const ref = useRef<MathViewRef>(null);
+  const [value, setValue] = useState("")
+
+  useEffect(() => {
+    blockStateFunction(value)
+  }, [value])
 
   return <MathView
     ref={ref}
@@ -13,6 +18,7 @@ function MathBlockContent({content}: ValueProps) {
     className='math-field-element'
     inlineShortcuts={ML_SHORTCUTS}
     keybindings={ML_KEYBINDINGS}
+    onChange={()=>setValue(ref.current?.getValue())}
     onExport={(ref, latex) => latex}
     plonkSound={null}
     keypressSound={null}

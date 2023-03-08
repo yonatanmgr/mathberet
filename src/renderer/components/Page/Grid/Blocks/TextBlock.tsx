@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   createEditor,
   Descendant,
@@ -32,7 +32,7 @@ const SHORTCUTS = {
   '######': 'heading-six',
 }
 
-const TextBlockContent = ({content}: ValueProps) => {
+const TextBlockContent = ({content, blockStateFunction}: ValueProps) => {
   const renderElement = useCallback(props => <Element {...props} />, [])
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
@@ -43,7 +43,10 @@ const TextBlockContent = ({content}: ValueProps) => {
     children: [{ text: '' }],  
   }])
 
-
+  useEffect(() => {
+    blockStateFunction(value)
+  }, [value])
+  
 
   const handleDOMBeforeInput = useCallback((e: InputEvent) => {
     queueMicrotask(() => {

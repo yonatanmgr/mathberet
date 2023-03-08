@@ -11,6 +11,7 @@ export enum WidgetType {
 }
 
 export type ValueProps = {
+  blockStateFunction: (...args: any[]) => any,
   content: {
     latex?: string,
     plots?: Array<string>,
