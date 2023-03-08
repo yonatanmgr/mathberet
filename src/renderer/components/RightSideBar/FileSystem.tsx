@@ -124,11 +124,16 @@ function FileSystem() {
     let parentValue;
     let parentKey;
 
-    for (const [key, value] of Object.entries(prev)) {
-      if (value.children.includes(focusedItem)) {
-        parentValue = value;
-        parentKey = key;
+    if (focusedItem) {
+      for (const [key, value] of Object.entries(prev)) {
+        if (value.children.includes(focusedItem)) {
+          parentValue = value;
+          parentKey = key;
+        }
       }
+    } else {
+      parentValue = prev['root'];
+      parentKey = 'root';
     }
 
     parentValue.children.push(newFileKey);
@@ -154,7 +159,6 @@ function FileSystem() {
     if (items[name]) {
       alert('כבר קיים שם כזה');
     } else {
-
       const index = item.path.length - (item.data + '.json').length;
       const dirName = item.path.slice(0, index);
       const newPath = dirName + name + '.json';
