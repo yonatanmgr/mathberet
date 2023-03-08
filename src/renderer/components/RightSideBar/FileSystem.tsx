@@ -57,6 +57,12 @@ function FileSystem() {
     return draggedToSameParent;
   };
 
+  const changeItemPath = (item, newPath) => {
+    console.log(item.path + ' ----> ' + newPath);
+    window.api.move(item.path, newPath);
+    item.path = newPath;
+  };
+
   const addItemToNewParent = (
     target: DraggingPositionItem | DraggingPositionBetweenItems,
     prev: any,
@@ -64,13 +70,22 @@ function FileSystem() {
   ) => {
     if (target.targetType != 'item') {
       prev[target.parentItem].children.push(item.index);
+      changeItemPath(
+        item,
+        prev[target.parentItem].path + '\\' + item.index + '.json',
+      );
     } else {
       if (prev[target.targetItem].isFolder) {
         prev[target.targetItem].children.push(item.index);
+        changeItemPath(
+          item,
+          prev[target.targetItem].path + '\\' + item.index + '.json',
+        );
       } else {
         for (const [key, value] of Object.entries(prev)) {
           if (value.children.includes(target.targetItem)) {
             value.children.push(item.index);
+            changeItemPath(item, value.path + '\\' + item.index + '.json');
           }
         }
       }
@@ -79,21 +94,22 @@ function FileSystem() {
 
   const updateItemsPosition = (
     prev: any,
-    items: Array<TreeItem>,
+    item: TreeItem,
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
-    // Handle D&D intentionally only for one item
-    const item = items[0];
-
-    if (draggedToTheSameParent(prev, item, target)) return prev;
-
     deleteItemFromItsPreviousParent(prev, item);
-
     if (target.targetItem == 'root') return prev;
-
     addItemToNewParent(target, prev, item);
-
     return prev;
+  };
+
+  const handleOnDrop = (items, target) => {
+    setItems((prev) => {
+      // Handle D&D intentionally only for one item
+      const item = items[0];
+      if (draggedToTheSameParent(prev, item, target)) return prev;
+      return updateItemsPosition(prev, item, target);
+    });
   };
 
   return (
@@ -115,7 +131,7 @@ function FileSystem() {
             },
           }}
           onDrop={(items, target) => {
-            setItems((prev) => updateItemsPosition(prev, items, target));
+            handleOnDrop(items, target);
           }}
           onFocusItem={(item) => setFocusedItem(item.index)}
           onExpandItem={(item) =>

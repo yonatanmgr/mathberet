@@ -53,8 +53,8 @@ contextBridge.exposeInMainWorld('api', {
   openFiles: () => {
     ipcRenderer.send('openFiles');
   },
-  move: (oldDir: string, newDir: string) => {
-    ipcRenderer.send('move', oldDir, newDir);
+  move: (oldPath: string, newPath: string) => {
+    ipcRenderer.send('move', oldPath, newPath);
   },
   save: (data: string, file: string, newName: string) => {
     ipcRenderer.send('save', data, file, newName);

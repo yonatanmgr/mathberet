@@ -179,7 +179,7 @@ function buildTree(dir: string, root: any) {
   }
 
   if (!stats.isDirectory()) {
-    root[name] = { index: name, data: name, children: [] };
+    root[name] = { index: name, data: name, children: [], path: dir };
     return name;
   }
 
@@ -192,6 +192,7 @@ function buildTree(dir: string, root: any) {
     isFolder: true,
     data: name,
     children,
+    path:dir
   };
 
   return name;
