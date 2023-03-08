@@ -38,23 +38,23 @@ function FileSystem() {
     }
   };
 
-  const dragedToTheSameParent = (
+  const draggedToTheSameParent = (
     prev,
     item: TreeItem,
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ): boolean => {
-    let dragedToSameParent;
+    let draggedToSameParent;
 
     if (prev[target.parentItem].data != 'root') {
-      dragedToSameParent = prev[target.parentItem].children.includes(
+      draggedToSameParent = prev[target.parentItem].children.includes(
         item.index,
       );
     } else if (target.targetItem == 'root') {
-      dragedToSameParent = prev[target.targetItem].children.includes(
+      draggedToSameParent = prev[target.targetItem].children.includes(
         item.index,
       );
     }
-    return dragedToSameParent;
+    return draggedToSameParent;
   };
 
   const addItemToNewParent = (
@@ -85,7 +85,7 @@ function FileSystem() {
     // Handle D&D intentionally only for one item
     const item = items[0];
 
-    if (dragedToTheSameParent(prev, item, target)) return prev;
+    if (draggedToTheSameParent(prev, item, target)) return prev;
 
     deleteItemFromItsPreviousParent(prev, item);
 
