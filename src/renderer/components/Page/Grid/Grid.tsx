@@ -85,6 +85,11 @@ const PageGrid = () => {
       ...prev,
       items: prev.items.filter((item) => item.i !== e.target.name),
     }));
+
+    setState((allValues) => ({
+      ...allValues,
+      items: allValues.filter((value) => value.i !== e.target.name),
+    }));
   };
 
   const handleConfirm = () => {
