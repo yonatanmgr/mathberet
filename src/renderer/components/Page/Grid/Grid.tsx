@@ -58,7 +58,7 @@ const PageGrid = () => {
           block.x = Infinity;
         }
       });
-      // console.log(loadedData);
+
       setState((prev) => ({ ...prev, items: loadedData }));
 
       let newData: Array<object> = loadedData;
@@ -93,7 +93,9 @@ const PageGrid = () => {
       items: prev.items.filter((item) => item.i !== e.target.name),
     }));
 
-    setAllValues((allValues)=>allValues.filter((value) => value.id !== e.target.name));
+    setAllValues((allValues) =>
+      allValues.filter((value) => value.id !== e.target.name),
+    );
   };
 
   const handleConfirm = () => {

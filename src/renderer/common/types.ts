@@ -23,7 +23,7 @@ export type ValueProps = {
       assets?: TDAsset[];
     };
   };
-} & object;
+};
 
 export type BlockElement = {
   type: WidgetType;
