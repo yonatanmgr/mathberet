@@ -16,118 +16,130 @@
     width: 100%;
   }
 
+
   .files-tree-container {
     height: 100%;
     width: 100%;
     flex-grow: 1;
 
-    .rct-tree-item-li {
-      height: 35px;
-      padding-bottom: 10px;
+    .rct-tree-root {
+      height: 100%;
 
-      .rct-tree-item-title-container {
+      [role="tree"] {
         height: 100%;
 
-        .rct-tree-item-button {
-          white-space: nowrap;
+        &>.rct-tree-items-container {
           height: 100%;
-          direction: rtl;
-          background-color: transparent;
-          color: var(--titlebar-color);
-          border-radius: 8px;
-          text-shadow: none;
-          font-family: 'Rubik2';
-          font-size: 16px;
-          flex-direction: row;
-          justify-content: flex-start;
-          // direction: ltr;
-          padding: 0 var(--rct-item-padding) 0 calc(var(--rct-item-padding) + var(--rct-arrow-container-size) + var(--rct-arrow-padding));
-          margin-right: calc(-1 * var(--rct-arrow-size));
-          margin-left: calc(-1 * var(--rct-arrow-size));
-          padding-left: 12px;
-          padding-right: 12px;
-          cursor: var(--rct-cursor);
-          transition: color 100ms ease-out, background-color 100ms ease-out, font-weight 100ms ease-in;
 
-          &:hover {
-            background-color: var(--file-hover-bgcolor);
-            color: var(--titlebar-color);
-          }
+          [role="treeitem"] {
 
-          &:active {
-            background-color: var(--file-active-bgcolor);
-            color: var(--titlebar-color);
-          }
+            .rct-tree-item-title-container {
 
-          &::before {
-            // Override
-            position: unset;
-            top: unset;
-            left: unset;
-            height: unset;
-            width: unset;
-            background-color: unset;
-            border-radius: unset;
+              .rct-tree-item-button {
+                white-space: nowrap;
+                height: 100%;
+                direction: rtl;
+                background-color: transparent;
+                color: var(--titlebar-color);
+                border-radius: 10px;
+                text-shadow: none;
+                font-family: 'Rubik2';
+                font-size: 16px;
+                height: 40px;
+                flex-direction: row;
+                justify-content: flex-start;
+                // direction: ltr;
+                padding: 0 var(--rct-item-padding) 0 calc(var(--rct-item-padding) + var(--rct-arrow-container-size) + var(--rct-arrow-padding));
+                margin-right: calc(-1 * var(--rct-arrow-size));
+                margin-left: calc(-1 * var(--rct-arrow-size));
+                padding-left: 12px;
+                padding-right: 12px;
+                cursor: var(--rct-cursor);
+                transition: color 100ms ease-out, background-color 100ms ease-out, font-weight 100ms ease-in;
 
-            // Custom
-            font-family: 'uicons-regular-rounded';
-            font-weight: 300;
-            font-size: large;
-            content: "\f35d";
-            padding-left: 10px;
-          }
+                &:hover {
+                  background-color: var(--file-hover-bgcolor);
+                  color: var(--titlebar-color);
+                }
 
-          &.rct-tree-item-button-isFolder {
+                &:active {
+                  background-color: var(--file-active-bgcolor);
+                  color: var(--titlebar-color);
+                }
 
-            &::after {
-              display: none;
-            }
+                &::before {
+                  // Override
+                  position: unset;
+                  top: unset;
+                  left: unset;
+                  height: unset;
+                  width: unset;
+                  background-color: unset;
+                  border-radius: unset;
 
-            &.rct-tree-item-button-expanded {
-              &::before {
-                font-family: 'uicons-regular-rounded';
-                font-weight: 300;
-                font-size: large;
-                content: "\f1de";
+                  // Custom
+                  font-family: 'uicons-regular-rounded';
+                  font-weight: 300;
+                  font-size: large;
+                  content: "\f35d";
+                  padding-left: 10px;
+                }
+
+                &.rct-tree-item-button-isFolder {
+
+                  &::after {
+                    display: none;
+                  }
+
+                  &.rct-tree-item-button-expanded {
+                    &::before {
+                      font-family: 'uicons-regular-rounded';
+                      font-weight: 300;
+                      font-size: large;
+                      content: "\f1de";
+                    }
+                  }
+
+                  &::before {
+                    font-family: 'uicons-regular-rounded';
+                    font-weight: 300;
+                    font-size: large;
+                    content: "\f1e6";
+                  }
+                }
+              }
+
+              .rct-tree-item-button-expanded {
+                background-color: var(--selected-bgcolor);
+                color: var(--titlebar-color);
+                font-weight: 700;
+
+
+                &:hover {
+                  background-color: var(--selected-hover-bgcolor);
+                }
+
+                &:active {
+                  background-color: var(--selected-active-bgcolor);
+                }
+              }
+
+              .rct-tree-item-arrow {
+                display: none;
               }
             }
 
-            &::before {
-              font-family: 'uicons-regular-rounded';
-              font-weight: 300;
-              font-size: large;
-              content: "\f1e6";
+
+            [role="group"] {
+              height: fit-content;
+              // padding-top: 10px;
+              padding-right: 20px;
+
+              .rct-tree-item-title-container {
+                padding-left: 10px !important;
+              }
             }
           }
-        }
-
-        .rct-tree-item-button-expanded {
-          background-color: var(--selected-bgcolor);
-          color: var(--titlebar-color);
-          font-weight: 700;
-
-
-          &:hover {
-            background-color: var(--selected-hover-bgcolor);
-          }
-
-          &:active {
-            background-color: var(--selected-active-bgcolor);
-          }
-        }
-
-        .rct-tree-item-arrow {
-          display: none;
-        }
-      }
-
-
-      .rct-tree-items-container {
-        padding-top: 10px;
-        padding-right: 20px;
-
-        .rct-tree-item-title-container {
-          padding-left: 10px !important;
         }
       }
     }

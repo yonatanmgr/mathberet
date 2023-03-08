@@ -3,6 +3,8 @@ import {
   Tree,
   ControlledTreeEnvironment,
   DraggingPositionItem,
+  TreeItem,
+  DraggingPositionBetweenItems,
 } from 'react-complex-tree';
 import './FileSystem.scss';
 
@@ -28,17 +30,24 @@ function FileSystem() {
     });
   }, []);
 
-  const updateItemsPosition = (prev, items, target) => {
-    console.log(target);
-
+  const updateItemsPosition = (
+    prev: [],
+    items: Array<TreeItem>,
+    target: DraggingPositionItem | DraggingPositionBetweenItems,
+  ) => {
     const item = items[0];
-    console.log(item);
 
-    const dragToSameTarget = prev[target.targetItem].children.includes(
-      item.index,
-    );
-
-    if (dragToSameTarget) return prev;
+    if (prev[target.parentItem].data != 'root') {
+      const dragToSameTarget = prev[target.parentItem].children.includes(
+        item.index,
+      );
+      if (dragToSameTarget) return prev;
+    } else if (target.targetItem == 'root') {
+      const dragToSameTarget = prev[target.targetItem].children.includes(
+        item.index,
+      );
+      if (dragToSameTarget) return prev;
+    }
 
     for (const [key, value] of Object.entries(prev)) {
       if (value.children.includes(item.index)) {
@@ -46,16 +55,25 @@ function FileSystem() {
       }
     }
 
-    if (prev[target.targetItem].isFolder) {
-      prev[target.targetItem].children.push(item.index);
-    } else {
-      for (const [key, value] of Object.entries(prev)) {
-        if (value.children.includes(target.targetItem)) {
-          value.children.push(item.index);
+    if (target.targetItem != 'root') {
+      if (target.targetType != 'item') {
+        prev[target.parentItem].children.push(item.index);
+      } else if (
+        prev[target.targetItem].isFolder &&
+        target.targetType == 'item'
+      ) {
+        if (target.targetType == 'item') {
+          prev[target.targetItem].children.push(item.index);
+        }
+      } else {
+        for (const [key, value] of Object.entries(prev)) {
+          if (value.children.includes(target.targetItem)) {
+            value.children.push(item.index);
+          }
         }
       }
     }
-
+    
     return prev;
   };
 
@@ -66,6 +84,7 @@ function FileSystem() {
         <ControlledTreeEnvironment
           items={items}
           canDragAndDrop={true}
+          canReorderItems={true}
           canDropOnFolder={true}
           canDropOnNonFolder={true}
           getItemTitle={(item) => item.data}
