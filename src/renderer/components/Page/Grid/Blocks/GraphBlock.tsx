@@ -1,5 +1,5 @@
 import { Mafs, Coordinates, Plot, Point, Theme } from "mafs"
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
 import { parseTex } from 'tex-math-parser'
 import ML_SHORTCUTS from "@common/shortcuts";
@@ -7,9 +7,9 @@ import ML_KEYBINDINGS from '@common/keybindings';
 import { ValueProps } from "@renderer/common/types";
 
 function latex2function(latex: string, i: number){
-    if (latex != "") {
+    if (latex[0] != "") {
         try {
-            const parsed = parseTex(String.raw`${latex}`);
+            const parsed = parseTex(String.raw`${latex[0]}`);
             return parsed.compile().evaluate({x: i})        
         } catch (error) {
             return
@@ -17,20 +17,24 @@ function latex2function(latex: string, i: number){
     }
 }
 
-function GraphBlockContent({content}: ValueProps) {    
-    const [value, setValue] = useState(content ? content.plots[0] : "")    
+function GraphBlockContent({content, blockStateFunction}: ValueProps) {    
+    const [value, setValue] = useState<string[]>(content ? content.plots : [""])    
+
+    useEffect(() => {
+        blockStateFunction(value)
+      }, [value])
 
     function GraphBlockSetter(){
         const ref = useRef<MathViewRef>(null);
 
         return <MathView
             ref={ref}
-            value={value}
+            value={value[0]}
             inlineShortcuts={ML_SHORTCUTS}
             keybindings={ML_KEYBINDINGS}
             className='math-field-element'
             onExport={(ref, latex) => latex}
-            onMathFieldBlur={() => {setValue(ref.current?.getValue('latex'))}}
+            onMathFieldBlur={() => {setValue([ref.current?.getValue('latex')])}}
             plonkSound={null}
             keypressSound={null}
         />;
