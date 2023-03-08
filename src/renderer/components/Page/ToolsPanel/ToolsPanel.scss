@@ -58,6 +58,12 @@
                 }
             }
         }
+
+        .tool-divider {
+            fill: var(--tool-color);
+            width: 20px;
+            height: 100%;
+        }
     }
 
     &:hover {

@@ -1,5 +1,3 @@
-
-
 .right-sidebar {
   transition: 0.2s;
   display: flex;
@@ -24,7 +22,7 @@
       align-items: flex-start;
       gap: 8px;
       transition: 0.2s;
-      
+
       .sidebar-button {
         transition: 0.2s;
         background-color: transparent;
@@ -33,7 +31,7 @@
         border-radius: 15px;
 
         &:hover {
-          .fi{
+          .fi {
             color: var(--titlebar-color);
           }
         }
@@ -55,21 +53,33 @@
     section#bottom {
       padding-bottom: 10px;
     }
+  }
 
+  .extension {
+    width: 45px;
+    height: 100%;
+  }
+
+  &.open{
+    width: 100%;
+    animation: openSidebar 0s linear 0.3s;
+    min-width: 250px;
+
+    animation-fill-mode: forwards;  
+    max-width: 15vw;
+  
     .extension {
-      width: 45px;
-      height: 100%;
+      padding-right: 10px;
+      width: 100%;
     }
   }
 }
 
-.right-sidebar.open {
-  width: 100%;
-  min-width: 230px;
-  max-width: 15vw;
-  .extension {
-    padding-right: 10px;
-    width: 100%;
+@keyframes openSidebar {
+  from {
+    min-width: 250px;
   }
-
+  to {
+    min-width: max-content;
+  }
 }
