@@ -1,69 +1,85 @@
 @import '../Theme.scss';
 
 .header {
-    width: calc(100% - 20px);
-    align-self: center;
-
-    padding-top: 5px;
-    height: calc(0% + 45px);
+  width: calc(100% - 20px);
+  align-self: center;
+  padding-top: 5px;
+  height: calc(0% + 45px);
+  display: flex;
+  
+  .main-heading {
+    justify-content: space-between;
     display: flex;
-    .main-heading {
+    flex-direction: row;
+    align-items: center;
+    direction: rtl;
+    height: 100%;
+    width: 100%;
 
+    .header-content {
       gap: 10px;
       display: flex;
       flex-direction: row;
       align-items: center;
       direction: rtl;
       height: 100%;
-      width: 100%;
-    
+      width: max-content;
+      -webkit-app-region: no-drag;
+
+  
       div {
+        width: max-content;
         font-size: 1.5rem;
         font-weight: 300;
         color: var(--erwt-heading-color);
         line-height: 1;
       }
-    
-      .tags{
+  
+      .tags {
+        width: max-content;
         display: flex;
         flex-direction: row;
         direction: rtl;
         padding-right: 10px;
         gap: 10px;
       }
-
-      .tag-pill{
+  
+      .tag-pill {
+        width: max-content;
         font-size: 16px;
         padding: 3px 12px 3px 12px;
         display: block;
         background-color: var(--pill-bgcolor);
         border-radius: 15px;
         transition: 0.1s;
-
-        &:hover{
+  
+        &:hover {
           cursor: pointer;
           background-color: var(--pill-hover-bgcolor);
         }
-        &:active{
+  
+        &:active {
           cursor: pointer;
           background-color: var(--pill-hover-bgcolor);
         }
-
-        &.new{
+  
+        &.new {
           background-color: var(--pill-bgcolor);
-          &:hover{
+  
+          &:hover {
             cursor: pointer;
             background-color: var(--pill-hover-bgcolor);
           }
-          &:active{
+  
+          &:active {
             cursor: pointer;
             background-color: var(--pill-active-bgcolor);
             transform: scale(0.98);
           }
         }
       }
-
-      .filepath{
+  
+      .filepath {
         max-width: 80%;
         font-size: 23px;
         display: flex;
@@ -71,24 +87,25 @@
         direction: rtl;
         gap: 6px;
         padding-bottom: 3px;
-
-        .filepath-name{
+  
+        .filepath-name {
           font-weight: 600;
-          &:focus{
+  
+          &:focus {
             outline: none;
           }
         }
       }
-      
-      #logo{
+  
+      #logo {
         fill: var(--titlebar-color);
         display: block;
         width: 45px;
         height: 55%;
-        filter: var(--logo-filter);   
+        filter: var(--logo-filter);
       }
-
-      .logo{
+  
+      .logo {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -96,4 +113,30 @@
         height: 100%;
       }
     }
+
+    .header-draggable {
+      height: 100%;
+      width: 100%;
+      -webkit-app-region: drag;
+
+    }
+    .header-controls {
+      height: inherit;
+      -webkit-app-region: no-drag;
+
+      .window-titlebar-controls{
+        height: inherit;
+        position: unset;
+
+        .control {
+          border-radius: 10px;
+          transition: 0.1s;
+
+          &:active{
+            transform: scale(0.95);
+          }
+        }
+      }
+    }
   }
+}
