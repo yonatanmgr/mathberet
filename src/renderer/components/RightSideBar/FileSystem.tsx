@@ -72,20 +72,22 @@ function FileSystem() {
       prev[target.parentItem].children.push(item.index);
       changeItemPath(
         item,
-        prev[target.parentItem].path + '\\' + item.index + '.json',
+        prev[target.parentItem].path + '\\' + item.index + (item.isFolder
+          ? ''
+          : '.json'),
       );
     } else {
       if (prev[target.targetItem].isFolder) {
         prev[target.targetItem].children.push(item.index);
-        changeItemPath(
-          item,
-          prev[target.targetItem].path + '\\' + item.index + '.json',
-        );
+        changeItemPath(item, prev[target.targetItem].path + '\\' + item.index);
       } else {
         for (const [key, value] of Object.entries(prev)) {
           if (value.children.includes(target.targetItem)) {
             value.children.push(item.index);
-            changeItemPath(item, value.path + '\\' + item.index + '.json');
+            changeItemPath(
+              item,
+              value.path + '\\' + item.index + (item.isFolder ? '' : '.json'),
+            );
           }
         }
       }
