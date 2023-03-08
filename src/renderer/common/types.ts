@@ -1,4 +1,5 @@
-import { Descendant } from "slate";
+import { TDShape, TDBinding, TDAsset } from '@tldraw/tldraw';
+import { Descendant } from 'slate';
 
 export enum WidgetType {
   Divider,
@@ -11,13 +12,18 @@ export enum WidgetType {
 }
 
 export type ValueProps = {
-  blockStateFunction: (...args: any[]) => any,
+  blockStateFunction: (...args: unknown[]) => unknown;
   content: {
-    latex?: string,
-    plots?: Array<string>,
-    text?: Array<Descendant>
-  }
-}
+    latex?: string;
+    plots?: Array<string>;
+    text?: Array<Descendant>;
+    canvas?: {
+      shapes: TDShape[];
+      bindings?: TDBinding[];
+      assets?: TDAsset[];
+    };
+  };
+} & object;
 
 export type BlockElement = {
   type: WidgetType;

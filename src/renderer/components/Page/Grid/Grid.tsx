@@ -32,7 +32,7 @@ const PageGrid = () => {
     cols: 8,
   });
 
-  const [allValues, setAllValues] = useState([{}]);
+  const [allValues, setAllValues] = useState([]);
 
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
@@ -60,6 +60,13 @@ const PageGrid = () => {
       });
       // console.log(loadedData);
       setState((prev) => ({ ...prev, items: loadedData }));
+
+      let newData: Array<object> = loadedData;
+      newData = newData.map((block: BlockElement) => {
+        return { id: block.i, metaData: block.metaData };
+      });
+
+      setAllValues(newData);
     });
   }, []);
 
@@ -86,7 +93,7 @@ const PageGrid = () => {
       items: prev.items.filter((item) => item.i !== e.target.name),
     }));
 
-    setAllValues(allValues.filter((value) => value.i !== e.target.name));
+    setAllValues((allValues)=>allValues.filter((value) => value.id !== e.target.name));
   };
 
   const handleConfirm = () => {
@@ -229,7 +236,7 @@ const PageGrid = () => {
         case WidgetType.Graph:
           return { plots: found };
         case WidgetType.Draw:
-          return null;
+          return { canvas: found };
         default:
           return null;
       }

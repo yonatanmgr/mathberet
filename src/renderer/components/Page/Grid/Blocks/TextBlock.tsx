@@ -85,7 +85,7 @@ const TextBlockContent = ({content, blockStateFunction}: ValueProps) => {
     <Slate
       editor={editor}
       value={value}
-      onChange={currentValue=>setValue((currentValue))}
+      onChange={currentValue=>setValue(currentValue)}
     >
       <Editable className="textbox"
         onDOMBeforeInput={handleDOMBeforeInput}

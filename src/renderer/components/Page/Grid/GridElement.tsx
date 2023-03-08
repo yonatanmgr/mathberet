@@ -26,6 +26,7 @@ function Switcher(
   blockValue: ValueProps,
   blockStateFunction: (...args: unknown[]) => any,
 ) {
+
   try {
     switch (widgetType) {
       case WidgetType.Text:
@@ -52,7 +53,12 @@ function Switcher(
       case WidgetType.Divider:
         return <hr className='pageDivider'></hr>;
       case WidgetType.Draw:
-        return <DrawBlockContent />;
+        return (
+          <DrawBlockContent
+            content={blockValue.content}
+            blockStateFunction={blockStateFunction}
+          />
+        );
       default:
         return null;
     }
@@ -87,12 +93,17 @@ const GridElement = React.forwardRef(
         metaData: blockState,
       };
 
-      let newAllValues = allValues.map(state => state.id == currentState.id ? {...state, metaData: blockState} : state);
-      if (!newAllValues.find(state => state.id == currentState.id)) {
-        newAllValues.push(currentState)
+      const newAllValues = allValues.map((state) =>
+        state.id == currentState.id
+          ? { ...state, metaData: currentState.metaData }
+          : state,
+      );
+
+      if (!newAllValues.find((state) => state.id == currentState.id)) {
+        newAllValues.push(currentState);
       }
-      
-      setValuesFunction(newAllValues)
+
+      setValuesFunction(newAllValues);
     }, [blockState]);
 
     const ReactElement = (
