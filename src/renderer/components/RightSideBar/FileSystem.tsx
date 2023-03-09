@@ -117,7 +117,7 @@ function FileSystem() {
   const newFolderKey = 'תיקיה חדשה';
 
   const addFolder = () => {
-    if (items[newFolderKey]?.isFolder ) {
+    if (items[newFolderKey]?.isFolder) {
       alert('תיקיה חדשה כבר קיימת');
       return;
     }
@@ -142,7 +142,7 @@ function FileSystem() {
 
     parentValue.children.push(newFolderKey);
 
-    const newFolderPath = parentValue.path + '\\' + newFolderKey ;
+    const newFolderPath = parentValue.path + '\\' + newFolderKey;
     const newState = {
       ...prev,
       [parentKey]: parentValue,
@@ -151,7 +151,7 @@ function FileSystem() {
         data: newFolderKey,
         children: [],
         path: newFolderPath,
-        isFolder: true
+        isFolder: true,
       },
     };
 
@@ -257,11 +257,11 @@ function FileSystem() {
       <div className='file-system-header'>
         <span className='file-system-header-title'>המחברות שלי</span>
         <div className='file-system-header-buttons'>
-          <button onClick={addFolder}>
-            <i className='fi fi-rr-add-folder'></i>
+          <button onClick={addFolder} title='תיקיה חדשה'>
+            <i className='fi fi-rr-add-folder' />
           </button>
-          <button onClick={addFile}>
-            <i className='fi-rr-add-document'></i>
+          <button onClick={addFile} title='קובץ חדש'>
+            <i className='fi-rr-add-document' />
           </button>
         </div>
       </div>
