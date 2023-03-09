@@ -142,6 +142,10 @@ ipcMain.on('newFile', (event, filePath) => {
   fs.writeFileSync(filePath, '{}');
 });
 
+ipcMain.on('newFolder', (event, folderPath) => {
+  fs.mkdirSync(folderPath);
+});
+
 // ipcMain.on('setUserColor', (event, color) => {
 //   store.set('color', color);
 // });

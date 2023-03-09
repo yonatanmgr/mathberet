@@ -114,8 +114,50 @@ function FileSystem() {
     });
   };
 
+  const newFolderKey = 'תיקיה חדשה';
+
   const addFolder = () => {
-    console.log('addfolder');
+    if (items[newFolderKey]?.isFolder ) {
+      alert('תיקיה חדשה כבר קיימת');
+      return;
+    }
+    setItems((prev) => generateStateWithNewFolder(prev));
+  };
+
+  const generateStateWithNewFolder = (prev) => {
+    let parentValue;
+    let parentKey;
+
+    if (focusedItem) {
+      for (const [key, value] of Object.entries(prev)) {
+        if (value.children.includes(focusedItem)) {
+          parentValue = value;
+          parentKey = key;
+        }
+      }
+    } else {
+      parentValue = prev['root'];
+      parentKey = 'root';
+    }
+
+    parentValue.children.push(newFolderKey);
+
+    const newFolderPath = parentValue.path + '\\' + newFolderKey ;
+    const newState = {
+      ...prev,
+      [parentKey]: parentValue,
+      [newFolderKey]: {
+        index: newFolderKey,
+        data: newFolderKey,
+        children: [],
+        path: newFolderPath,
+        isFolder: true
+      },
+    };
+
+    window.api.newFolder(newFolderPath);
+
+    return newState;
   };
 
   const newFileKey = 'קובץ חדש';
@@ -156,7 +198,7 @@ function FileSystem() {
   };
 
   const addFile = () => {
-    if (items[newFileKey]) {
+    if (items[newFileKey]?.isFolder === false) {
       alert('קובץ חדש כבר קיים');
       return;
     }

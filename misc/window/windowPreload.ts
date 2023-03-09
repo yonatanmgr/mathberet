@@ -50,6 +50,9 @@ contextBridge.exposeInMainWorld('api', {
   newFile: (filePath: string) => {
     ipcRenderer.send('newFile', filePath);
   },
+  newFolder: (folderPath: string) => {
+    ipcRenderer.send('newFolder', folderPath);
+  },
   openFiles: () => {
     ipcRenderer.send('openFiles');
   },
