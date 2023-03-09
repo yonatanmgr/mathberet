@@ -13,7 +13,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import Modal from '@components/common/Modal';
+import ConfirmModal from '@components/common/ConfirmModal/ConfirmModal';
 import GridElement from './GridElement';
 import { any } from 'prop-types';
 
@@ -298,13 +298,13 @@ const PageGrid = () => {
         ))}
       </ResponsiveGridLayout>
 
-      <Modal
+      <ConfirmModal
         open={areYouSureDeleteDialogOpen}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       >
         האם למחוק את תכולת הדף?
-      </Modal>
+      </ConfirmModal>
     </div>
   );
 };

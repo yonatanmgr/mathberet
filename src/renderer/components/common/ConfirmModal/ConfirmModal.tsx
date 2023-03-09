@@ -1,19 +1,19 @@
 import React, { PropsWithChildren } from 'react';
 import ReactDom from 'react-dom';
-import './Modal.scss';
+import './ConfirmModal.scss';
 
-interface ModalProps extends PropsWithChildren {
+interface ConfirmModalProps extends PropsWithChildren {
   open: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-export default function Modal({
+export default function ConfirmModal({
   open,
   onConfirm,
   onCancel,
   children,
-}: ModalProps) {
+}: ConfirmModalProps) {
   if (!open) return null;
 
   return ReactDom.createPortal(
@@ -22,7 +22,9 @@ export default function Modal({
       <div className='modal'>
         {children}
         <div className='actions-container'>
-          <button onClick={onConfirm} className='danger-button'>כן</button>
+          <button onClick={onConfirm} className='danger-button'>
+            כן
+          </button>
           <button onClick={onCancel}>לא</button>
         </div>
       </div>
