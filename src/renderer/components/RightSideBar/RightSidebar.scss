@@ -32,7 +32,7 @@
 
         &:hover {
           .fi {
-            color: var(--titlebar-color);
+            color: var(--tool-color);
           }
         }
 
@@ -60,25 +60,34 @@
     height: 100%;
   }
 
-  &.open{
+  &.open {
     width: 100%;
     animation: openSidebar 0s linear 0.3s;
-    min-width: 250px;
-
-    animation-fill-mode: forwards;  
+    min-width: 230px;
+    animation-fill-mode: forwards;
     max-width: 15vw;
-  
+
     .extension {
+      min-width: 210px;
+      max-width: 15vw;
       padding-right: 10px;
       width: 100%;
+    }
+
+    .sidebar-button#files {
+      .fi {
+        color: var(--titlebar-color);
+        transform: scale(1.1);
+      }
     }
   }
 }
 
 @keyframes openSidebar {
   from {
-    min-width: 250px;
+    min-width: 230px;
   }
+
   to {
     min-width: max-content;
   }

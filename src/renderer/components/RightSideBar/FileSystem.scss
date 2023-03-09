@@ -6,36 +6,80 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
+  min-width: 190px;
+  max-width: 230px;
 
-  .header {
-    color: var(--button-color);
-    opacity: 60%;
-    white-space: nowrap;
-    font-size: 19px;
-    font-weight: 700;
-    width: 100%;
+  .file-system-header {
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    height: max-content;
+    padding-bottom: 10px;
+    padding-top: 3px;
+    align-items: center;
+
+    .file-system-header-title {
+      color: var(--button-color);
+      opacity: 60%;
+      white-space: nowrap;
+      font-size: 21px;
+      font-weight: 700;
+      width: 100%;
+    }
+
+    .file-system-header-buttons {
+      border-radius: 10px;
+      display: flex;
+      flex-direction: row;
+      direction: rtl;
+      width: max-content;
+      gap: 3px;
+
+      button {
+        background: none;
+        padding: 5px !important;
+        color: var(--tool-color);
+        transition: 0.1s;
+
+        &:hover {
+          background: none;
+          color: var(--button-color);
+        }
+
+        &:active {
+          transform: scale(0.92);
+        }
+
+        i {
+          font-size: 18px;
+          height: 18px;
+        }
+      }
+    }
   }
-
 
   .files-tree-container {
     height: 100%;
     width: 100%;
     flex-grow: 1;
+    min-width: inherit;
+    max-width: inherit;
 
     .rct-tree-root {
-      height: 100%;
+      height: calc(100% - 30px);
 
       [role="tree"] {
-        height: 100%;
+        height: inherit;
 
         &>.rct-tree-items-container {
-          height: 100%;
+          height: inherit;
 
           [role="treeitem"] {
-
             .rct-tree-item-title-container {
-
               .rct-tree-item-button {
+                overflow: hidden;
+                min-width: inherit;
+                text-overflow: ellipsis;
                 white-space: nowrap;
                 height: 100%;
                 direction: rtl;
@@ -52,7 +96,6 @@
                 padding: 0 var(--rct-item-padding) 0 calc(var(--rct-item-padding) + var(--rct-arrow-container-size) + var(--rct-arrow-padding));
                 margin-right: calc(-1 * var(--rct-arrow-size));
                 margin-left: calc(-1 * var(--rct-arrow-size));
-                padding-left: 12px;
                 padding-right: 12px;
                 cursor: var(--rct-cursor);
                 transition: color 100ms ease-out, background-color 100ms ease-out, font-weight 100ms ease-in;
@@ -78,6 +121,7 @@
                   border-radius: unset;
 
                   // Custom
+                  color: var(--tool-color);
                   font-family: 'uicons-regular-rounded';
                   font-weight: 300;
                   font-size: large;
@@ -86,7 +130,6 @@
                 }
 
                 &.rct-tree-item-button-isFolder {
-
                   &::after {
                     display: none;
                   }
@@ -110,7 +153,7 @@
               }
 
               .rct-tree-item-button-focused {
-                background-color: var(--file-bgcolor);
+                background-color: var(--selected-transparent);
               }
 
               .rct-tree-item-button-expanded {

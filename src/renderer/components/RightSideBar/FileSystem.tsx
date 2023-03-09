@@ -204,14 +204,16 @@ function FileSystem() {
 
   return (
     <div className='file-system'>
-      <span className='header'>המחברות שלי</span>
-      <div>
-        <button onClick={addFolder}>
-          <i className='fi fi-rr-add-folder'></i>
-        </button>
-        <button onClick={addFile}>
-          <i className='fi-rr-add-document'></i>
-        </button>
+      <div className='file-system-header'>
+        <span className='file-system-header-title'>המחברות שלי</span>
+        <div className='file-system-header-buttons'>
+          <button onClick={addFolder}>
+            <i className='fi fi-rr-add-folder'></i>
+          </button>
+          <button onClick={addFile}>
+            <i className='fi-rr-add-document'></i>
+          </button>
+        </div>
       </div>
       <div className='files-tree-container'>
         <button onClick={() => console.table(items)}>X</button>
