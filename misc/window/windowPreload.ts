@@ -47,8 +47,8 @@ contextBridge.exposeInMainWorld('api', {
   delete: (file: string) => {
     ipcRenderer.send('delete', file);
   },
-  newFile: () => {
-    ipcRenderer.send('newFile');
+  newFile: (filePath: string) => {
+    ipcRenderer.send('newFile', filePath);
   },
   openFiles: () => {
     ipcRenderer.send('openFiles');

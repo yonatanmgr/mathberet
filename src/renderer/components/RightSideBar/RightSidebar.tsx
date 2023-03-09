@@ -4,7 +4,7 @@ import SidebarButton from './SidebarButton';
 import FileSystem from './FileSystem';
 
 const RightSidebar = () => {
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
 
   const handleOnClickFiles = () => {
     setIsRightSidebarOpen((isRightSidebarOpen) => !isRightSidebarOpen);
