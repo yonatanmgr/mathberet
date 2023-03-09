@@ -159,15 +159,46 @@ function FileSystem() {
     if (items[name]) {
       alert('כבר קיים שם כזה');
     } else {
-      const index = item.path.length - (item.data + '.json').length;
-      const dirName = item.path.slice(0, index);
-      const newPath = dirName + name + '.json';
+      let newPath;
+
+      if (item.isFolder) {
+        const split = item.path.split('\\');
+        split.pop();
+        split.push(name);
+        newPath = split.join('\\');
+      } else {
+        const index = item.path.length - (item.data + '.json').length;
+        const dirName = item.path.slice(0, index);
+        newPath = dirName + name + '.json';
+      }
       changeItemPath(item, newPath);
 
-      setItems((prev) => ({
-        ...prev,
-        [item.index]: { ...prev[item.index], data: name, path: newPath },
-      }));
+      setItems((prev) => {
+        const oldIndex = item.index;
+
+        const newState = {
+          ...prev,
+          [name]: {
+            ...prev[item.index],
+            index: name,
+            data: name,
+            path: newPath,
+          },
+        };
+
+        delete newState[oldIndex];
+
+        for (const [key, value] of Object.entries(newState)) {
+          if (value.children.includes(oldIndex)) {
+            value.children = value.children.filter(
+              (child) => child !== oldIndex,
+            );
+            value.children.push(name);
+          }
+        }
+
+        return newState;
+      });
     }
   };
 
@@ -183,6 +214,7 @@ function FileSystem() {
         </button>
       </div>
       <div className='files-tree-container'>
+        <button onClick={() => console.table(items)}>X</button>
         <ControlledTreeEnvironment
           items={items}
           canDragAndDrop={true}
