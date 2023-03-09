@@ -6,7 +6,7 @@
   padding-top: 5px;
   height: calc(0% + 45px);
   display: flex;
-  
+
   .main-heading {
     justify-content: space-between;
     display: flex;
@@ -26,15 +26,14 @@
       width: max-content;
       -webkit-app-region: no-drag;
 
-  
+
       div {
         width: max-content;
-        font-size: 1.5rem;
         font-weight: 300;
         color: var(--erwt-heading-color);
         line-height: 1;
       }
-  
+
       .tags {
         width: max-content;
         display: flex;
@@ -43,42 +42,77 @@
         padding-right: 10px;
         gap: 10px;
       }
-  
+
       .tag-pill {
-        width: max-content;
-        font-size: 16px;
         padding: 3px 12px 3px 12px;
-        display: block;
+        display: flex;
+        justify-content: space-between;
         background-color: var(--pill-bgcolor);
-        border-radius: 15px;
+        border-radius: 7px;
         transition: 0.1s;
-  
+        height: max-content;
+
+        .tag-action::before {
+          content: "#";
+        }
+
+        .tag-content {
+          width: max-content;
+          font-size: 16px;
+          display: flex;
+          gap: 5px;
+          height: 16px;
+        }
+
+        .tag-action {
+          opacity: 70%;
+          width: 16px;
+          font-size: 16px;
+
+          &:hover{
+            cursor: pointer;
+            opacity: 100%;
+          }
+        }
+
         &:hover {
-          cursor: pointer;
-          background-color: var(--pill-hover-bgcolor);
+          filter: var(--tag-filter);
+
+          .tag-action::before {
+            content: "X";
+            font-size: 14px;
+          }
         }
-  
+
         &:active {
-          cursor: pointer;
-          background-color: var(--pill-hover-bgcolor);
+          filter: var(--tag-filter);
         }
-  
+
         &.new {
           background-color: var(--pill-bgcolor);
-  
+          font-size: 16px;
+          gap: 5px;
+
+          &::before {
+            opacity: 70%;
+            content: "+";
+          }
+
           &:hover {
             cursor: pointer;
+            filter: unset;
             background-color: var(--pill-hover-bgcolor);
           }
-  
+
           &:active {
             cursor: pointer;
+            filter: unset;
             background-color: var(--pill-active-bgcolor);
             transform: scale(0.98);
           }
         }
       }
-  
+
       .filepath {
         max-width: 80%;
         font-size: 23px;
@@ -87,16 +121,16 @@
         direction: rtl;
         gap: 6px;
         padding-bottom: 3px;
-  
+
         .filepath-name {
           font-weight: 600;
-  
+
           &:focus {
             outline: none;
           }
         }
       }
-  
+
       #logo {
         fill: var(--titlebar-color);
         display: block;
@@ -104,7 +138,7 @@
         height: 55%;
         filter: var(--logo-filter);
       }
-  
+
       .logo {
         display: flex;
         align-items: center;
@@ -120,11 +154,12 @@
       -webkit-app-region: drag;
 
     }
+
     .header-controls {
       height: inherit;
       -webkit-app-region: no-drag;
 
-      .window-titlebar-controls{
+      .window-titlebar-controls {
         height: inherit;
         position: unset;
 
@@ -132,7 +167,7 @@
           border-radius: 10px;
           transition: 0.1s;
 
-          &:active{
+          &:active {
             transform: scale(0.95);
           }
         }
