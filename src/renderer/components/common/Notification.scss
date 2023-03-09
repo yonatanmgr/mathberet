@@ -1,0 +1,47 @@
+@import '../Theme.scss';
+
+#notification {
+    direction: rtl;
+    visibility: hidden;
+    align-self: center;
+    min-width: 120px;
+    margin-left: -60px;
+    z-index: 1;
+    padding: 6px 10px 6px 10px;
+    background-color: var(--button-bgcolor);
+    text-shadow: none;
+    border: 1px solid var(--page-border);
+    border-radius: 6px;
+    color: var(--titlebar-color);
+    text-align: center;
+    position: fixed;
+    box-shadow: 0px 1px 3px #0000002a;
+    left: 49.5vw;
+    bottom: 80px;
+
+    &.show {
+        visibility: visible;
+        -webkit-animation: fadein 0.2s, fadeout 0.3s 1s;
+        animation: fadein 0.2s, fadeout 0.3s 1s;
+      }
+  }
+    
+@-webkit-keyframes fadein {
+from { bottom: 0; opacity: 0; }
+to { bottom: 80px; opacity: 1; }
+}
+
+@keyframes fadein {
+from { bottom: 0; opacity: 0; }
+to { bottom: 80px; opacity: 1; }
+}
+
+@-webkit-keyframes fadeout {
+from { bottom: 80px; opacity: 1; }
+to { bottom: 0; opacity: 0; }
+}
+
+@keyframes fadeout {
+from { bottom: 80px; opacity: 1; }
+to { bottom: 0; opacity: 0; }
+}

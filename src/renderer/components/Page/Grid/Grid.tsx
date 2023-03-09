@@ -5,6 +5,8 @@ import {
   newWidgetRequest,
   WidgetType,
 } from '@renderer/common/types';
+import Notification from '../../common/Notification';
+
 
 import '../Page.scss';
 import './Grid.scss';
@@ -33,6 +35,8 @@ const PageGrid = () => {
   });
 
   const [allValues, setAllValues] = useState([]);
+
+  const [popupType, setPopupType] = useState("");
 
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
@@ -265,14 +269,29 @@ const PageGrid = () => {
     const currentItems = state.items;
     currentItems.map(saveMetaData);
     const data = JSON.stringify(currentItems);
-
     window.api.saveX(data, selectedFile);
   };
 
+  const popupAnimation = (type: string) => {
+    setTimeout(() => {
+      setPopupType(type);
+      setTimeout(() => {
+        setPopupType("");
+      }, 1200);
+    }, 0);
+  }
+
   useEffect(() => {
-    if (saveRequest?.cmd === 'save') saveGridData()
+    if (saveRequest?.cmd === 'save') try {
+      saveGridData();
+      popupAnimation("save")
+    } catch (error) {
+      popupAnimation("error")
+      console.error(error)
+    }
+
   }, [saveRequest])
-  
+
   return (
     <div className='grid-container'>
       <ResponsiveGridLayout
@@ -307,6 +326,9 @@ const PageGrid = () => {
       >
         האם למחוק את תכולת הדף?
       </Modal>
+
+      <Notification scene={popupType} />
+
     </div>
   );
 };
