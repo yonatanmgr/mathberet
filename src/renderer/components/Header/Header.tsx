@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../Application.scss';
 import { icons } from '../Icons';
 import FilePath from './FilePath';
@@ -6,18 +6,25 @@ import Tag from './Tag';
 import AddTag from './AddTag';
 import WindowControls from '@misc/window/components/WindowControls';
 
-type Tag = {
+export type Tag = {
   id: string;
   text: string;
   color: string;
 };
 
-const tags: Tag[] = [
-  { text: 'חדוא', id: crypto.randomUUID(), color: '0' },
-  { text: 'עוד אחד', id: crypto.randomUUID(), color: '130' },
-];
-
 const Header = () => {
+  const [tags, setTags] = useState<Tag[]>(
+    JSON.parse(localStorage.getItem('all-tags')),
+  );
+
+  window.addEventListener('setTags', () => {
+    setTags(JSON.parse(localStorage.getItem('all-tags')));
+  });
+
+  useEffect(() => {
+    console.log(tags);
+  }, [tags]);
+
   return (
     <div className='header'>
       <div className='main-heading'>
@@ -27,9 +34,11 @@ const Header = () => {
           </div>
           <FilePath fileName='בדיקה' folderName='תיקייה' />
           <div className='tags'>
-            {tags.map((tag) => (
-              <Tag key={tag.id} text={tag.text} color={tag.color} />
-            ))}
+            {tags
+              ? tags.map((tag) => (
+                  <Tag key={tag.id} text={tag.text} color={tag.color} />
+                ))
+              : null}
             <AddTag />
           </div>
         </section>

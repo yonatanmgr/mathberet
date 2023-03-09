@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Tag } from './Header';
 
 const AddTag = () => {
   const [clickState, setClickState] = useState(false);
@@ -25,7 +26,25 @@ const AddTag = () => {
   };
 
   useEffect(() => {
-    console.log(`Add tag with vaule ${savedValue}`);
+    if (!localStorage.getItem('all-tags'))
+      localStorage.setItem('all-tags', JSON.stringify([]));
+    else {
+      const allTags: Tag[] = JSON.parse(localStorage.getItem('all-tags'));
+
+      const createdTag: Tag = {
+        id: crypto.randomUUID(),
+        text: savedValue,
+        color: Math.floor(Math.random() * 359).toString(),
+      };
+      
+      if (!allTags.find((tag: Tag) => tag.text == createdTag.text) && createdTag.text != '') {
+        allTags.push(createdTag) 
+      }
+
+      localStorage.setItem('all-tags', JSON.stringify(allTags));
+      
+      window.dispatchEvent(new Event("setTags"));
+    }
   }, [savedValue]);
 
   useEffect(() => {
