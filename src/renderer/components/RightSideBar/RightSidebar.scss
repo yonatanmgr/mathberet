@@ -31,6 +31,13 @@
         border-radius: 15px;
         cursor: default;
 
+        &.open {
+          background-color: var(--page-border);
+          .fi {
+            color: var(--tool-color);
+          }
+        }
+        
         &:hover::after {
           content: attr(data-tooltip);
           min-width: 90px;
@@ -38,7 +45,8 @@
           margin-right: 170px;
           z-index: 1000;
           padding: 6px 10px 6px 10px;
-          background-color: var(--app-bgcolor);
+          background-color: var(--button-bgcolor);
+          text-shadow: none;
           border: 1px solid var(--page-border);
           border-radius: 6px;
           opacity: 0%;
@@ -92,13 +100,6 @@
       max-width: 15vw;
       padding-right: 10px;
       width: 100%;
-    }
-
-    .sidebar-button#files {
-      background-color: var(--page-border);
-      .fi {
-        color: var(--tool-color);
-      }
     }
   }
 }

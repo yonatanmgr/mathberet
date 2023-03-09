@@ -4,6 +4,7 @@ import './RightSidebar.scss';
 
 type SidebarButtonProps = {
   title: string;
+  state?: boolean;
   buttonType: string;
   icon?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -11,6 +12,7 @@ type SidebarButtonProps = {
 
 const SidebarButton = ({
   buttonType,
+  state,
   title,
   icon,
   onClick,
@@ -20,7 +22,7 @@ const SidebarButton = ({
     <div>
       <button
         data-tooltip={title}
-        className='sidebar-button'
+        className={'sidebar-button' + (state ? ' open' : '')}
         id={buttonType}
         onClick={onClick}
       >

@@ -5,12 +5,14 @@ import FileSystem from './FileSystem';
 
 const RightSidebar = () => {
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
 
   const handleOnClickFiles = () => {
     setIsRightSidebarOpen((isRightSidebarOpen) => !isRightSidebarOpen);
   };
-
+  
   const handleOnClickMathPanel = () => {
+    setIsLeftSidebarOpen((isLeftSidebarOpen) => !isLeftSidebarOpen);
     //todo: should be refactored to React way
     document.querySelector('.left-sidebar').classList.toggle('open');
   };
@@ -22,6 +24,7 @@ const RightSidebar = () => {
           <SidebarButton
             title='המחברות שלי'
             buttonType='files'
+            state={isRightSidebarOpen}
             icon='notebook'
             onClick={handleOnClickFiles}
           />
@@ -31,6 +34,7 @@ const RightSidebar = () => {
           <SidebarButton
             title='זיכרון מתמטי'
             buttonType='mathPanel'
+            state={isLeftSidebarOpen}
             icon='calculator'
             onClick={handleOnClickMathPanel}
           />
