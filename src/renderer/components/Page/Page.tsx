@@ -1,6 +1,7 @@
 import React from 'react';
 import '../Application.scss';
 
+
 import PageGrid from './Grid/Grid';
 import './Page.scss';
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Tag } from './Tag';
 
 const AddTag = () => {
   const [clickState, setClickState] = useState(false);
@@ -17,7 +18,7 @@ const AddTag = () => {
     outline: 'none',
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       setSavedValue(currentValue);
       setClickState(false);
@@ -25,7 +26,24 @@ const AddTag = () => {
   };
 
   useEffect(() => {
-    console.log(`Add tag with vaule ${savedValue}`);
+    if (!localStorage.getItem('all-tags'))
+      localStorage.setItem('all-tags', JSON.stringify([]));
+    else {
+      const allTags: Tag[] = JSON.parse(localStorage.getItem('all-tags'));
+
+      const createdTag: Tag = {
+        text: savedValue,
+        color: Math.floor(Math.random() * 359).toString(),
+      };
+      
+      if (!allTags.find((tag: Tag) => tag.text == createdTag.text) && createdTag.text != '') {
+        allTags.push(createdTag) 
+      }
+
+      localStorage.setItem('all-tags', JSON.stringify(allTags));
+      
+      window.dispatchEvent(new Event("setTags"));
+    }
   }, [savedValue]);
 
   useEffect(() => {

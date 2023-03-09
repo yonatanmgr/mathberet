@@ -31,5 +31,5 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Set versions to app data
-  app.setAttribute('data-versions', JSON.stringify(versions));
+  // app.setAttribute('data-versions', JSON.stringify(versions));
 });

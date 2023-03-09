@@ -5,7 +5,7 @@ import { useGeneralContext } from '@components/GeneralContext';
 import { WidgetType } from '@renderer/common/types';
 
 const ToolsPanel = () => {
-  const { setNewWidgetRequest, setClearPageRequest } = useGeneralContext();
+  const { setNewWidgetRequest, setClearPageRequest, setSaveRequest } = useGeneralContext();
 
   const handleOnClickTool = (widgetType: WidgetType) => {
     setNewWidgetRequest({ widgetType });
@@ -13,6 +13,10 @@ const ToolsPanel = () => {
 
   const clearPage = () => {
     setClearPageRequest({ cmd: 'clear' });
+  };
+
+  const savePage = () => {
+    setSaveRequest({ cmd: 'save' });
   };
 
   return (
@@ -55,18 +59,18 @@ const ToolsPanel = () => {
           icon='minus'
           onClick={() => handleOnClickTool(WidgetType.Divider)}
         />
-        <Tool
-          title='ניקוי הדף'
-          buttonType='clearPage'
-          icon={'trash'}
-          onClick={() => clearPage()}
-        />
         <svg viewBox="0 0 24 24" className='tool-divider'><path d="M11,3 L11,21 C11,21.5522847 11.4477153,22 12,22 C12.5522847,22 13,21.5522847 13,21 L13,3 C13,2.44771525 12.5522847,2 12,2 C11.4477153,2 11,2.44771525 11,3 Z"></path></svg>
         <Tool
           title='שמירה'
           buttonType='savePage'
           icon={'disk'}
-          onClick={() => null}
+          onClick={() => savePage()}
+        />
+        <Tool
+          title='ניקוי הדף'
+          buttonType='clearPage'
+          icon={'trash'}
+          onClick={() => clearPage()}
         />
       </div>
     </div>

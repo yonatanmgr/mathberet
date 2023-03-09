@@ -5,6 +5,7 @@ import {
   newWidgetRequest,
   WidgetType,
 } from '@renderer/common/types';
+import Notification from '../../common/Notification';
 
 import '../Page.scss';
 import './Grid.scss';
@@ -34,10 +35,12 @@ const PageGrid = () => {
 
   const [allValues, setAllValues] = useState([]);
 
+  const [popupType, setPopupType] = useState('');
+
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
 
-  const { selectedFile, newWidgetRequest, clearPageRequest } =
+  const { selectedFile, newWidgetRequest, clearPageRequest, saveRequest } =
     useGeneralContext();
 
   useEffect(() => {
@@ -80,7 +83,7 @@ const PageGrid = () => {
 
       setAllValues(newData);
     });
-  }, []);
+  }, [selectedFile]);
 
   useEffect(() => {
     if (selectedFile) window.api.loadX(selectedFile);
@@ -265,14 +268,34 @@ const PageGrid = () => {
     const currentItems = state.items;
     currentItems.map(saveMetaData);
     const data = JSON.stringify(currentItems);
-
     window.api.saveX(data, selectedFile);
   };
 
+  const popupAnimation = (type: string) => {
+    setTimeout(() => {
+      setPopupType(type);
+      setTimeout(() => {
+        setPopupType('');
+      }, 1200);
+    }, 0);
+  };
+
+  useEffect(() => {
+    if (saveRequest?.cmd === 'save') {
+      if (selectedFile) {
+        try {
+          saveGridData();
+          popupAnimation('save');
+        } catch (error) {
+          popupAnimation('error');
+          console.error(error);
+        }
+      } else popupAnimation('firstSelect');
+    }
+  }, [saveRequest]);
+
   return (
     <div className='grid-container'>
-      <button onClick={saveGridData}>Save</button>
-      {/* <button onClick={loadGridData}>Load</button> */}
       <ResponsiveGridLayout
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}

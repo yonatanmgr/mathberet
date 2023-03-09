@@ -10,7 +10,7 @@ type ToolProps = {
 const Tool = ({ buttonType, title, icon, onClick }: ToolProps) => {
   const iconName = `fi fi-rr-${icon}`;
   return (
-    <button title={title} id={buttonType} className='tool' onClick={onClick}>
+    <button data-tooltip={title} id={buttonType} className='tool' onClick={onClick}>
       {icon && <i className={iconName} />}
     </button>
   );
