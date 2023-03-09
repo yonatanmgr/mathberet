@@ -1,3 +1,4 @@
+import { useGeneralContext } from '@components/GeneralContext';
 import React, { useEffect, useState } from 'react';
 import {
   Tree,
@@ -9,6 +10,8 @@ import {
 import './FileSystem.scss';
 
 function FileSystem() {
+  const { setSelectedFile } = useGeneralContext();
+
   const [focusedItem, setFocusedItem] = useState();
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -282,7 +285,10 @@ function FileSystem() {
             },
           }}
           onDrop={handleOnDrop}
-          onFocusItem={(item) => setFocusedItem(item.index)}
+          onFocusItem={(item) => {
+            setFocusedItem(item.index);
+            if (!item.isFolder) setSelectedFile(item.path);
+          }}
           onExpandItem={(item) =>
             setExpandedItems([...expandedItems, item.index])
           }

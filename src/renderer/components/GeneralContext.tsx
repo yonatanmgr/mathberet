@@ -10,7 +10,8 @@ const GeneralContext = createContext(null);
 
 function GeneralContextProvider({ children }: PropsWithChildren) {
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
-  const [clearPageRequest, setClearPageRequest] = useState({cmd:{}});
+  const [clearPageRequest, setClearPageRequest] = useState({ cmd: {} });
+  const [selectedFile, setSelectedFile] = useState();
 
   return (
     <GeneralContext.Provider
@@ -19,6 +20,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
         setNewWidgetRequest,
         clearPageRequest,
         setClearPageRequest,
+        selectedFile,
+        setSelectedFile,
       }}
     >
       {children}

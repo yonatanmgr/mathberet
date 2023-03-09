@@ -65,11 +65,11 @@ contextBridge.exposeInMainWorld('api', {
   load: (file: string) => {
     ipcRenderer.send('load', file);
   },
-  saveX: (data: string) => {
-    ipcRenderer.send('saveX', data);
+  saveX: (data: string, filePath: string) => {
+    ipcRenderer.send('saveX', data, filePath);
   },
-  loadX: () => {
-    ipcRenderer.send('loadX');
+  loadX: (filePath:string) => {
+    ipcRenderer.send('loadX',filePath);
   },
   maximize: () => {
     ipcRenderer.send('maximize');

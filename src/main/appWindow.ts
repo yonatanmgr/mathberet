@@ -90,27 +90,24 @@ fs.readdir(app.getPath('userData'), (err, res) => {
 //   .catch((error) => {console.error(error)});
 // });
 
-ipcMain.on('saveX', (event, data) => {
+ipcMain.on('saveX', (event, data, filePath) => {
   const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
 
   if (fs.existsSync(filesPath)) {
-    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8');
+    fs.writeFileSync(path.join(filePath), data, 'utf-8');
   } else {
     fs.mkdirSync(filesPath, { recursive: true });
-    fs.writeFileSync(path.join(filesPath, '7777.json'), data, 'utf-8');
+    fs.writeFileSync(path.join(filePath), data, 'utf-8');
   }
 });
 
-ipcMain.on('loadX', (event, args) => {
-  const fileName = '7777.json';
-  const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
+ipcMain.on('loadX', (event, filePath) => {
+  // fs.existsSync(filesPath)
+  //   ? null
+  //   : fs.mkdirSync(filesPath, { recursive: true });
 
-  fs.existsSync(filesPath)
-    ? null
-    : fs.mkdirSync(filesPath, { recursive: true });
-
-  if (fs.existsSync(path.join(filesPath, fileName))) {
-    fs.readFile(path.join(filesPath, fileName), 'utf-8', (error, data) => {
+  if (fs.existsSync(filePath)) {
+    fs.readFile(filePath, 'utf-8', (error, data) => {
       error
         ? console.error('Error Reading file: ', error)
         : appWindow.webContents.send('gotLoadedDataX', data);

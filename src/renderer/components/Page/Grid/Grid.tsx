@@ -37,7 +37,8 @@ const PageGrid = () => {
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
 
-  const { newWidgetRequest, clearPageRequest } = useGeneralContext();
+  const { selectedFile, newWidgetRequest, clearPageRequest } =
+    useGeneralContext();
 
   useEffect(() => {
     if (newWidgetRequest) AddWidget(newWidgetRequest);
@@ -49,6 +50,8 @@ const PageGrid = () => {
 
   useEffect(() => {
     window.api.receive('gotLoadedDataX', (data: string) => {
+      if (!data) return;
+
       const loadedData: Array<BlockElement> = JSON.parse(data);
       loadedData.map((block: BlockElement) => {
         if (block.y == null) {
@@ -69,6 +72,10 @@ const PageGrid = () => {
       setAllValues(newData);
     });
   }, []);
+
+  useEffect(() => {
+    if (selectedFile) window.api.loadX(selectedFile);
+  }, [selectedFile]);
 
   const onBreakpointChange = (breakpoint: string, cols: number) => {
     setState((prev) => ({ ...prev, breakpoint, cols }));
@@ -221,11 +228,6 @@ const PageGrid = () => {
     [WidgetType.Draw, addDraw],
   ]);
 
-  const loadGridData = () => {
-    setState((prev) => ({ ...prev, items: [] }));
-    window.api.loadX();
-  };
-
   const saveMetaData = (block: BlockElement) => {
     const found = allValues.find((state) => state.id == block.i).metaData;
 
@@ -255,13 +257,13 @@ const PageGrid = () => {
     currentItems.map(saveMetaData);
     const data = JSON.stringify(currentItems);
 
-    window.api.saveX(data);
+    window.api.saveX(data, selectedFile);
   };
 
   return (
     <div className='grid-container'>
       <button onClick={saveGridData}>Save</button>
-      <button onClick={loadGridData}>Load</button>
+      {/* <button onClick={loadGridData}>Load</button> */}
       <ResponsiveGridLayout
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
