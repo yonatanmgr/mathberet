@@ -3,9 +3,6 @@
 #notification {
     direction: rtl;
     visibility: hidden;
-    align-self: center;
-    min-width: 120px;
-    margin-left: -60px;
     z-index: 1;
     padding: 6px 10px 6px 10px;
     background-color: var(--button-bgcolor);
@@ -14,9 +11,11 @@
     border-radius: 6px;
     color: var(--titlebar-color);
     text-align: center;
-    position: fixed;
+    align-self: center;
+    position: relative;
+    width: max-content;
     box-shadow: 0px 1px 3px #0000002a;
-    left: 49.5vw;
+    display: block;
     bottom: 80px;
 
     &.show {

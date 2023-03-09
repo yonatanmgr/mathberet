@@ -13,10 +13,13 @@ const Notification = ({ scene }: NotificationProps) => {
       content = '';
       break;
     case 'save':
-      content = 'הדף נשמר!';
+      content = 'הקובץ נשמר!';
+      break;
+    case 'firstSelect':
+      content = 'יש לבחור קובץ כדי לשמור!';
       break;
     case 'error':
-      content = 'הייתה תקלה בשמירת הדף!';
+      content = 'הייתה תקלה בשמירת הקובץ!';
       break;
 
     // NOT IMPLEMENTED YET

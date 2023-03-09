@@ -7,7 +7,6 @@ import {
 } from '@renderer/common/types';
 import Notification from '../../common/Notification';
 
-
 import '../Page.scss';
 import './Grid.scss';
 import './Blocks/Blocks.scss';
@@ -36,7 +35,7 @@ const PageGrid = () => {
 
   const [allValues, setAllValues] = useState([]);
 
-  const [popupType, setPopupType] = useState("");
+  const [popupType, setPopupType] = useState('');
 
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
@@ -84,7 +83,7 @@ const PageGrid = () => {
 
       setAllValues(newData);
     });
-  }, []);
+  }, [selectedFile]);
 
   useEffect(() => {
     if (selectedFile) window.api.loadX(selectedFile);
@@ -276,21 +275,24 @@ const PageGrid = () => {
     setTimeout(() => {
       setPopupType(type);
       setTimeout(() => {
-        setPopupType("");
+        setPopupType('');
       }, 1200);
     }, 0);
-  }
+  };
 
   useEffect(() => {
-    if (saveRequest?.cmd === 'save') try {
-      saveGridData();
-      popupAnimation("save")
-    } catch (error) {
-      popupAnimation("error")
-      console.error(error)
+    if (saveRequest?.cmd === 'save') {
+      if (selectedFile) {
+        try {
+          saveGridData();
+          popupAnimation('save');
+        } catch (error) {
+          popupAnimation('error');
+          console.error(error);
+        }
+      } else popupAnimation('firstSelect');
     }
-
-  }, [saveRequest])
+  }, [saveRequest]);
 
   return (
     <div className='grid-container'>
@@ -326,7 +328,6 @@ const PageGrid = () => {
       >
         האם למחוק את תכולת הדף?
       </Modal>
-
       <Notification scene={popupType} />
 
     </div>
