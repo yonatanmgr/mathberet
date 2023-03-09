@@ -138,11 +138,19 @@ function FileSystem() {
 
     parentValue.children.push(newFileKey);
 
+    const newFilePath = parentValue.path + '\\' + newFileKey + '.json';
     const newState = {
       ...prev,
       [parentKey]: parentValue,
-      [newFileKey]: { index: newFileKey, data: newFileKey, children: [] },
+      [newFileKey]: {
+        index: newFileKey,
+        data: newFileKey,
+        children: [],
+        path: newFilePath,
+      },
     };
+
+    window.api.newFile(newFilePath);
 
     return newState;
   };

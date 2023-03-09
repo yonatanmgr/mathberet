@@ -138,6 +138,10 @@ ipcMain.on('load', (event, file) => {
   });
 });
 
+ipcMain.on('newFile', (event, filePath) => {
+  fs.writeFileSync(filePath, '{}');
+});
+
 // ipcMain.on('setUserColor', (event, color) => {
 //   store.set('color', color);
 // });
@@ -192,7 +196,7 @@ function buildTree(dir: string, root: any) {
     isFolder: true,
     data: name,
     children,
-    path:dir
+    path: dir,
   };
 
   return name;
