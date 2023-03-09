@@ -9,6 +9,8 @@ import {
   useMatches
 } from 'kbar';
 
+import { setColor, setTheme } from '@components/Application';
+
 function KBar() {
   function RenderResults() {
     const { results } = useMatches();
@@ -55,64 +57,49 @@ function KBar() {
     {
       id: "blue",
       name: "כחול",
-      perform: () => {
-        localStorage.setItem('color', 'blue');
-        document.documentElement.style.setProperty('--theme-hue', '200')  
-      },
+      perform: () => { setColor('blue', 210) },
+      parent: 'color'
+    },
+    {
+      id: "pink",
+      name: "ורוד",
+      perform: () => { setColor('pink', 300) },
       parent: 'color'
     },
     {
       id: "yellow",
       name: "צהוב",
-      perform: () => {
-        localStorage.setItem('color', 'yellow');
-        document.documentElement.style.setProperty('--theme-hue', '35')  
-      },
+      perform: () => { setColor('yellow', 35) },
       parent: 'color'
     },
     {
       id: "purple",
       name: "סגול",
-      perform: () => {
-        localStorage.setItem('color', 'purple');
-        document.documentElement.style.setProperty('--theme-hue', '245')  
-      },
+      perform: () => { setColor('purple', 250) },
       parent: 'color'
     },
     {
       id: "red",
       name: "אדום",
-      perform: () => {
-        localStorage.setItem('color', 'red');
-        document.documentElement.style.setProperty('--theme-hue', '0')  
-      },
+      perform: () => { setColor('red', 0) },
       parent: 'color'
     },
     {
       id: "green",
       name: "ירוק",
-      perform: () => {
-        localStorage.setItem('color', 'green');
-        document.documentElement.style.setProperty('--theme-hue', '140')  
-      },
+      perform: () => { setColor('green', 140) },
       parent: 'color'
     },
     {
       id: "light",
       name: "מצב אור",
-      perform: () => {
-        localStorage.setItem('dark-mode', '0');
-        document.body.classList.remove('dark-mode');    
-      },
+      perform: () => { setTheme(0) },
       parent: 'theme'
     },
     {
       id: "dark",
       name: "מצב חושך",
-      perform: () => {
-        localStorage.setItem('dark-mode', '1');
-        document.body.classList.add('dark-mode');    
-      },
+      perform: () => { setTheme(1) },
       parent: 'theme'
     },
   ]

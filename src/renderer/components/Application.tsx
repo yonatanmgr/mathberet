@@ -9,9 +9,27 @@ import '../../../node_modules/react-resizable/css/styles.css';
 import KBar from './RightSideBar/KBar';
 import { GeneralContextProvider } from './GeneralContext';
 
+export const setColor = (name: string, hue: number) => {
+  localStorage.setItem('color', name);
+  document.documentElement.style.setProperty('--theme-hue', hue.toString());
+}
+
+export const setTheme = (theme: number) => {
+  localStorage.setItem('dark-mode', theme.toString());
+  switch (theme) {
+    case 0:
+      document.body.classList.remove('dark-mode');    
+      break;
+
+    case 1:
+      document.body.classList.add('dark-mode');    
+      break;
+  }
+}
+
 const Application = () => {
   const [darkTheme, setDarkTheme] = useState(true);
-  const [colorTheme, setColorTheme] = useState("");
+  const [colorTheme, setColorTheme] = useState('');
 
   useEffect(() => {
     const useDarkTheme = parseInt(localStorage.getItem('dark-mode'));
@@ -22,54 +40,26 @@ const Application = () => {
     } else if (useDarkTheme == 0) {
       setDarkTheme(false);
     }
-  }, []);
 
-  useEffect(() => {
+    if (!localStorage.getItem('all-tags'))
+      localStorage.setItem('all-tags', JSON.stringify([]));
+
+    if (!localStorage.getItem('color')) localStorage.setItem('color', 'blue');
     setColorTheme(localStorage.getItem('color'));
   }, []);
 
   useEffect(() => {
-    if (!localStorage.getItem('all-tags')) localStorage.setItem('all-tags', JSON.stringify([]));
-  }, [])
-  
-
-  useEffect(() => {
-    if (darkTheme) {
-      localStorage.setItem('dark-mode', '1');
-      document.body.classList.add('dark-mode');
-    } else {
-      localStorage.setItem('dark-mode', '0');
-      document.body.classList.remove('dark-mode');
-    }
+    if (darkTheme) {setTheme(1)} else {setTheme(0)}
   }, [darkTheme]);
 
   useEffect(() => {
-    const root = document.documentElement;
     switch (colorTheme) {
-      case 'blue':
-        localStorage.setItem('color', 'blue');
-        root.style.setProperty('--theme-hue', '200')  
-        break;
-
-      case 'red':
-        localStorage.setItem('color', 'red');
-        root.style.setProperty('--theme-hue', '0')  
-        break;
-
-      case 'yellow':
-        localStorage.setItem('color', 'yellow');
-        root.style.setProperty('--theme-hue', '35')  
-        break;
-
-      case 'green':
-        localStorage.setItem('color', 'green');
-        root.style.setProperty('--theme-hue', '140')  
-        break;
-
-      case 'purple':
-        localStorage.setItem('color', 'purple');
-        root.style.setProperty('--theme-hue', '245')  
-        break;
+      case 'red': setColor('red', 0); break;
+      case 'yellow': setColor('yellow', 35); break;
+      case 'green': setColor('green', 140); break;
+      case 'blue': setColor('blue', 210); break;
+      case 'purple': setColor('purple', 250); break;
+      case 'pink': setColor('pink', 300); break;
 
       default:
         break;
