@@ -9,6 +9,7 @@ import { newWidgetRequest } from '@renderer/common/types';
 const GeneralContext = createContext(null);
 
 function GeneralContextProvider({ children }: PropsWithChildren) {
+  const [saveRequest, setSaveRequest] = useState({ cmd: {} });
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [clearPageRequest, setClearPageRequest] = useState({ cmd: {} });
   const [selectedFile, setSelectedFile] = useState();
@@ -22,6 +23,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
         setClearPageRequest,
         selectedFile,
         setSelectedFile,
+        saveRequest,
+        setSaveRequest,
       }}
     >
       {children}

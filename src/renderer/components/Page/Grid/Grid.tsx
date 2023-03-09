@@ -37,7 +37,7 @@ const PageGrid = () => {
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
 
-  const { selectedFile, newWidgetRequest, clearPageRequest } =
+  const { selectedFile, newWidgetRequest, clearPageRequest, saveRequest } =
     useGeneralContext();
 
   useEffect(() => {
@@ -269,10 +269,12 @@ const PageGrid = () => {
     window.api.saveX(data, selectedFile);
   };
 
+  useEffect(() => {
+    if (saveRequest?.cmd === 'save') saveGridData()
+  }, [saveRequest])
+  
   return (
     <div className='grid-container'>
-      <button onClick={saveGridData}>Save</button>
-      {/* <button onClick={loadGridData}>Load</button> */}
       <ResponsiveGridLayout
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}

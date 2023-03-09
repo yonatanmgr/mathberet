@@ -1,5 +1,9 @@
 import React from 'react';
-import { Tag } from './Header';
+
+export type Tag = {
+  text: string;
+  color: string;
+};
 
 const Tag = ({ text, color }: Tag) => {
 

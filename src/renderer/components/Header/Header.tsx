@@ -6,6 +6,7 @@ import Tag from './Tag';
 import AddTag from './AddTag';
 import WindowControls from '@misc/window/components/WindowControls';
 
+
 const Header = () => {
   const [tags, setTags] = useState<Tag[]>(
     JSON.parse(localStorage.getItem('all-tags')),

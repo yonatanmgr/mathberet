@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tag } from './Header';
+import { Tag } from './Tag';
 
 const AddTag = () => {
   const [clickState, setClickState] = useState(false);
@@ -18,7 +18,7 @@ const AddTag = () => {
     outline: 'none',
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       setSavedValue(currentValue);
       setClickState(false);
