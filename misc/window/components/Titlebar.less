@@ -9,7 +9,7 @@
  * @project : Electron Window
  * @package : Window Components Stylesheet
 */
-
+@import '/src/renderer/components/Theme.scss';
 @titlebar-baseSize: 16px;
 @titlebar-height: 28px;
 @titlebar-bg: #171b21;
@@ -171,7 +171,7 @@
         -webkit-app-region: no-drag;
 
         &.close:hover {
-          background: #e10000;
+          background: var(--button-danger);
         }
         &:hover {
           background: #242d38;

@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../Application.scss';
 import { icons } from '../Icons';
 import FilePath from './FilePath';
 import Tag from './Tag';
 import AddTag from './AddTag';
 import WindowControls from '@misc/window/components/WindowControls';
-
-export type Tag = {
-  text: string;
-  color: string;
-};
 
 const Header = () => {
   const [tags, setTags] = useState<Tag[]>(
@@ -31,7 +26,11 @@ const Header = () => {
           <div className='tags'>
             {tags
               ? tags.map((tag) => (
-                  <Tag key={`tag-${tag.text}`} text={tag.text} color={tag.color} />
+                  <Tag
+                    key={`tag-${tag.text}`}
+                    text={tag.text}
+                    color={tag.color}
+                  />
                 ))
               : null}
             <AddTag />
