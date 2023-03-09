@@ -29,6 +29,11 @@ const Application = () => {
   }, []);
 
   useEffect(() => {
+    if (!localStorage.getItem('all-tags')) localStorage.setItem('all-tags', JSON.stringify([]));
+  }, [])
+  
+
+  useEffect(() => {
     if (darkTheme) {
       localStorage.setItem('dark-mode', '1');
       document.body.classList.add('dark-mode');

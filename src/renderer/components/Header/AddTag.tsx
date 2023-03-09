@@ -32,7 +32,6 @@ const AddTag = () => {
       const allTags: Tag[] = JSON.parse(localStorage.getItem('all-tags'));
 
       const createdTag: Tag = {
-        id: crypto.randomUUID(),
         text: savedValue,
         color: Math.floor(Math.random() * 359).toString(),
       };

@@ -7,7 +7,6 @@ import AddTag from './AddTag';
 import WindowControls from '@misc/window/components/WindowControls';
 
 export type Tag = {
-  id: string;
   text: string;
   color: string;
 };
@@ -21,10 +20,6 @@ const Header = () => {
     setTags(JSON.parse(localStorage.getItem('all-tags')));
   });
 
-  useEffect(() => {
-    console.log(tags);
-  }, [tags]);
-
   return (
     <div className='header'>
       <div className='main-heading'>
@@ -36,7 +31,7 @@ const Header = () => {
           <div className='tags'>
             {tags
               ? tags.map((tag) => (
-                  <Tag key={tag.id} text={tag.text} color={tag.color} />
+                  <Tag key={`tag-${tag.text}`} text={tag.text} color={tag.color} />
                 ))
               : null}
             <AddTag />
