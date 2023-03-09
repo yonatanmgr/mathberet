@@ -68,6 +68,7 @@
   --pill-active-bgcolor: hsl(var(--theme-hue), 33%, 15%);
   --tag-saturation: 19%;
   --tag-lightness: 23%;
+  --tag-filter: brightness(110%);
   --button-danger: hsl(0, 50%, 50%);
   // --button-outline: 1px solid hsl(var(--theme-hue), 3%, 14%);
   --clear-button-bgcolor: hsl(0, 15%, 32%);
@@ -170,6 +171,7 @@ body:not(.dark-mode) {
   --pill-active-bgcolor: hsl(var(--theme-hue), 29%, 80%);
   --tag-saturation: 47%;
   --tag-lightness: 93%;
+  --tag-filter: brightness(90%);
   --clear-button-bgcolor: hsl(0, 41%, 92%);
   --clear-button-color: hsl(0, 34%, 40%);
   --clear-button-hover-bgcolor: hsl(0, 44%, 85%);

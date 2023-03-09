@@ -7,12 +7,12 @@ const AddTag = () => {
 
   const addTagStyle = {
     backgroundColor: 'unset',
-    height: '13px',
+    height: '14px',
     border: 'none',
     color: 'unset',
     fontFamily: 'unset',
     fontSize: 'unset',
-    minWidth: `92px`,
+    minWidth: `79px`,
     width: `${currentValue.length * 9 + 10}px`,
     outline: 'none',
   };
@@ -37,7 +37,7 @@ const AddTag = () => {
       autoFocus={true}
       type='text'
       title=''
-      placeholder='+ הוספת תגית'
+      placeholder='הוספת תגית'
       className='tag-text-adding'
       onChange={(e) => setCurrentValue(e.target.value)}
       onKeyDown={handleKeyDown}
@@ -45,7 +45,6 @@ const AddTag = () => {
     />
   ) : (
     <>
-      <span className='add'>+ </span>
       <span className='tag-text'>הוספת תגית</span>
     </>
   );
