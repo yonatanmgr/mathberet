@@ -50,9 +50,18 @@ const PageGrid = () => {
 
   useEffect(() => {
     window.api.receive('gotLoadedDataX', (data: string) => {
-      if (!data) return;
+      if (!data) {
+        setState((prev) => ({ ...prev, items: [] }));
+        return;
+      }
 
       const loadedData: Array<BlockElement> = JSON.parse(data);
+
+      if (!Array.isArray(loadedData)) {
+        setState((prev) => ({ ...prev, items: [] }));
+        return;
+      }
+
       loadedData.map((block: BlockElement) => {
         if (block.y == null) {
           block.y = Infinity;
