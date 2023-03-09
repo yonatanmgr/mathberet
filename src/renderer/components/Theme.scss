@@ -58,7 +58,7 @@
 
   // Button
   --button-color: hsl(0, 0%, 100%);
-  --button-border: 1px solid hsl(180, 3%, 14%);
+  --button-border: 1px solid hsl(var(--theme-hue), 3%, 14%);
   --button-bgcolor: hsl(var(--theme-hue), 26%, 9%);
   --button-hover-bgcolor: hsl(var(--theme-hue), 25%, 12%);
   --button-active-bgcolor: hsl(var(--theme-hue), 27%, 18%);
@@ -68,6 +68,8 @@
   --pill-active-bgcolor: hsl(var(--theme-hue), 33%, 15%);
   --tag-saturation: 19%;
   --tag-lightness: 23%;
+  --button-danger: hsl(0, 50%, 50%);
+  // --button-outline: 1px solid hsl(var(--theme-hue), 3%, 14%);
   --clear-button-bgcolor: hsl(0, 15%, 32%);
   --clear-button-hover-bgcolor: hsl(0, 16%, 39%);
   --clear-button-color: hsl(0, 12%, 66%);
