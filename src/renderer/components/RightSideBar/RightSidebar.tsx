@@ -25,7 +25,7 @@ const RightSidebar = () => {
             icon='notebook'
             onClick={handleOnClickFiles}
           />
-          <SidebarButton title='חיפוש' buttonType='search' icon='terminal' />
+          <SidebarButton title='חיפוש ופעולות' buttonType='search' icon='terminal' />
         </section>
         <section id='bottom'>
           <SidebarButton
@@ -34,7 +34,7 @@ const RightSidebar = () => {
             icon='calculator'
             onClick={handleOnClickMathPanel}
           />
-          <SidebarButton title='הארכיון' buttonType='archive' icon='archive' />
+          <SidebarButton title='הארכיון שלי' buttonType='archive' icon='archive' />
         </section>
       </div>
       {isRightSidebarOpen && (

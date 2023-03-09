@@ -29,7 +29,26 @@
         width: 45px;
         height: 45px;
         border-radius: 15px;
+        cursor: default;
 
+        &:hover::after {
+          content: attr(data-tooltip);
+          min-width: 90px;
+          position: fixed;        
+          margin-right: 170px;
+          z-index: 1000;
+          padding: 6px 10px 6px 10px;
+          background-color: var(--app-bgcolor);
+          border: 1px solid var(--page-border);
+          border-radius: 6px;
+          opacity: 0%;
+          animation: tooltip 0.1s ease-in-out 0.3s forwards;
+        }
+
+        &:active::after {
+          display: none;
+        }
+        
         &:hover {
           .fi {
             color: var(--tool-color);
@@ -46,6 +65,7 @@
           font-size: 22px;
           color: var(--sidebar-button-color);
           text-shadow: none;
+          padding-top: 3px;
         }
       }
     }
@@ -75,9 +95,9 @@
     }
 
     .sidebar-button#files {
+      background-color: var(--page-border);
       .fi {
-        color: var(--titlebar-color);
-        transform: scale(1.1);
+        color: var(--tool-color);
       }
     }
   }
@@ -90,5 +110,18 @@
 
   to {
     min-width: max-content;
+  }
+}
+
+@keyframes tooltip {
+  from {
+    transform: scale(0.95);
+    opacity: 0%;
+    box-shadow: 0px 1px 3px #00000000;
+  }
+  to {
+    transform: scale(1);
+    opacity: 100%;
+    box-shadow: 0px 1px 3px #0000002a;
   }
 }

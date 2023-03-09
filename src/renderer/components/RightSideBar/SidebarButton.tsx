@@ -19,7 +19,7 @@ const SidebarButton = ({
   return (
     <div>
       <button
-        title={title}
+        data-tooltip={title}
         className='sidebar-button'
         id={buttonType}
         onClick={onClick}
