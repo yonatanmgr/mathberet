@@ -22,7 +22,7 @@ export default function Modal({
       <div className='modal'>
         {children}
         <div className='actions-container'>
-          <button onClick={onConfirm}>כן</button>
+          <button onClick={onConfirm} className='danger-button'>כן</button>
           <button onClick={onCancel}>לא</button>
         </div>
       </div>

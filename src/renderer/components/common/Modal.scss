@@ -8,22 +8,25 @@
   .overlay {
     position: fixed;
     height: 100%;
-    animation: blurPage 0.2s ease-in forwards;
+    animation: blurPage 0.15s ease-in-out forwards;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
     z-index: 1000;
   }
+
   .modal {
     transform-origin: center;
     direction: rtl;
     font-size: larger;
-    animation: popup 0.1s ease-in forwards;
+    animation: popup 0.15s ease-in-out forwards;
     color: var(--titlebar-color);
     display: flex;
     flex-direction: column;
     position: absolute;
+    box-shadow: 0px 1px 10px #0000005c;
     top: 40%;
     background-color: var(--page-bgcolor);
     padding: 2rem;
@@ -31,15 +34,15 @@
     border-radius: 10px;
     border: 1px solid var(--page-border);
     text-shadow: none;
-  
+
     .actions-container {
       margin-top: 1rem;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       width: 100%;
-  
-      button{
+
+      button {
         background-color: var(--tool-bgcolor);
         border-radius: 8px;
         width: 45%;
@@ -47,16 +50,24 @@
         font-weight: 300;
         transition: 0.05s;
         text-shadow: none;
+        border: 1px solid var(--panel-bgcolor);
 
-        &:hover{
+        &:hover {
           transform: scale(1.04);
           font-weight: 700;
           background-color: var(--tool-hover-bgcolor);
         }
-        &:active{
+
+        &:active {
           transform: scale(0.98);
           font-weight: 700;
           background-color: var(--tool-active-bgcolor);
+        }
+
+        &.danger-button {
+          background-color: var(--button-danger);
+          border: 0px solid transparent;
+
         }
       }
     }
@@ -67,19 +78,26 @@
 
 @keyframes blurPage {
   to {
-    -webkit-backdrop-filter: blur(5px);
-    -moz-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(3px);
+    -moz-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
   }
 }
 
 @keyframes popup {
   0% {
-    transform: scale(0.8);
-    opacity: 0;
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    filter: blur(3px);
+
+    transform: scale(0.95);
   }
+
   100% {
+    -webkit-filter: blur(0px);
+    -moz-filter: blur(0px);
+    filter: blur(0px);
+
     transform: scale(1);
-    opacity: 1;
   }
 }
