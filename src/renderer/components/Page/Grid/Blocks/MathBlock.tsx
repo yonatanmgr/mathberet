@@ -15,7 +15,7 @@ function MathBlockContent({ content, blockStateFunction }: ValueProps) {
   return (
     <MathView
       ref={ref}
-      value={content ? content.latex : ''}
+      value={typeof content.latex != 'object' ? content.latex : ''}
       className='math-field-element'
       inlineShortcuts={ML_SHORTCUTS}
       keybindings={ML_KEYBINDINGS}

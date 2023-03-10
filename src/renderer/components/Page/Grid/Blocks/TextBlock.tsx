@@ -38,7 +38,7 @@ const TextBlockContent = ({content, blockStateFunction}: ValueProps) => {
     () => withShortcuts(withReact(withHistory(createEditor()))),
     []
   )
-  const [value, setValue] = useState(content ? content.text : [{
+  const [value, setValue] = useState(typeof content.text != 'object' ? content.text : [{
     type: 'paragraph',
     children: [{ text: '' }],  
   }])
@@ -46,7 +46,6 @@ const TextBlockContent = ({content, blockStateFunction}: ValueProps) => {
   useEffect(() => {
     blockStateFunction(value)
   }, [value])
-  
 
   const handleDOMBeforeInput = useCallback((e: InputEvent) => {
     queueMicrotask(() => {

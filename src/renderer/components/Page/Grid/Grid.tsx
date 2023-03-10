@@ -320,7 +320,7 @@ const PageGrid = () => {
           />
         ))}
       </ResponsiveGridLayout>
-
+      <Notification scene={popupType} />
       <ConfirmModal
         open={areYouSureDeleteDialogOpen}
         onConfirm={handleConfirm}

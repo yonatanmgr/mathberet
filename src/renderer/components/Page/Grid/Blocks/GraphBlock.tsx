@@ -18,7 +18,7 @@ function latex2function(latex: string, i: number){
 }
 
 function GraphBlockContent({content, blockStateFunction}: ValueProps) {    
-    const [value, setValue] = useState<string[]>(content ? content.plots : [""])    
+    const [value, setValue] = useState<string[]>(typeof content.plots != 'object' ? content.plots : [""])    
 
     useEffect(() => {
         blockStateFunction(value)
