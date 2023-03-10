@@ -14,6 +14,10 @@ type MathTreeItem = {
   path: string;
 } & TreeItem;
 
+type TreeItemsObj = {
+  [key: string]: MathTreeItem;
+};
+
 function FileSystem() {
   const { setSelectedFile } = useGeneralContext();
 
@@ -23,10 +27,11 @@ function FileSystem() {
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const [items, setItems] = useState({
+  const [items, setItems] = useState<TreeItemsObj>({
     root: {
       index: 'root',
       data: '',
+      path: '',
     },
   });
 
@@ -40,10 +45,16 @@ function FileSystem() {
     });
   }, []);
 
-  const deleteItemFromItsPreviousParent = (prev, item: TreeItem) => {
-    for (const [key, value] of Object.entries(prev)) {
-      if (value.children.includes(item.index)) {
-        value.children = value.children.filter((child) => child !== item.index);
+  const deleteItemFromItsPreviousParent = (
+    prev: TreeItemsObj,
+    item: TreeItem,
+  ) => {
+    for (const [, value] of Object.entries(prev)) {
+      const mathItemTree = value as MathTreeItem;
+      if (mathItemTree.children.includes(item.index)) {
+        mathItemTree.children = mathItemTree.children.filter(
+          (child) => child !== item.index,
+        );
       }
     }
   };
@@ -116,7 +127,7 @@ function FileSystem() {
   };
 
   const updateItemsPosition = (
-    prev: any,
+    prev: TreeItemsObj,
     item: TreeItem,
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
@@ -126,7 +137,10 @@ function FileSystem() {
     return prev;
   };
 
-  const handleOnDrop = (items, target) => {
+  const handleOnDrop = (
+    items: any,
+    target: DraggingPositionItem | DraggingPositionBetweenItems,
+  ) => {
     setItems((prev) => {
       // Handle D&D intentionally only for one item
       const item = items[0];
@@ -147,7 +161,7 @@ function FileSystem() {
     setItems((prev) => generateStateWithNewFolder(prev));
   };
 
-  const generateStateWithNewFolder = (prev) => {
+  const generateStateWithNewFolder = (prev: TreeItemsObj) => {
     let parentValue;
     let parentKey;
 
@@ -186,7 +200,7 @@ function FileSystem() {
 
   const newFileKey = 'קובץ חדש';
 
-  const generateStateWithNewFile = (prev) => {
+  const generateStateWithNewFile = (prev: TreeItemsObj) => {
     let parentValue;
     let parentKey;
 
