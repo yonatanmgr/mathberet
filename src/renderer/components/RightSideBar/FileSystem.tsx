@@ -82,7 +82,13 @@ function FileSystem() {
     } else {
       if (prev[target.targetItem].isFolder) {
         prev[target.targetItem].children.push(item.index);
-        changeItemPath(item, prev[target.targetItem].path + '\\' + item.index);
+        changeItemPath(
+          item,
+          prev[target.targetItem].path +
+            '\\' +
+            item.index +
+            (item.isFolder ? '' : '.json'),
+        );
       } else {
         for (const [key, value] of Object.entries(prev)) {
           if (value.children.includes(target.targetItem)) {
@@ -192,6 +198,7 @@ function FileSystem() {
         data: newFileKey,
         children: [],
         path: newFilePath,
+        isFolder: false,
       },
     };
 
@@ -201,7 +208,8 @@ function FileSystem() {
   };
 
   const addFile = () => {
-    if (items[newFileKey]?.isFolder === false) {
+    //Todo: check also that they are in the same folder - compare paths
+    if (items[newFileKey]?.isFolder == false) {
       alert('קובץ חדש כבר קיים');
       return;
     }
