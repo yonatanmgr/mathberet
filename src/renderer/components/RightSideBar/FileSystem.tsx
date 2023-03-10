@@ -10,6 +10,10 @@ import {
 } from 'react-complex-tree';
 import './FileSystem.scss';
 
+type MathTreeItem = {
+  path: string;
+} & TreeItem;
+
 function FileSystem() {
   const { setSelectedFile } = useGeneralContext();
 
@@ -93,12 +97,17 @@ function FileSystem() {
             (item.isFolder ? '' : '.json'),
         );
       } else {
-        for (const [key, value] of Object.entries(prev)) {
-          if (value.children.includes(target.targetItem)) {
-            value.children.push(item.index);
+        for (const [, value] of Object.entries(prev)) {
+          const mathTreeItem = value as MathTreeItem;
+
+          if (mathTreeItem.children.includes(target.targetItem)) {
+            mathTreeItem.children.push(item.index);
             changeItemPath(
               item,
-              value.path + '\\' + item.index + (item.isFolder ? '' : '.json'),
+              mathTreeItem.path +
+                '\\' +
+                item.index +
+                (item.isFolder ? '' : '.json'),
             );
           }
         }
@@ -144,8 +153,9 @@ function FileSystem() {
 
     if (focusedItem) {
       for (const [key, value] of Object.entries(prev)) {
-        if (value.children.includes(focusedItem)) {
-          parentValue = value;
+        const mathTreeItem = value as MathTreeItem;
+        if (mathTreeItem.children.includes(focusedItem)) {
+          parentValue = mathTreeItem;
           parentKey = key;
         }
       }
@@ -182,8 +192,9 @@ function FileSystem() {
 
     if (focusedItem) {
       for (const [key, value] of Object.entries(prev)) {
-        if (value.children.includes(focusedItem)) {
-          parentValue = value;
+        const mathTreeItem = value as MathTreeItem;
+        if (mathTreeItem.children.includes(focusedItem)) {
+          parentValue = mathTreeItem;
           parentKey = key;
         }
       }
@@ -222,12 +233,12 @@ function FileSystem() {
     setItems((prev) => generateStateWithNewFile(prev));
   };
 
-  const handleRenameItem = (item: TreeItem, name: string): void => {
+  const handleRenameItem = (item: MathTreeItem, name: string): void => {
     if (items[name]) {
       setErrorModalContent('כבר קיים שם כזה');
       setErrorModalOpen(true);
     } else {
-      let newPath;
+      let newPath: string;
 
       if (item.isFolder) {
         const split = item.path.split('\\');
@@ -256,12 +267,13 @@ function FileSystem() {
 
         delete newState[oldIndex];
 
-        for (const [key, value] of Object.entries(newState)) {
-          if (value.children.includes(oldIndex)) {
-            value.children = value.children.filter(
+        for (const [, value] of Object.entries(newState)) {
+          const mathTreeItem = value as MathTreeItem;
+          if (mathTreeItem.children.includes(oldIndex)) {
+            mathTreeItem.children = mathTreeItem.children.filter(
               (child) => child !== oldIndex,
             );
-            value.children.push(name);
+            mathTreeItem.children.push(name);
           }
         }
 
@@ -303,8 +315,9 @@ function FileSystem() {
           }}
           onDrop={handleOnDrop}
           onFocusItem={(item) => {
-            setFocusedItem(item.index);
-            if (!item.isFolder) setSelectedFile(item.path);
+            const mathTreeItem = item as MathTreeItem;
+            setFocusedItem(mathTreeItem.index);
+            if (!item.isFolder) setSelectedFile(mathTreeItem.path);
           }}
           onExpandItem={(item) =>
             setExpandedItems([...expandedItems, item.index])
