@@ -1,3 +1,4 @@
+import ErrorModal from '@components/common/Modals/ErrorModal';
 import { useGeneralContext } from '@components/GeneralContext';
 import React, { useEffect, useState } from 'react';
 import {
@@ -12,6 +13,8 @@ import './FileSystem.scss';
 function FileSystem() {
   const { setSelectedFile } = useGeneralContext();
 
+  const [errorModalContent, setErrorModalContent] = useState('');
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [focusedItem, setFocusedItem] = useState();
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -126,8 +129,10 @@ function FileSystem() {
   const newFolderKey = 'תיקיה חדשה';
 
   const addFolder = () => {
+    //Todo: check also that they are in the same folder - compare paths
     if (items[newFolderKey]?.isFolder) {
-      alert('תיקיה חדשה כבר קיימת');
+      setErrorModalContent('תיקיה חדשה כבר קיימת');
+      setErrorModalOpen(true);
       return;
     }
     setItems((prev) => generateStateWithNewFolder(prev));
@@ -210,7 +215,8 @@ function FileSystem() {
   const addFile = () => {
     //Todo: check also that they are in the same folder - compare paths
     if (items[newFileKey]?.isFolder == false) {
-      alert('קובץ חדש כבר קיים');
+      setErrorModalContent(`'קובץ חדש כבר קיים'`);
+      setErrorModalOpen(true);
       return;
     }
     setItems((prev) => generateStateWithNewFile(prev));
@@ -218,7 +224,8 @@ function FileSystem() {
 
   const handleRenameItem = (item: TreeItem, name: string): void => {
     if (items[name]) {
-      alert('כבר קיים שם כזה');
+      setErrorModalContent('כבר קיים שם כזה');
+      setErrorModalOpen(true);
     } else {
       let newPath;
 
@@ -262,6 +269,8 @@ function FileSystem() {
       });
     }
   };
+
+  const handleErrorModalClose = () => setErrorModalOpen(false);
 
   return (
     <div className='file-system'>
@@ -313,6 +322,9 @@ function FileSystem() {
           <Tree treeId='tree-2' rootItem='root' treeLabel='Tree Example' />
         </ControlledTreeEnvironment>
       </div>
+      <ErrorModal open={errorModalOpen} onClose={handleErrorModalClose}>
+        {errorModalContent}
+      </ErrorModal>
     </div>
   );
 }
