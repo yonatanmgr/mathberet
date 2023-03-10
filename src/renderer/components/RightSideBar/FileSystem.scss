@@ -44,6 +44,21 @@
         &:hover {
           background: none;
           color: var(--button-color);
+
+          &::after {
+            content: attr(data-tooltip);
+            min-width: max-content;
+            position: fixed;
+            margin-bottom: 100px;
+            z-index: 1000;
+            padding: 6px 10px 6px 10px;
+            background-color: var(--button-bgcolor);
+            text-shadow: none;
+            border: 1px solid var(--page-border);
+            border-radius: 6px;
+            opacity: 0%;
+            animation: tooltip 0.1s ease-in-out 0.2s forwards;
+          }
         }
 
         &:active {
@@ -68,13 +83,13 @@
     .rct-tree-root {
       height: calc(100% - 30px);
 
-      [role="tree"] {
+      [role='tree'] {
         height: inherit;
 
-        &>.rct-tree-items-container {
+        & > .rct-tree-items-container {
           height: inherit;
 
-          [role="treeitem"] {
+          [role='treeitem'] {
             .rct-tree-item-title-container {
               .rct-tree-item-button {
                 overflow: hidden;
@@ -93,12 +108,17 @@
                 flex-direction: row;
                 justify-content: flex-start;
                 // direction: ltr;
-                padding: 0 var(--rct-item-padding) 0 calc(var(--rct-item-padding) + var(--rct-arrow-container-size) + var(--rct-arrow-padding));
+                padding: 0 var(--rct-item-padding) 0
+                  calc(
+                    var(--rct-item-padding) + var(--rct-arrow-container-size) +
+                      var(--rct-arrow-padding)
+                  );
                 margin-right: calc(-1 * var(--rct-arrow-size));
                 margin-left: calc(-1 * var(--rct-arrow-size));
                 padding-right: 12px;
                 cursor: var(--rct-cursor);
-                transition: color 100ms ease-out, background-color 100ms ease-out, font-weight 100ms ease-in;
+                transition: color 100ms ease-out,
+                  background-color 100ms ease-out, font-weight 100ms ease-in;
 
                 &:hover {
                   background-color: var(--file-hover-bgcolor);
@@ -125,7 +145,7 @@
                   font-family: 'uicons-regular-rounded';
                   font-weight: 300;
                   font-size: large;
-                  content: "\f35d";
+                  content: '\f35d';
                   padding-left: 10px;
                 }
 
@@ -139,7 +159,7 @@
                       font-family: 'uicons-regular-rounded';
                       font-weight: 300;
                       font-size: large;
-                      content: "\f1de";
+                      content: '\f1de';
                     }
                   }
 
@@ -147,7 +167,7 @@
                     font-family: 'uicons-regular-rounded';
                     font-weight: 300;
                     font-size: large;
-                    content: "\f1e6";
+                    content: '\f1e6';
                   }
                 }
               }
@@ -160,7 +180,6 @@
                 background-color: var(--selected-bgcolor);
                 color: var(--titlebar-color);
                 font-weight: 700;
-
 
                 &:hover {
                   background-color: var(--selected-hover-bgcolor);
@@ -176,8 +195,7 @@
               }
             }
 
-
-            [role="group"] {
+            [role='group'] {
               height: fit-content;
               // padding-top: 10px;
               padding-right: 20px;

@@ -260,10 +260,10 @@ function FileSystem() {
       <div className='file-system-header'>
         <span className='file-system-header-title'>המחברות שלי</span>
         <div className='file-system-header-buttons'>
-          <button onClick={addFolder} title='תיקיה חדשה'>
+          <button onClick={addFolder} data-tooltip='תיקיה חדשה'>
             <i className='fi fi-rr-add-folder' />
           </button>
-          <button onClick={addFile} title='קובץ חדש'>
+          <button onClick={addFile} data-tooltip='קובץ חדש'>
             <i className='fi-rr-add-document' />
           </button>
         </div>
