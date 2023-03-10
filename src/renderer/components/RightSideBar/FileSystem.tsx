@@ -7,6 +7,7 @@ import {
   DraggingPositionItem,
   TreeItem,
   DraggingPositionBetweenItems,
+  TreeItemIndex,
 } from 'react-complex-tree';
 import './FileSystem.scss';
 
@@ -23,7 +24,7 @@ function FileSystem() {
 
   const [errorModalContent, setErrorModalContent] = useState('');
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [focusedItem, setFocusedItem] = useState();
+  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -60,7 +61,7 @@ function FileSystem() {
   };
 
   const draggedToTheSameParent = (
-    prev,
+    prev: TreeItemsObj,
     item: TreeItem,
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ): boolean => {
@@ -78,15 +79,15 @@ function FileSystem() {
     return draggedToSameParent;
   };
 
-  const changeItemPath = (item, newPath) => {
+  const changeItemPath = (item: MathTreeItem, newPath: string) => {
     window.api.move(item.path, newPath);
     item.path = newPath;
   };
 
   const addItemToNewParent = (
     target: DraggingPositionItem | DraggingPositionBetweenItems,
-    prev: any,
-    item: TreeItem,
+    prev: TreeItemsObj,
+    item: MathTreeItem,
   ) => {
     if (target.targetType != 'item') {
       prev[target.parentItem].children.push(item.index);
@@ -133,12 +134,12 @@ function FileSystem() {
   ) => {
     deleteItemFromItsPreviousParent(prev, item);
     if (target.targetItem == 'root') return prev;
-    addItemToNewParent(target, prev, item);
+    addItemToNewParent(target, prev, item as MathTreeItem);
     return prev;
   };
 
   const handleOnDrop = (
-    items: any,
+    items: TreeItem[],
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
     setItems((prev) => {
@@ -187,7 +188,7 @@ function FileSystem() {
       [newFolderKey]: {
         index: newFolderKey,
         data: newFolderKey,
-        children: [],
+        children: [] as TreeItemIndex[],
         path: newFolderPath,
         isFolder: true,
       },
