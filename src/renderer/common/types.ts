@@ -22,6 +22,12 @@ export type ValueProps = {
   content: string | string[] | Descendant[] | canvasProps;
 };
 
+export type FileStructure = {
+  tags: string[],
+  blocks: Array<BlockElement>,
+  mathMemory: object
+}
+
 export type BlockElement = {
   type: WidgetType;
   metaData?: ValueProps;

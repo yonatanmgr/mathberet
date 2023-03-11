@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Tag } from './Tag';
+import { TagProps } from './Tag';
+import { useGeneralContext } from '@components/GeneralContext';
 
 const AddTag = () => {
   const [clickState, setClickState] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
   const [savedValue, setSavedValue] = useState('');
+  const { setCurrentFileTags, currentFileTags } = useGeneralContext();
 
   const addTagStyle = {
     backgroundColor: 'unset',
@@ -29,20 +31,28 @@ const AddTag = () => {
     if (!localStorage.getItem('all-tags'))
       localStorage.setItem('all-tags', JSON.stringify([]));
     else {
-      const allTags: Tag[] = JSON.parse(localStorage.getItem('all-tags'));
+      const allTags: TagProps[] = JSON.parse(localStorage.getItem('all-tags'));
 
-      const createdTag: Tag = {
+      const createdTag: TagProps = {
         text: savedValue,
         color: Math.floor(Math.random() * 359).toString(),
       };
-      
-      if (!allTags.find((tag: Tag) => tag.text == createdTag.text) && createdTag.text != '') {
-        allTags.push(createdTag) 
+
+      if (
+        !allTags.find((tag: TagProps) => tag.text == createdTag.text) &&
+        createdTag.text != ''
+      ) {
+        allTags.push(createdTag);
+      }
+
+      if (
+        !currentFileTags.find((tag: TagProps) => tag.text == createdTag.text) &&
+        createdTag.text != ''
+      ) {
+        setCurrentFileTags([...currentFileTags, createdTag.text].flat())
       }
 
       localStorage.setItem('all-tags', JSON.stringify(allTags));
-      
-      window.dispatchEvent(new Event("setTags"));
     }
   }, [savedValue]);
 

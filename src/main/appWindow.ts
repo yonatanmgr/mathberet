@@ -1,8 +1,7 @@
-import { app, BrowserWindow, ipcMain, shell, nativeTheme } from 'electron';
+import { app, BrowserWindow, ipcMain, shell } from 'electron';
 import path from 'path';
 import { registerTitlebarIpc } from '@misc/window/titlebarIPC';
 import * as fs from 'fs';
-import Store from 'electron-store';
 const { resolve } = require('path');
 
 // Electron Forge automatically creates these entry points
@@ -27,7 +26,7 @@ export function createAppWindow(): BrowserWindow {
     autoHideMenuBar: true,
     frame: false,
     titleBarStyle: 'hidden',
-    icon: path.resolve('assets/images/appIcon.ico'),
+    icon: resolve('assets/images/appIcon.ico'),
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -56,39 +55,6 @@ export function createAppWindow(): BrowserWindow {
   return appWindow;
 }
 
-const schema = {
-  theme: { type: 'string', default: 'light' },
-  color: { type: 'number', maximum: 360, minimum: 1, default: 203 },
-  pageStyle: { type: 'string', default: 'transparent' },
-};
-fs.readdir(app.getPath('userData'), (err, res) => {
-  if (err) {
-    fs.mkdirSync(app.getPath('userData'));
-    if (
-      fs.readFileSync(
-        path.join(app.getPath('userData'), 'config.json'),
-        'utf8',
-      ) == ''
-    ) {
-      fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), '{}');
-    }
-  } else if (
-    fs.readFileSync(
-      path.join(app.getPath('userData'), 'config.json'),
-      'utf8',
-    ) == ''
-  ) {
-    fs.writeFileSync(path.join(app.getPath('userData'), 'config.json'), '{}');
-  }
-});
-
-// const store = new Store({ schema });
-// nativeTheme.themeSource = store.get('theme');
-
-// ipcMain.on('delete', (event, file) => {
-//   shell.trashItem(path.resolve(file))
-//   .catch((error) => {console.error(error)});
-// });
 
 ipcMain.on('saveX', (event, data, filePath) => {
   const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
@@ -119,7 +85,7 @@ ipcMain.on('loadX', (event, filePath) => {
 
 ipcMain.on('openFiles', () => {
   shell
-    .openPath(path.resolve(path.join(__dirname, '..', 'files')))
+    .openPath(resolve(path.join(__dirname, '..', 'files')))
     .catch((error) => {
       console.error(error);
     });

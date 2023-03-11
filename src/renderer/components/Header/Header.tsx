@@ -2,28 +2,21 @@ import React, { useEffect, useState } from 'react';
 import '../Application.scss';
 import { icons } from '../Icons';
 import FilePath from './FilePath';
-import Tag from './Tag';
+import { Tag, TagProps } from './Tag';
 import AddTag from './AddTag';
 import WindowControls from '@misc/window/components/WindowControls';
 import { useGeneralContext } from '@components/GeneralContext';
 
-
 const Header = () => {
-  const [tags, setTags] = useState<Tag[]>(
-    JSON.parse(localStorage.getItem('all-tags')),
-  );
-
-  window.addEventListener('setTags', () => {
-    setTags(JSON.parse(localStorage.getItem('all-tags')));
-  });
-
-  const { selectedFile } = useGeneralContext();
-  const [currentFilePath, setCurrentFilePath] = useState("")
+  const allTags = JSON.parse(localStorage.getItem('all-tags'));
+  const { selectedFile, currentFileTags, setCurrentFileTags } = useGeneralContext();
+  const [currentFilePath, setCurrentFilePath] = useState('');
 
   useEffect(() => {
-    setCurrentFilePath(selectedFile)
-  }, [selectedFile])
-  
+    setCurrentFilePath(selectedFile);
+    setCurrentFileTags([])
+  }, [selectedFile]);
+
   return (
     <div className='header'>
       <div className='main-heading'>
@@ -33,16 +26,21 @@ const Header = () => {
           </div>
           <FilePath filePath={currentFilePath} />
           <div className='tags'>
-            {tags
-              ? tags.map((tag) => (
-                  <Tag
-                    key={`tag-${tag.text}`}
-                    text={tag.text}
-                    color={tag.color}
-                  />
-                ))
+            {currentFileTags
+              ? currentFileTags.map((tag: string) => {
+                  const foundTag = allTags.find(
+                    (searchTag: TagProps) => searchTag.text == tag,
+                  );
+                  return (
+                    <Tag
+                      key={`tag-${foundTag.text}`}
+                      text={foundTag.text}
+                      color={foundTag.color}
+                    />
+                  );
+                })
               : null}
-            {currentFilePath ? <AddTag /> : <></> }
+            {currentFilePath ? <AddTag /> : <></>}
           </div>
         </section>
         <section className='header-draggable'></section>

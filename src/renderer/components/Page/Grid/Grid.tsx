@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
 import {
   BlockElement,
+  FileStructure,
   newWidgetRequest,
   WidgetType,
 } from '@renderer/common/types';
@@ -40,8 +41,14 @@ const PageGrid = () => {
   const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
     useState(false);
 
-  const { selectedFile, newWidgetRequest, clearPageRequest, saveRequest } =
-    useGeneralContext();
+  const {
+    selectedFile,
+    newWidgetRequest,
+    clearPageRequest,
+    saveRequest,
+    currentFileTags,
+    setCurrentFileTags,
+  } = useGeneralContext();
 
   useEffect(() => {
     if (newWidgetRequest) AddWidget(newWidgetRequest);
@@ -58,14 +65,19 @@ const PageGrid = () => {
         return;
       }
 
-      const loadedData: Array<BlockElement> = JSON.parse(data);
+      const parsedData = JSON.parse(data)
 
-      if (!Array.isArray(loadedData)) {
+      const blocksData: Array<BlockElement> = parsedData.blocks;
+      parsedData.tags
+        ? setCurrentFileTags(JSON.parse(data).tags)
+        : setCurrentFileTags([]);
+
+      if (!Array.isArray(blocksData)) {
         setState((prev) => ({ ...prev, items: [] }));
         return;
       }
 
-      loadedData.map((block: BlockElement) => {
+      blocksData.map((block: BlockElement) => {
         if (block.y == null) {
           block.y = Infinity;
         }
@@ -74,9 +86,9 @@ const PageGrid = () => {
         }
       });
 
-      setState((prev) => ({ ...prev, items: loadedData }));
+      setState((prev) => ({ ...prev, items: blocksData }));
 
-      let newData: Array<object> = loadedData;
+      let newData: Array<object> = blocksData;
       newData = newData.map((block: BlockElement) => {
         return { id: block.i, metaData: block.metaData };
       });
@@ -86,8 +98,6 @@ const PageGrid = () => {
   }, [selectedFile]);
 
   useEffect(() => {
-    console.log(selectedFile);
-    
     if (selectedFile) window.api.loadX(selectedFile);
   }, [selectedFile]);
 
@@ -254,8 +264,14 @@ const PageGrid = () => {
   const saveGridData = () => {
     const currentItems = state.items;
     currentItems.map(saveMetaData);
-    const data = JSON.stringify(currentItems);
-    window.api.saveX(data, selectedFile);
+
+    const fileData: FileStructure = {
+      blocks: currentItems,
+      tags: currentFileTags,
+      mathMemory: {},
+    };
+
+    window.api.saveX(JSON.stringify(fileData), selectedFile);
   };
 
   const popupAnimation = (type: string) => {
