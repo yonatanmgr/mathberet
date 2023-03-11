@@ -18,14 +18,7 @@ function latex2function(latex: string, i: number) {
 }
 
 function GraphBlockContent({ content, blockStateFunction }: ValueProps) {
-  const defaultValue = [''];
-  const [value, setValue] = useState<string[]>(
-    content
-      ? typeof content.plots != 'object'
-        ? content.plots
-        : defaultValue
-      : defaultValue,
-  );
+  const [value, setValue] = useState(content ? content : ['']);
 
   useEffect(() => {
     blockStateFunction(value);
@@ -65,7 +58,7 @@ function GraphBlockContent({ content, blockStateFunction }: ValueProps) {
       >
         <Coordinates.Cartesian />
         <Plot.OfX
-          y={(x: number) => latex2function(value, x)}
+          y={(x: number) => latex2function(value[0], x)}
           color={Theme.blue}
         />
         {/* {points} */}

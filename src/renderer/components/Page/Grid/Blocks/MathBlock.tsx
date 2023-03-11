@@ -16,13 +16,7 @@ function MathBlockContent({ content, blockStateFunction }: ValueProps) {
   return (
     <MathView
       ref={ref}
-      value={
-        content
-          ? typeof content.latex == 'string'
-            ? content.latex
-            : defaultValue
-          : defaultValue
-      }
+      value={content ? content.toString() : defaultValue}
       className='math-field-element'
       inlineShortcuts={ML_SHORTCUTS}
       keybindings={ML_KEYBINDINGS}

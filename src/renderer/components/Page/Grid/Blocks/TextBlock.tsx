@@ -33,24 +33,16 @@ const SHORTCUTS = {
 };
 
 const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
-  const defaultValue = [{ type: 'paragraph', children: [{ text: '' }] }];
+  const valueToSet = content
+    ? content
+    : [{ type: 'paragraph', children: [{ text: '' }] }];
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
     [],
   );
 
-  let valueToSet: Descendant[];
-
-  if (content) {
-    if (content.text instanceof Array) {
-      valueToSet = content.text;
-    } else {
-      valueToSet = defaultValue;
-    }
-  }
-
-  const [value, setValue] = useState<Descendant[]>(valueToSet);
+  const [value, setValue] = useState(valueToSet);
 
   useEffect(() => {
     blockStateFunction(value);

@@ -243,26 +243,8 @@ const PageGrid = () => {
   const saveMetaData = (block: BlockElement) => {
     const found = allValues.find((state) => state.id == block.i).metaData;
 
-    function saveSwitcher(widgetType: WidgetType) {
-      switch (widgetType) {
-        case WidgetType.Text:
-          return { text   :  found };
-        case WidgetType.Math:
-          return { latex  :  found };
-        case WidgetType.Graph:
-          return { plots  :  found };
-        case WidgetType.Draw:
-          return { canvas :  found };
-        default:
-          return null;
-      }
-    }
-
-    console.log(saveSwitcher(block.type));
-    
-
     block.metaData = {
-      content: saveSwitcher(block.type),
+      content: found.content,
       blockStateFunction: () => any,
     };
   };

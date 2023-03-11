@@ -3,7 +3,7 @@ import { Tldraw, TldrawApp } from '@tldraw/tldraw';
 import React, { useEffect, useState } from 'react';
 
 function DrawBlockContent({ content, blockStateFunction }: ValueProps) {
-  const [canvasState, setCanvasState] = useState<object>({ shapes: [] });
+  const [canvasState, setCanvasState] = useState({ shapes: [] });
 
   useEffect(() => {
     blockStateFunction(canvasState);
@@ -12,7 +12,6 @@ function DrawBlockContent({ content, blockStateFunction }: ValueProps) {
   return (
     <div className='draw-applet'>
       <Tldraw
-        // document={content ? content.canvas : {}}
         autofocus={true}
         showMenu={false}
         showMultiplayerMenu={false}
@@ -21,7 +20,7 @@ function DrawBlockContent({ content, blockStateFunction }: ValueProps) {
         showZoom={false}
         onMount={(app: TldrawApp) => {
           app.setSetting('showGrid', true);
-          app.insertContent(content ? content.canvas : { shapes: [] });
+          app.insertContent(content ? content : { shapes: [] });
           app.zoomToContent();
         }}
         onPersist={(app: TldrawApp) => setCanvasState(app.getContent())}

@@ -11,18 +11,15 @@ export enum WidgetType {
   Draw,
 }
 
-export type ValueProps = {
-  blockStateFunction: (...args: unknown[]) => unknown;
-  content: {
-    latex?: string;
-    plots?: Array<string>;
-    text?: Array<Descendant>;
-    canvas?: {
+type canvasProps = {
       shapes: TDShape[];
       bindings?: TDBinding[];
       assets?: TDAsset[];
-    };
-  };
+    }
+
+export type ValueProps = {
+  blockStateFunction: (...args: unknown[]) => unknown;
+  content: string | string[] | Descendant[] | canvasProps;
 };
 
 export type BlockElement = {

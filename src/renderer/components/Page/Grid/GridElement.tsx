@@ -24,7 +24,7 @@ type GridElementProps = {
 function Switcher(
   widgetType: WidgetType,
   blockValue: ValueProps,
-  blockStateFunction: (...args: unknown[]) => any,
+  blockStateFunction: (...args: unknown[]) => unknown,
 ) {
 
   try {
@@ -90,7 +90,7 @@ const GridElement = React.forwardRef(
     useEffect(() => {
       const currentState = {
         id: blockElement.i,
-        metaData: blockState,
+        metaData: {content: blockState},
       };
 
       const newAllValues = allValues.map((state) =>
@@ -102,7 +102,7 @@ const GridElement = React.forwardRef(
       if (!newAllValues.find((state) => state.id == currentState.id)) {
         newAllValues.push(currentState);
       }
-
+      
       setValuesFunction(newAllValues);
     }, [blockState]);
 
