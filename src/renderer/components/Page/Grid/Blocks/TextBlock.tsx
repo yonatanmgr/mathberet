@@ -33,15 +33,16 @@ const SHORTCUTS = {
 }
 
 const TextBlockContent = ({content, blockStateFunction}: ValueProps) => {
+  const defaultValue = [{
+    type: 'paragraph',
+    children: [{ text: '' }],  
+  }]
   const renderElement = useCallback(props => <Element {...props} />, [])
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
     []
   )
-  const [value, setValue] = useState(typeof content.text != 'object' ? content.text : [{
-    type: 'paragraph',
-    children: [{ text: '' }],  
-  }])
+  const [value, setValue] = useState(content ? (typeof content.text != 'object' ? content.text : defaultValue): defaultValue)
 
   useEffect(() => {
     blockStateFunction(value)

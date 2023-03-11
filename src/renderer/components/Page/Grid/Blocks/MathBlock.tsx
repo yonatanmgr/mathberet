@@ -5,8 +5,9 @@ import ML_KEYBINDINGS from '@common/keybindings';
 import { ValueProps } from '@renderer/common/types';
 
 function MathBlockContent({ content, blockStateFunction }: ValueProps) {
+  const defaultValue = '';
   const ref = useRef<MathViewRef>(null);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
     blockStateFunction(value);
@@ -15,7 +16,7 @@ function MathBlockContent({ content, blockStateFunction }: ValueProps) {
   return (
     <MathView
       ref={ref}
-      value={typeof content.latex != 'object' ? content.latex : ''}
+      value={content ? (typeof content.latex != 'object' ? content.latex : defaultValue): defaultValue}
       className='math-field-element'
       inlineShortcuts={ML_SHORTCUTS}
       keybindings={ML_KEYBINDINGS}
