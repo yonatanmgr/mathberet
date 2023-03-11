@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   createEditor,
   Descendant,
@@ -8,16 +8,16 @@ import {
   Point,
   Range,
   Transforms,
-} from 'slate'
-import { withHistory } from 'slate-history'
-import { Editable, ReactEditor, Slate, withReact } from 'slate-react'
-import { ValueProps } from '@renderer/common/types'
+} from 'slate';
+import { withHistory } from 'slate-history';
+import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
+import { ValueProps } from '@renderer/common/types';
 
 type BulletedListElement = {
-  type: 'bulleted-list'
-  align?: string
-  children: Descendant[]
-}
+  type: 'bulleted-list';
+  align?: string;
+  children: Descendant[];
+};
 
 const SHORTCUTS = {
   '*': 'list-item',
@@ -30,135 +30,144 @@ const SHORTCUTS = {
   '####': 'heading-four',
   '#####': 'heading-five',
   '######': 'heading-six',
-}
+};
 
-const TextBlockContent = ({content, blockStateFunction}: ValueProps) => {
-  const defaultValue = [{
-    type: 'paragraph',
-    children: [{ text: '' }],  
-  }]
-  const renderElement = useCallback(props => <Element {...props} />, [])
+const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
+  const defaultValue = [{ type: 'paragraph', children: [{ text: '' }] }];
+  const renderElement = useCallback((props) => <Element {...props} />, []);
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
-    []
-  )
-  const [value, setValue] = useState(content ? (typeof content.text != 'object' ? content.text : defaultValue): defaultValue)
+    [],
+  );
+
+  let valueToSet: Descendant[];
+
+  if (content) {
+    if (content.text instanceof Array) {
+      valueToSet = content.text;
+    } else {
+      valueToSet = defaultValue;
+    }
+  }
+
+  const [value, setValue] = useState<Descendant[]>(valueToSet);
 
   useEffect(() => {
-    blockStateFunction(value)
-  }, [value])
+    blockStateFunction(value);
+  }, [value]);
 
   const handleDOMBeforeInput = useCallback((e: InputEvent) => {
     queueMicrotask(() => {
-      const pendingDiffs = ReactEditor.androidPendingDiffs(editor)
+      const pendingDiffs = ReactEditor.androidPendingDiffs(editor);
 
       const scheduleFlush = pendingDiffs?.some(({ diff, path }) => {
         if (!diff.text.endsWith(' ')) {
-          return false
+          return false;
         }
 
-        const { text } = SlateNode.leaf(editor, path)
-        const beforeText = text.slice(0, diff.start) + diff.text.slice(0, -1)
+        const { text } = SlateNode.leaf(editor, path);
+        const beforeText = text.slice(0, diff.start) + diff.text.slice(0, -1);
         if (!(beforeText in SHORTCUTS)) {
-          return
+          return;
         }
 
         const blockEntry = Editor.above(editor, {
           at: path,
-          match: n => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-        })
+          match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
+        });
         if (!blockEntry) {
-          return false
+          return false;
         }
 
-        const [, blockPath] = blockEntry
-        return Editor.isStart(editor, Editor.start(editor, path), blockPath)
-      })
+        const [, blockPath] = blockEntry;
+        return Editor.isStart(editor, Editor.start(editor, path), blockPath);
+      });
 
       if (scheduleFlush) {
-        ReactEditor.androidScheduleFlush(editor)
+        ReactEditor.androidScheduleFlush(editor);
       }
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <Slate
       editor={editor}
       value={value}
-      onChange={currentValue=>setValue(currentValue)}
+      onChange={(currentValue) => setValue(currentValue)}
     >
-      <Editable className="textbox"
+      <Editable
+        className='textbox'
         onDOMBeforeInput={handleDOMBeforeInput}
         renderElement={renderElement}
-        placeholder="כתבו טקסט כאן..."
+        placeholder='כתבו טקסט כאן...'
         autoFocus
       />
     </Slate>
-  )
-}
+  );
+};
 
-const withShortcuts = editor => {
-  const { deleteBackward, insertText } = editor
+const withShortcuts = (editor) => {
+  const { deleteBackward, insertText } = editor;
 
-  editor.insertText = text => {
-    const { selection } = editor
+  editor.insertText = (text) => {
+    const { selection } = editor;
 
     if (text.endsWith(' ') && selection && Range.isCollapsed(selection)) {
-      const { anchor } = selection
+      const { anchor } = selection;
       const block = Editor.above(editor, {
-        match: n => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-      })
-      const path = block ? block[1] : []
-      const start = Editor.start(editor, path)
-      const range = { anchor, focus: start }
-      const beforeText = Editor.string(editor, range) + text.slice(0, -1)
-      const type = SHORTCUTS[beforeText]
+        match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
+      });
+      const path = block ? block[1] : [];
+      const start = Editor.start(editor, path);
+      const range = { anchor, focus: start };
+      const beforeText = Editor.string(editor, range) + text.slice(0, -1);
+      const type = SHORTCUTS[beforeText];
 
       if (type) {
-        Transforms.select(editor, range)
+        Transforms.select(editor, range);
 
         if (!Range.isCollapsed(range)) {
-          Transforms.delete(editor)
+          Transforms.delete(editor);
         }
 
         const newProperties: Partial<SlateElement> = {
           type,
-        }
+        };
         Transforms.setNodes<SlateElement>(editor, newProperties, {
-          match: n => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-        })
+          match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
+        });
 
         if (type === 'list-item') {
           const list: BulletedListElement = {
             type: 'bulleted-list',
             children: [],
-          }
+          };
           Transforms.wrapNodes(editor, list, {
-            match: n =>
+            match: (n) =>
               !Editor.isEditor(n) &&
               SlateElement.isElement(n) &&
               n.type === 'list-item',
-          })
+          });
         }
 
-        return
+        return;
       }
     }
 
-    insertText(text)
-  }
+    insertText(text);
+  };
 
   editor.deleteBackward = (...args) => {
-    const { selection } = editor
+    const { selection } = editor;
 
     if (selection && Range.isCollapsed(selection)) {
       const match = Editor.above(editor, {
-        match: n => SlateElement.isElement(n) && Editor.isBlock(editor, n),
-      })
+        match: (n) => SlateElement.isElement(n) && Editor.isBlock(editor, n),
+      });
 
       if (match) {
-        const [block, path] = match
-        const start = Editor.start(editor, path)
+        const [block, path] = match;
+        const start = Editor.start(editor, path);
 
         if (
           !Editor.isEditor(block) &&
@@ -168,54 +177,53 @@ const withShortcuts = editor => {
         ) {
           const newProperties: Partial<SlateElement> = {
             type: 'paragraph',
-          }
-          Transforms.setNodes(editor, newProperties)
+          };
+          Transforms.setNodes(editor, newProperties);
 
           if (block.type === 'list-item') {
             Transforms.unwrapNodes(editor, {
-              match: n =>
+              match: (n) =>
                 !Editor.isEditor(n) &&
                 SlateElement.isElement(n) &&
                 n.type === 'bulleted-list',
               split: true,
-            })
+            });
           }
 
-          return
+          return;
         }
       }
 
-      deleteBackward(...args)
+      deleteBackward(...args);
     }
-  }
+  };
 
-  return editor
-}
+  return editor;
+};
 
 const Element = ({ attributes, children, element }) => {
   switch (element.type) {
     case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>
+      return <blockquote {...attributes}>{children}</blockquote>;
     case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>
+      return <ul {...attributes}>{children}</ul>;
     case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>
+      return <h1 {...attributes}>{children}</h1>;
     case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>
+      return <h2 {...attributes}>{children}</h2>;
     case 'heading-three':
-      return <h3 {...attributes}>{children}</h3>
+      return <h3 {...attributes}>{children}</h3>;
     case 'heading-four':
-      return <h4 {...attributes}>{children}</h4>
+      return <h4 {...attributes}>{children}</h4>;
     case 'heading-five':
-      return <h5 {...attributes}>{children}</h5>
+      return <h5 {...attributes}>{children}</h5>;
     case 'heading-six':
-      return <h6 {...attributes}>{children}</h6>
+      return <h6 {...attributes}>{children}</h6>;
     case 'list-item':
-      return <li {...attributes}>{children}</li>
+      return <li {...attributes}>{children}</li>;
     default:
-      return <p {...attributes}>{children}</p>
+      return <p {...attributes}>{children}</p>;
   }
-}
+};
 
-
-export default TextBlockContent
+export default TextBlockContent;
