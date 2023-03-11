@@ -86,6 +86,8 @@ const PageGrid = () => {
   }, [selectedFile]);
 
   useEffect(() => {
+    console.log(selectedFile);
+    
     if (selectedFile) window.api.loadX(selectedFile);
   }, [selectedFile]);
 

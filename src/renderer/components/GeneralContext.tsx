@@ -12,7 +12,7 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [saveRequest, setSaveRequest] = useState({ cmd: {} });
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [clearPageRequest, setClearPageRequest] = useState({ cmd: {} });
-  const [selectedFile, setSelectedFile] = useState();
+  const [selectedFile, setSelectedFile] = useState<string>();
 
   return (
     <GeneralContext.Provider

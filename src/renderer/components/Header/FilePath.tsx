@@ -1,15 +1,21 @@
 import React from 'react';
 import './Header.scss';
 
-type FilePathProps = { fileName: string; folderName: string };
+type FilePathProps = { filePath: string };
 
-const FilePath = ({ fileName, folderName }: FilePathProps) => {
+const FilePath = ({ filePath }: FilePathProps) => {
+  const resolvedFilePath = filePath
+    ? filePath.replace('/', '\\').split('\\')
+    : [''];
+  const folderPath = resolvedFilePath.slice(resolvedFilePath.length - 2)[0];
+  const fileName = resolvedFilePath.pop().replace('.json', '');
+
   return (
     <div className='filepath'>
-      <span className='filepath-folder'>{folderName} / </span>
-      <span className='filepath-name'>
-        {fileName}
+      <span className='filepath-folder'>
+        {folderPath == 'files' || fileName == '' ? '' : `${folderPath} /`}
       </span>
+      <span className='filepath-name'>{fileName}</span>
     </div>
   );
 };
