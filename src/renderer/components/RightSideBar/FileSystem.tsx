@@ -1,3 +1,4 @@
+import ErrorModal from '@components/common/Modals/ErrorModal';
 import { useGeneralContext } from '@components/GeneralContext';
 import React, { useEffect, useState } from 'react';
 import {
@@ -6,20 +7,32 @@ import {
   DraggingPositionItem,
   TreeItem,
   DraggingPositionBetweenItems,
+  TreeItemIndex,
 } from 'react-complex-tree';
 import './FileSystem.scss';
+
+type MathTreeItem = {
+  path: string;
+} & TreeItem;
+
+type TreeItemsObj = {
+  [key: string]: MathTreeItem;
+};
 
 function FileSystem() {
   const { setSelectedFile } = useGeneralContext();
 
-  const [focusedItem, setFocusedItem] = useState();
+  const [errorModalContent, setErrorModalContent] = useState('');
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const [items, setItems] = useState({
+  const [items, setItems] = useState<TreeItemsObj>({
     root: {
       index: 'root',
       data: '',
+      path: '',
     },
   });
 
@@ -33,16 +46,22 @@ function FileSystem() {
     });
   }, []);
 
-  const deleteItemFromItsPreviousParent = (prev, item: TreeItem) => {
-    for (const [key, value] of Object.entries(prev)) {
-      if (value.children.includes(item.index)) {
-        value.children = value.children.filter((child) => child !== item.index);
+  const deleteItemFromItsPreviousParent = (
+    prev: TreeItemsObj,
+    item: TreeItem,
+  ) => {
+    for (const [, value] of Object.entries(prev)) {
+      const mathItemTree = value as MathTreeItem;
+      if (mathItemTree.children.includes(item.index)) {
+        mathItemTree.children = mathItemTree.children.filter(
+          (child) => child !== item.index,
+        );
       }
     }
   };
 
   const draggedToTheSameParent = (
-    prev,
+    prev: TreeItemsObj,
     item: TreeItem,
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ): boolean => {
@@ -60,15 +79,15 @@ function FileSystem() {
     return draggedToSameParent;
   };
 
-  const changeItemPath = (item, newPath) => {
+  const changeItemPath = (item: MathTreeItem, newPath: string) => {
     window.api.move(item.path, newPath);
     item.path = newPath;
   };
 
   const addItemToNewParent = (
     target: DraggingPositionItem | DraggingPositionBetweenItems,
-    prev: any,
-    item: TreeItem,
+    prev: TreeItemsObj,
+    item: MathTreeItem,
   ) => {
     if (target.targetType != 'item') {
       prev[target.parentItem].children.push(item.index);
@@ -82,14 +101,25 @@ function FileSystem() {
     } else {
       if (prev[target.targetItem].isFolder) {
         prev[target.targetItem].children.push(item.index);
-        changeItemPath(item, prev[target.targetItem].path + '\\' + item.index);
+        changeItemPath(
+          item,
+          prev[target.targetItem].path +
+            '\\' +
+            item.index +
+            (item.isFolder ? '' : '.json'),
+        );
       } else {
-        for (const [key, value] of Object.entries(prev)) {
-          if (value.children.includes(target.targetItem)) {
-            value.children.push(item.index);
+        for (const [, value] of Object.entries(prev)) {
+          const mathTreeItem = value as MathTreeItem;
+
+          if (mathTreeItem.children.includes(target.targetItem)) {
+            mathTreeItem.children.push(item.index);
             changeItemPath(
               item,
-              value.path + '\\' + item.index + (item.isFolder ? '' : '.json'),
+              mathTreeItem.path +
+                '\\' +
+                item.index +
+                (item.isFolder ? '' : '.json'),
             );
           }
         }
@@ -98,17 +128,20 @@ function FileSystem() {
   };
 
   const updateItemsPosition = (
-    prev: any,
+    prev: TreeItemsObj,
     item: TreeItem,
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
     deleteItemFromItsPreviousParent(prev, item);
     if (target.targetItem == 'root') return prev;
-    addItemToNewParent(target, prev, item);
+    addItemToNewParent(target, prev, item as MathTreeItem);
     return prev;
   };
 
-  const handleOnDrop = (items, target) => {
+  const handleOnDrop = (
+    items: TreeItem[],
+    target: DraggingPositionItem | DraggingPositionBetweenItems,
+  ) => {
     setItems((prev) => {
       // Handle D&D intentionally only for one item
       const item = items[0];
@@ -120,21 +153,24 @@ function FileSystem() {
   const newFolderKey = 'תיקיה חדשה';
 
   const addFolder = () => {
+    //Todo: check also that they are in the same folder - compare paths
     if (items[newFolderKey]?.isFolder) {
-      alert('תיקיה חדשה כבר קיימת');
+      setErrorModalContent('תיקיה חדשה כבר קיימת');
+      setErrorModalOpen(true);
       return;
     }
     setItems((prev) => generateStateWithNewFolder(prev));
   };
 
-  const generateStateWithNewFolder = (prev) => {
+  const generateStateWithNewFolder = (prev: TreeItemsObj) => {
     let parentValue;
     let parentKey;
 
     if (focusedItem) {
       for (const [key, value] of Object.entries(prev)) {
-        if (value.children.includes(focusedItem)) {
-          parentValue = value;
+        const mathTreeItem = value as MathTreeItem;
+        if (mathTreeItem.children.includes(focusedItem)) {
+          parentValue = mathTreeItem;
           parentKey = key;
         }
       }
@@ -152,7 +188,7 @@ function FileSystem() {
       [newFolderKey]: {
         index: newFolderKey,
         data: newFolderKey,
-        children: [],
+        children: [] as TreeItemIndex[],
         path: newFolderPath,
         isFolder: true,
       },
@@ -165,14 +201,15 @@ function FileSystem() {
 
   const newFileKey = 'קובץ חדש';
 
-  const generateStateWithNewFile = (prev) => {
+  const generateStateWithNewFile = (prev: TreeItemsObj) => {
     let parentValue;
     let parentKey;
 
     if (focusedItem) {
       for (const [key, value] of Object.entries(prev)) {
-        if (value.children.includes(focusedItem)) {
-          parentValue = value;
+        const mathTreeItem = value as MathTreeItem;
+        if (mathTreeItem.children.includes(focusedItem)) {
+          parentValue = mathTreeItem;
           parentKey = key;
         }
       }
@@ -192,6 +229,7 @@ function FileSystem() {
         data: newFileKey,
         children: [],
         path: newFilePath,
+        isFolder: false,
       },
     };
 
@@ -201,18 +239,21 @@ function FileSystem() {
   };
 
   const addFile = () => {
-    if (items[newFileKey]?.isFolder === false) {
-      alert('קובץ חדש כבר קיים');
+    //Todo: check also that they are in the same folder - compare paths
+    if (items[newFileKey]?.isFolder == false) {
+      setErrorModalContent(`'קובץ חדש כבר קיים'`);
+      setErrorModalOpen(true);
       return;
     }
     setItems((prev) => generateStateWithNewFile(prev));
   };
 
-  const handleRenameItem = (item: TreeItem, name: string): void => {
+  const handleRenameItem = (item: MathTreeItem, name: string): void => {
     if (items[name]) {
-      alert('כבר קיים שם כזה');
+      setErrorModalContent('כבר קיים שם כזה');
+      setErrorModalOpen(true);
     } else {
-      let newPath;
+      let newPath: string;
 
       if (item.isFolder) {
         const split = item.path.split('\\');
@@ -241,12 +282,13 @@ function FileSystem() {
 
         delete newState[oldIndex];
 
-        for (const [key, value] of Object.entries(newState)) {
-          if (value.children.includes(oldIndex)) {
-            value.children = value.children.filter(
+        for (const [, value] of Object.entries(newState)) {
+          const mathTreeItem = value as MathTreeItem;
+          if (mathTreeItem.children.includes(oldIndex)) {
+            mathTreeItem.children = mathTreeItem.children.filter(
               (child) => child !== oldIndex,
             );
-            value.children.push(name);
+            mathTreeItem.children.push(name);
           }
         }
 
@@ -255,15 +297,17 @@ function FileSystem() {
     }
   };
 
+  const handleErrorModalClose = () => setErrorModalOpen(false);
+
   return (
     <div className='file-system'>
       <div className='file-system-header'>
         <span className='file-system-header-title'>המחברות שלי</span>
         <div className='file-system-header-buttons'>
-          <button onClick={addFolder} title='תיקיה חדשה'>
+          <button onClick={addFolder} data-tooltip='תיקיה חדשה'>
             <i className='fi fi-rr-add-folder' />
           </button>
-          <button onClick={addFile} title='קובץ חדש'>
+          <button onClick={addFile} data-tooltip='קובץ חדש'>
             <i className='fi-rr-add-document' />
           </button>
         </div>
@@ -286,8 +330,9 @@ function FileSystem() {
           }}
           onDrop={handleOnDrop}
           onFocusItem={(item) => {
-            setFocusedItem(item.index);
-            if (!item.isFolder) setSelectedFile(item.path);
+            const mathTreeItem = item as MathTreeItem;
+            setFocusedItem(mathTreeItem.index);
+            if (!item.isFolder) setSelectedFile(mathTreeItem.path);
           }}
           onExpandItem={(item) =>
             setExpandedItems([...expandedItems, item.index])
@@ -305,6 +350,9 @@ function FileSystem() {
           <Tree treeId='tree-2' rootItem='root' treeLabel='Tree Example' />
         </ControlledTreeEnvironment>
       </div>
+      <ErrorModal open={errorModalOpen} onClose={handleErrorModalClose}>
+        {errorModalContent}
+      </ErrorModal>
     </div>
   );
 }
