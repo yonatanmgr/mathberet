@@ -6,8 +6,9 @@ import LeftSidebar from './LeftSidebar/LeftSidebar';
 import Header from './Header/Header';
 import '../../../node_modules/react-grid-layout/css/styles.css';
 import '../../../node_modules/react-resizable/css/styles.css';
-import KBar from './RightSideBar/KBar';
 import { GeneralContextProvider } from './GeneralContext';
+import { KBarProvider } from 'kbar';
+import { KBar, actions } from './RightSideBar/KBar';
 
 export const setColor = (name: string, hue: number) => {
   localStorage.setItem('color', name);
@@ -68,15 +69,17 @@ const Application = () => {
 
   return (
     <GeneralContextProvider>
-      <div id='erwt'>
-        <Header />
-        <div className='workspace'>
-          <RightSidebar />
-          <KBar />
-          <Page />
-          <LeftSidebar />
+      <KBarProvider actions={actions} options={{ toggleShortcut: "$mod+Shift+p"}}>
+        <div id='erwt'>
+          <Header />
+          <div className='workspace'>
+            <RightSidebar />
+            <KBar />
+            <Page />
+            <LeftSidebar />
+          </div>
         </div>
-      </div>
+      </KBarProvider>
     </GeneralContextProvider>
   );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  KBarProvider,
   KBarPortal,
   KBarPositioner,
   KBarAnimator,
@@ -11,10 +10,75 @@ import {
 
 import { setColor, setTheme } from '@components/Application';
 
-function KBar() {
+export const actions = [
+  {
+    id: "preferences",
+    name: "העדפות משתמש"
+  },
+  {
+    id: "theme",
+    name: "ערכת נושא",
+    parent: "preferences"
+  },
+  {
+    id: "color",
+    name: "צבע נושא",
+    parent: "preferences"
+  },
+  {
+    id: "blue",
+    name: "כחול",
+    perform: () => { setColor('blue', 210) },
+    parent: 'color'
+  },
+  {
+    id: "pink",
+    name: "ורוד",
+    perform: () => { setColor('pink', 300) },
+    parent: 'color'
+  },
+  {
+    id: "yellow",
+    name: "צהוב",
+    perform: () => { setColor('yellow', 35) },
+    parent: 'color'
+  },
+  {
+    id: "purple",
+    name: "סגול",
+    perform: () => { setColor('purple', 250) },
+    parent: 'color'
+  },
+  {
+    id: "red",
+    name: "אדום",
+    perform: () => { setColor('red', 0) },
+    parent: 'color'
+  },
+  {
+    id: "green",
+    name: "ירוק",
+    perform: () => { setColor('green', 140) },
+    parent: 'color'
+  },
+  {
+    id: "light",
+    name: "מצב אור",
+    perform: () => { setTheme(0) },
+    parent: 'theme'
+  },
+  {
+    id: "dark",
+    name: "מצב חושך",
+    perform: () => { setTheme(1) },
+    parent: 'theme'
+  },
+]
+
+export function KBar() {
   function RenderResults() {
     const { results } = useMatches();
-  
+
     return (
       <KBarResults
         items={results}
@@ -39,70 +103,6 @@ function KBar() {
   }
   
 
-  const actions = [
-    {
-      id: "preferences",
-      name: "העדפות משתמש"
-    },
-    {
-      id: "theme",
-      name: "ערכת נושא",
-      parent: "preferences"
-    },
-    {
-      id: "color",
-      name: "צבע נושא",
-      parent: "preferences"
-    },
-    {
-      id: "blue",
-      name: "כחול",
-      perform: () => { setColor('blue', 210) },
-      parent: 'color'
-    },
-    {
-      id: "pink",
-      name: "ורוד",
-      perform: () => { setColor('pink', 300) },
-      parent: 'color'
-    },
-    {
-      id: "yellow",
-      name: "צהוב",
-      perform: () => { setColor('yellow', 35) },
-      parent: 'color'
-    },
-    {
-      id: "purple",
-      name: "סגול",
-      perform: () => { setColor('purple', 250) },
-      parent: 'color'
-    },
-    {
-      id: "red",
-      name: "אדום",
-      perform: () => { setColor('red', 0) },
-      parent: 'color'
-    },
-    {
-      id: "green",
-      name: "ירוק",
-      perform: () => { setColor('green', 140) },
-      parent: 'color'
-    },
-    {
-      id: "light",
-      name: "מצב אור",
-      perform: () => { setTheme(0) },
-      parent: 'theme'
-    },
-    {
-      id: "dark",
-      name: "מצב חושך",
-      perform: () => { setTheme(1) },
-      parent: 'theme'
-    },
-  ]
 
   const searchStyle = {
     padding: "12px 16px",
@@ -132,17 +132,13 @@ function KBar() {
   
 
   return (
-    <KBarProvider actions={actions} options={{ toggleShortcut: "$mod+Shift+p"}}>
-      <KBarPortal> 
-        <KBarPositioner> 
-          <KBarAnimator style={animatorStyle}>
-            <KBarSearch style={searchStyle} defaultPlaceholder='הקלידו פקודה או חפשו...' />
-            <RenderResults />
-          </KBarAnimator>
-        </KBarPositioner>
-      </KBarPortal>
-    </KBarProvider>
+    <KBarPortal> 
+      <KBarPositioner> 
+        <KBarAnimator style={animatorStyle}>
+          <KBarSearch style={searchStyle} defaultPlaceholder='הקלידו פקודה או חפשו...' />
+          <RenderResults />
+        </KBarAnimator>
+      </KBarPositioner>
+    </KBarPortal>
   );
 }
-
-export default KBar

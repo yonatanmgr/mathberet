@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 import './RightSidebar.scss';
 import SidebarButton from './SidebarButton';
 import FileSystem from './FileSystem';
+import { useKBar } from 'kbar';
 
 const RightSidebar = () => {
+  const { query } = useKBar();
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
 
   const handleOnClickFiles = () => {
     setIsRightSidebarOpen((isRightSidebarOpen) => !isRightSidebarOpen);
   };
-  
+
   const handleOnClickMathPanel = () => {
     setIsLeftSidebarOpen((isLeftSidebarOpen) => !isLeftSidebarOpen);
     //todo: should be refactored to React way
@@ -28,7 +30,12 @@ const RightSidebar = () => {
             icon='notebook'
             onClick={handleOnClickFiles}
           />
-          <SidebarButton title='חיפוש ופעולות' buttonType='search' icon='terminal' />
+          <SidebarButton
+            title='חיפוש ופעולות'
+            buttonType='search'
+            icon='terminal'
+            onClick={() => query.toggle()}
+          />
         </section>
         <section id='bottom'>
           <SidebarButton
@@ -38,7 +45,11 @@ const RightSidebar = () => {
             icon='calculator'
             onClick={handleOnClickMathPanel}
           />
-          <SidebarButton title='הארכיון שלי' buttonType='archive' icon='archive' />
+          <SidebarButton
+            title='הארכיון שלי'
+            buttonType='archive'
+            icon='archive'
+          />
         </section>
       </div>
       {isRightSidebarOpen && (
