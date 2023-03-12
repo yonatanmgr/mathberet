@@ -302,7 +302,7 @@ function FileSystem() {
   return (
     <div className='file-system'>
       <div className='file-system-header'>
-        <span className='file-system-header-title'>המחברות שלי</span>
+        <span data-tooltip='לחצו פעמיים כדי לפתוח את התיקייה' className='file-system-header-title' onDoubleClick={()=>window.api.openFiles()}>המחברות שלי</span>
         <div className='file-system-header-buttons'>
           <button onClick={addFolder} data-tooltip='תיקיה חדשה'>
             <i className='fi fi-rr-add-folder' />

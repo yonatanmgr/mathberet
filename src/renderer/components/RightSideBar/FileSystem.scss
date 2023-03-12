@@ -19,12 +19,33 @@
     align-items: center;
 
     .file-system-header-title {
+      cursor: alias;
       color: var(--button-color);
       opacity: 60%;
       white-space: nowrap;
       font-size: 21px;
       font-weight: 700;
       width: 100%;
+
+      &:hover::after {
+        // @todo: fix opacity
+        content: attr(data-tooltip);
+        font-size: 14px;
+        font-weight: 300;
+        min-width: max-content;
+        position: fixed;
+        margin-top: 40px;
+        margin-right: -130px;
+        z-index: 1000;
+        padding: 6px 10px 6px 10px;
+        background-color: var(--button-bgcolor);
+        text-shadow: none;
+        border: 1px solid var(--page-border);
+        border-radius: 6px;
+        opacity: 0%;
+        animation: tooltip 0.1s ease-in-out 0.2s forwards;
+      }
+      
     }
 
     .file-system-header-buttons {
@@ -208,5 +229,19 @@
         }
       }
     }
+  }
+}
+
+@keyframes tooltip {
+  from {
+    transform: scale(0.95);
+    opacity: 0%;
+    box-shadow: 0px 1px 3px #00000000;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 100%;
+    box-shadow: 0px 1px 3px #0000002a;
   }
 }

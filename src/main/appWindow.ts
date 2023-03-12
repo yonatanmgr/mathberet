@@ -85,7 +85,7 @@ ipcMain.on('loadX', (event, filePath) => {
 
 ipcMain.on('openFiles', () => {
   shell
-    .openPath(resolve(path.join(__dirname, '..', 'files')))
+    .openPath(path.join(app.getPath('documents'), 'Mathberet', 'files'))
     .catch((error) => {
       console.error(error);
     });
