@@ -1,18 +1,19 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import ReactDom from 'react-dom';
 import './ConfirmModal.scss';
 
-interface ConfirmModalProps extends PropsWithChildren {
+interface ConfirmModalProps {
   open: boolean;
   onConfirm: () => void;
   onCancel: () => void;
+  text: string;
 }
 
 export default function ConfirmModal({
   open,
   onConfirm,
   onCancel,
-  children,
+  text
 }: ConfirmModalProps) {
   if (!open) return null;
 
@@ -20,7 +21,7 @@ export default function ConfirmModal({
     <>
       <div className='overlay' />
       <div className='modal'>
-        {children}
+        {text}
         <div className='actions-container'>
           <button onClick={onConfirm} className='danger-button'>
             כן

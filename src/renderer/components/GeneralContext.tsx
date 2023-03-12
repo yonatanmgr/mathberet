@@ -9,9 +9,9 @@ import { newWidgetRequest } from '@renderer/common/types';
 const GeneralContext = createContext(null);
 
 function GeneralContextProvider({ children }: PropsWithChildren) {
-  const [saveRequest, setSaveRequest] = useState({ cmd: {} });
+  const [saveRequest, setSaveRequest] = useState({ cmd: '' });
+  const [clearPageRequest, setClearPageRequest] = useState({ cmd: '' });
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
-  const [clearPageRequest, setClearPageRequest] = useState({ cmd: {} });
   const [selectedFile, setSelectedFile] = useState<string>();
   const [currentFileTags, setCurrentFileTags] = useState<string[]>([]);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
