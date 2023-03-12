@@ -10,14 +10,16 @@ import {
   TreeItemIndex,
 } from 'react-complex-tree';
 import './FileSystem.scss';
-
-type MathTreeItem = {
-  path: string;
-} & TreeItem;
-
-type TreeItemsObj = {
-  [key: string]: MathTreeItem;
-};
+import {
+  draggedToTheSameParent,
+  updateItemsPosition,
+  changeItemPath,
+  generateStateWithNewFolder,
+  newFolderKey,
+  generateStateWithNewFile,
+  newFileKey,
+} from './FileSystemHelpers';
+import { MathTreeItem, TreeItemsObj } from './types';
 
 function FileSystem() {
   const { setSelectedFile } = useGeneralContext();
@@ -46,98 +48,6 @@ function FileSystem() {
     });
   }, []);
 
-  const deleteItemFromItsPreviousParent = (
-    prev: TreeItemsObj,
-    item: TreeItem,
-  ) => {
-    for (const [, value] of Object.entries(prev)) {
-      const mathItemTree = value as MathTreeItem;
-      if (mathItemTree.children.includes(item.index)) {
-        mathItemTree.children = mathItemTree.children.filter(
-          (child) => child !== item.index,
-        );
-      }
-    }
-  };
-
-  const draggedToTheSameParent = (
-    prev: TreeItemsObj,
-    item: TreeItem,
-    target: DraggingPositionItem | DraggingPositionBetweenItems,
-  ): boolean => {
-    let draggedToSameParent;
-
-    if (prev[target.parentItem].data != 'root') {
-      draggedToSameParent = prev[target.parentItem].children.includes(
-        item.index,
-      );
-    } else if (target.targetItem == 'root') {
-      draggedToSameParent = prev[target.targetItem].children.includes(
-        item.index,
-      );
-    }
-    return draggedToSameParent;
-  };
-
-  const changeItemPath = (item: MathTreeItem, newPath: string) => {
-    window.api.move(item.path, newPath);
-    item.path = newPath;
-  };
-
-  const addItemToNewParent = (
-    target: DraggingPositionItem | DraggingPositionBetweenItems,
-    prev: TreeItemsObj,
-    item: MathTreeItem,
-  ) => {
-    if (target.targetType != 'item') {
-      prev[target.parentItem].children.push(item.index);
-      changeItemPath(
-        item,
-        prev[target.parentItem].path +
-          '\\' +
-          item.index +
-          (item.isFolder ? '' : '.json'),
-      );
-    } else {
-      if (prev[target.targetItem].isFolder) {
-        prev[target.targetItem].children.push(item.index);
-        changeItemPath(
-          item,
-          prev[target.targetItem].path +
-            '\\' +
-            item.index +
-            (item.isFolder ? '' : '.json'),
-        );
-      } else {
-        for (const [, value] of Object.entries(prev)) {
-          const mathTreeItem = value as MathTreeItem;
-
-          if (mathTreeItem.children.includes(target.targetItem)) {
-            mathTreeItem.children.push(item.index);
-            changeItemPath(
-              item,
-              mathTreeItem.path +
-                '\\' +
-                item.index +
-                (item.isFolder ? '' : '.json'),
-            );
-          }
-        }
-      }
-    }
-  };
-
-  const updateItemsPosition = (
-    prev: TreeItemsObj,
-    item: TreeItem,
-    target: DraggingPositionItem | DraggingPositionBetweenItems,
-  ) => {
-    deleteItemFromItsPreviousParent(prev, item);
-    if (target.targetItem == 'root') return prev;
-    addItemToNewParent(target, prev, item as MathTreeItem);
-    return prev;
-  };
-
   const handleOnDrop = (
     items: TreeItem[],
     target: DraggingPositionItem | DraggingPositionBetweenItems,
@@ -150,8 +60,6 @@ function FileSystem() {
     });
   };
 
-  const newFolderKey = 'תיקיה חדשה';
-
   const addFolder = () => {
     //Todo: check also that they are in the same folder - compare paths
     if (items[newFolderKey]?.isFolder) {
@@ -159,83 +67,7 @@ function FileSystem() {
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFolder(prev));
-  };
-
-  const generateStateWithNewFolder = (prev: TreeItemsObj) => {
-    let parentValue;
-    let parentKey;
-
-    if (focusedItem) {
-      for (const [key, value] of Object.entries(prev)) {
-        const mathTreeItem = value as MathTreeItem;
-        if (mathTreeItem.children.includes(focusedItem)) {
-          parentValue = mathTreeItem;
-          parentKey = key;
-        }
-      }
-    } else {
-      parentValue = prev['root'];
-      parentKey = 'root';
-    }
-
-    parentValue.children.push(newFolderKey);
-
-    const newFolderPath = parentValue.path + '\\' + newFolderKey;
-    const newState = {
-      ...prev,
-      [parentKey]: parentValue,
-      [newFolderKey]: {
-        index: newFolderKey,
-        data: newFolderKey,
-        children: [] as TreeItemIndex[],
-        path: newFolderPath,
-        isFolder: true,
-      },
-    };
-
-    window.api.newFolder(newFolderPath);
-
-    return newState;
-  };
-
-  const newFileKey = 'קובץ חדש';
-
-  const generateStateWithNewFile = (prev: TreeItemsObj) => {
-    let parentValue;
-    let parentKey;
-
-    if (focusedItem) {
-      for (const [key, value] of Object.entries(prev)) {
-        const mathTreeItem = value as MathTreeItem;
-        if (mathTreeItem.children.includes(focusedItem)) {
-          parentValue = mathTreeItem;
-          parentKey = key;
-        }
-      }
-    } else {
-      parentValue = prev['root'];
-      parentKey = 'root';
-    }
-
-    parentValue.children.push(newFileKey);
-
-    const newFilePath = parentValue.path + '\\' + newFileKey + '.json';
-    const newState = {
-      ...prev,
-      [parentKey]: parentValue,
-      [newFileKey]: {
-        index: newFileKey,
-        data: newFileKey,
-        children: [],
-        path: newFilePath,
-        isFolder: false,
-      },
-    };
-
-    window.api.newFile(newFilePath);
-
-    return newState;
+    setItems((prev) => generateStateWithNewFolder(prev, focusedItem));
   };
 
   const addFile = () => {
@@ -245,7 +77,7 @@ function FileSystem() {
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFile(prev));
+    setItems((prev) => generateStateWithNewFile(prev, focusedItem));
   };
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
@@ -302,7 +134,13 @@ function FileSystem() {
   return (
     <div className='file-system'>
       <div className='file-system-header'>
-        <span data-tooltip='לחצו פעמיים כדי לפתוח את התיקייה' className='file-system-header-title' onDoubleClick={()=>window.api.openFiles()}>המחברות שלי</span>
+        <span
+          data-tooltip='לחצו פעמיים כדי לפתוח את התיקייה'
+          className='file-system-header-title'
+          onDoubleClick={() => window.api.openFiles()}
+        >
+          המחברות שלי
+        </span>
         <div className='file-system-header-buttons'>
           <button onClick={addFolder} data-tooltip='תיקיה חדשה'>
             <i className='fi fi-rr-add-folder' />
@@ -329,7 +167,7 @@ function FileSystem() {
             },
           }}
           onDrop={handleOnDrop}
-          onFocusItem={(item) => {            
+          onFocusItem={(item) => {
             const mathTreeItem = item as MathTreeItem;
             setFocusedItem(mathTreeItem.index);
             if (!item.isFolder) setSelectedFile(mathTreeItem.path);
