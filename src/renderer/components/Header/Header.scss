@@ -23,6 +23,8 @@
       align-items: center;
       direction: rtl;
       height: 100%;
+      max-width: calc(100% - 200px);
+      white-space: nowrap;
       width: max-content;
       -webkit-app-region: no-drag;
 
@@ -36,6 +38,7 @@
 
       .tags {
         width: max-content;
+        max-width: inherit;
         display: flex;
         flex-direction: row;
         direction: rtl;
@@ -156,6 +159,8 @@
     }
 
     .header-controls {
+      z-index: 1000;
+      background-color: var(--app-bgcolor);
       height: inherit;
       -webkit-app-region: no-drag;
 

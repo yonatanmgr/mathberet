@@ -8,6 +8,7 @@
     transition: 0.3s;
     width: 100%;
     height: 100%;
+    max-width: calc(100% - 110px);
     background: var(--page-bgcolor);
     border-width: 2px 2px 0px 2px;
     border-style: solid;
@@ -21,8 +22,7 @@
 
     .page-grid {
         height: calc(100% - 100px);
-        position: fixed;
-        left: 20vw;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -30,7 +30,8 @@
         .grid-container {
             padding-top: 80px;
             height: calc(100% + 80px);
-            width: 60vw;
+            width: 60%;
+            max-width: 100%;
             overflow-y: auto;
             overflow-x: hidden;
             display: flex;
