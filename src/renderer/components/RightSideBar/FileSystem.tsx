@@ -24,7 +24,7 @@ function FileSystem() {
 
   const [errorModalContent, setErrorModalContent] = useState('');
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>();
+  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -241,7 +241,7 @@ function FileSystem() {
   const addFile = () => {
     //Todo: check also that they are in the same folder - compare paths
     if (items[newFileKey]?.isFolder == false) {
-      setErrorModalContent(`'קובץ חדש כבר קיים'`);
+      setErrorModalContent(`קובץ חדש כבר קיים`);
       setErrorModalOpen(true);
       return;
     }
@@ -329,7 +329,7 @@ function FileSystem() {
             },
           }}
           onDrop={handleOnDrop}
-          onFocusItem={(item) => {
+          onFocusItem={(item) => {            
             const mathTreeItem = item as MathTreeItem;
             setFocusedItem(mathTreeItem.index);
             if (!item.isFolder) setSelectedFile(mathTreeItem.path);
