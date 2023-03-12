@@ -44,9 +44,12 @@
         width: 100%;
         height: inherit;
         overflow-wrap: anywhere !important;
-        
-        p:first-child{
-            margin-top: 0 !important;
+        font-size: larger;
+
+        p {
+            &:first-child{
+                margin-top: 0 !important;
+            }
         }
     }
     

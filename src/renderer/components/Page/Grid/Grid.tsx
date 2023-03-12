@@ -322,7 +322,7 @@ const PageGrid = () => {
           />
         ))}
       </ResponsiveGridLayout>
-      <Notification scene={popupType} />
+      
       <ConfirmModal
         open={areYouSureDeleteDialogOpen}
         onConfirm={handleConfirm}
@@ -330,6 +330,7 @@ const PageGrid = () => {
       >
         האם למחוק את תכולת הדף?
       </ConfirmModal>
+      <Notification scene={popupType} />
     </div>
   );
 };

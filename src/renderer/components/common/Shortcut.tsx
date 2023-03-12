@@ -6,10 +6,10 @@ type ShortcutProps = {
 
 const Shortcut = ({ shortcut }: ShortcutProps) => {
   const keys = shortcut.map((k: string) => (
-    <>
+    <span key={Math.random()}>
       <>{k == shortcut[0] ? '' : '+'}</>
       <kbd className='kbc-button'>{k}</kbd>
-    </>
+    </span>
   ));
 
   return (
@@ -22,7 +22,7 @@ const Shortcut = ({ shortcut }: ShortcutProps) => {
       }}
       className='shortcut'
     >
-      {keys ? keys : null}
+      {keys ? keys : <></>}
     </span>
   );
 };

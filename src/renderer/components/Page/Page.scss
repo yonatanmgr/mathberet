@@ -53,6 +53,7 @@
         height: 100%;
 
         .placeholder-text {
+            line-height: 1.5;
             opacity: 70%;
             font-weight: 100;
             text-align: center;
@@ -60,6 +61,12 @@
             font-size: 20px;
             color: hsla(var(--app-text-color), 1);
 
+            .fi{
+                height: 18px;
+                display: inline-block;
+                margin-bottom: 6px;
+                font-size: 18px;
+            }
             .kbc-button {
                 font-family: 'Rubik2' !important;
                 font-weight: 100;

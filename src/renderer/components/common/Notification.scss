@@ -16,7 +16,7 @@
     width: max-content;
     box-shadow: 0px 1px 3px #0000002a;
     display: block;
-    bottom: 80px;
+    bottom: 1px;
 
     &.show {
         visibility: visible;
@@ -27,20 +27,20 @@
     
 @-webkit-keyframes fadein {
 from { bottom: 0; opacity: 0; }
-to { bottom: 80px; opacity: 1; }
+to { bottom: 1px; opacity: 1; }
 }
 
 @keyframes fadein {
 from { bottom: 0; opacity: 0; }
-to { bottom: 80px; opacity: 1; }
+to { bottom: 1px; opacity: 1; }
 }
 
 @-webkit-keyframes fadeout {
-from { bottom: 80px; opacity: 1; }
+from { bottom: 1px; opacity: 1; }
 to { bottom: 0; opacity: 0; }
 }
 
 @keyframes fadeout {
-from { bottom: 80px; opacity: 1; }
+from { bottom: 1px; opacity: 1; }
 to { bottom: 0; opacity: 0; }
 }

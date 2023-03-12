@@ -7,7 +7,11 @@ const PagePlaceholder = () => {
     <div className='page-placeholder'>
       <div className='placeholder-text'>
         כדי להתחיל, <br />
-        לחצו על כפתור המחברות שבצד ימין <Shortcut shortcut={["Ctrl", "o"]}/> ובחרו קובץ!
+        לחצו על כפתור המחברות בצד ימין{' '}
+        <kbd className='kbc-button'>
+          <i className='fi fi-rr-notebook'></i>
+        </kbd>{' '}
+        (או <Shortcut shortcut={['Ctrl', 'o']} />) ובחרו/צרו קובץ!
       </div>
     </div>
   );
