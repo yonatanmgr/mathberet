@@ -17,8 +17,6 @@
 
 
 :root {
-  // --rct-item-height: 40px !important;
-
   // Logo 
   --logo-filter: brightness(1);
 
@@ -28,6 +26,7 @@
   --app-font-family: 'Rubik2';
   --app-bgcolor: hsl(var(--theme-hue), 11%, 7%);
   --app-border-color: hsl(var(--theme-hue), 7%, 25%);
+  --app-text-color: 0, 0%, 85%;
 
   // Page
   --page-bgcolor: hsl(var(--theme-hue), 26%, 9%);
@@ -132,6 +131,7 @@ body:not(.dark-mode) {
   // Application
   --app-accent-color: hsl(var(--theme-hue), 62%, 49%);
   --app-bgcolor: hsl(var(--theme-hue), 78%, 98%);
+  --app-text-color: 0, 0%, 10%;
 
   // Page
   --page-bgcolor: hsl(0, 0%, 100%);

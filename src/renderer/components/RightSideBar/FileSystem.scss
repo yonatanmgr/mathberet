@@ -20,18 +20,17 @@
 
     .file-system-header-title {
       cursor: alias;
-      color: var(--button-color);
-      opacity: 60%;
+      color: hsla(var(--app-text-color), 0.6);
       white-space: nowrap;
       font-size: 21px;
       font-weight: 700;
       width: 100%;
 
       &:hover::after {
-        // @todo: fix opacity
         content: attr(data-tooltip);
+        color: hsla(var(--app-text-color), 1);
         font-size: 14px;
-        font-weight: 300;
+        font-weight: 400;
         min-width: max-content;
         position: fixed;
         margin-top: 40px;
@@ -68,6 +67,7 @@
 
           &::after {
             content: attr(data-tooltip);
+            color: hsla(var(--app-text-color), 1);
             min-width: max-content;
             position: fixed;
             margin-top: 80px;
@@ -120,7 +120,7 @@
                 height: 100%;
                 direction: rtl;
                 background-color: transparent;
-                color: var(--titlebar-color);
+                color: hsla(var(--app-text-color), 1);
                 border-radius: 10px;
                 text-shadow: none;
                 font-family: 'Rubik2';
@@ -143,12 +143,12 @@
 
                 &:hover {
                   background-color: var(--file-hover-bgcolor);
-                  color: var(--titlebar-color);
+                  color: hsla(var(--app-text-color), 1);
                 }
 
                 &:active {
                   background-color: var(--file-active-bgcolor);
-                  color: var(--titlebar-color);
+                  color: hsla(var(--app-text-color), 1);
                 }
 
                 &::before {
@@ -199,7 +199,7 @@
 
               .rct-tree-item-button-expanded {
                 background-color: var(--selected-bgcolor);
-                color: var(--titlebar-color);
+                color: hsla(var(--app-text-color), 1);
                 font-weight: 700;
 
                 &:hover {

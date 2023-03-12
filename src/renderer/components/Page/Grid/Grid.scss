@@ -2,10 +2,10 @@
 @import '../Page.scss';
 
 .layout {
-    height: 100%;
+    height: 100% !important;
     direction: ltr;
     width: 100%;
-    padding-bottom: 50px;
+    max-height: 100%;
 
     .react-grid-placeholder{
         transition: 0.2s;
@@ -28,8 +28,8 @@
 
             &::after {
                 opacity: 20%;
-                border-right: 2px solid var(--titlebar-color);
-                border-bottom: 2px solid var(--titlebar-color);
+                border-right: 2px solid hsla(var(--app-text-color), 1);
+                border-bottom: 2px solid hsla(var(--app-text-color), 1);
                 border-radius: 0 0 5px 0;
             }
         }
@@ -43,7 +43,7 @@
             padding-top: 8px;
             font-size: 16px;
             opacity: 0%;
-            color: var(--titlebar-color);
+            color: hsla(var(--app-text-color), 1);
         }
 
         .block-remove-button {
@@ -62,7 +62,7 @@
             
             .fi {
                 pointer-events: none;
-                color: var(--titlebar-color);
+                color: hsla(var(--app-text-color), 1);
                 font-size: 10px;    
             }
         }

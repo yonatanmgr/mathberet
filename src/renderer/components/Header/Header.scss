@@ -2,6 +2,7 @@
 
 .header {
   width: calc(100% - 20px);
+  max-width: 100%;
   align-self: center;
   padding-top: 5px;
   height: calc(0% + 45px);
@@ -135,7 +136,7 @@
       }
 
       #logo {
-        fill: var(--titlebar-color);
+        fill: hsla(var(--app-text-color), 1);
         display: block;
         width: 45px;
         height: 55%;

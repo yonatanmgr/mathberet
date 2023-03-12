@@ -23,7 +23,7 @@
         --selection-background-color: var(--math-block-selection-bg);
         --selection-color: var(--math-block-selection);
         font-size: 25px;
-        color: var(--titlebar-color);
+        color: hsla(var(--app-text-color), 1);
         width: 100%;
         height: 100%;
         outline: none;
@@ -40,7 +40,7 @@
     // Text
     .textbox{
         padding: 10px;
-        color: var(--titlebar-color);
+        color: hsla(var(--app-text-color), 1);
         width: 100%;
         height: inherit;
         overflow-wrap: anywhere !important;
@@ -88,7 +88,7 @@
             direction: ltr;
             --mafs-line-color: var(--page-border);
             --mafs-bg: var(--page-bgcolor);
-            --mafs-fg: var(--titlebar-color);
+            --mafs-fg: hsla(var(--app-text-color), 1);
             --mafs-blue: var(--mafs-plot-color);
 
         }
@@ -107,8 +107,8 @@
 
             .tl-positioned{
                 path:last-child{
-                    fill: var(--titlebar-color);
-                    stroke: var(--titlebar-color);    
+                    fill: hsla(var(--app-text-color), 1);
+                    stroke: hsla(var(--app-text-color), 1);    
                 }
             }
 
@@ -120,7 +120,7 @@
                 --colors-panelContrast: var(--tool-hover-bgcolor);
                 --colors-panel: var(--panel-bgcolor);
                 --colors-hover: var(--tool-hover-bgcolor);
-                --colors-text: var(--titlebar-color);
+                --colors-text: hsla(var(--app-text-color), 1);
             }
             .c-itYKbw{
                 display: none;

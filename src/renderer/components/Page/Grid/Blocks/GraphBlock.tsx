@@ -7,9 +7,9 @@ import ML_KEYBINDINGS from '@common/keybindings';
 import { ValueProps } from '@renderer/common/types';
 
 function latex2function(latex: string, i: number) {
-  if (latex[0] != '') {
+  if (latex != '') {
     try {
-      const parsed = parseTex(String.raw`${latex[0]}`);
+      const parsed = parseTex(String.raw`${latex}`);
       return parsed.compile().evaluate({ x: i });
     } catch (error) {
       return;

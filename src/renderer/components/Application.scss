@@ -194,7 +194,7 @@ button {
     &.active .menu-title {
       background: var(--titlebar-menu-title-active-bgcolor);
       box-shadow: var(--titlebar-menu-title-shadow);
-      color: var(--titlebar-color);
+      color: hsla(var(--app-text-color), 1);
       border-color: var(--titlebar-menu-title-active-border-color);
       border-radius: 4px 4px 0 0;
       border-top-color: var(--app-accent-color);
@@ -204,7 +204,7 @@ button {
   .menu-title {
     font-weight: normal;
     text-shadow: none;
-    color: var(--titlebar-color);
+    color: hsla(var(--app-text-color), 1);
     border-color: transparent;
     border-width: 1px 1px 0 1px;
     border-style: solid;
@@ -263,11 +263,11 @@ button {
   }
 
   &-controls.type-windows .control {
-    color: var(--titlebar-color);
+    color: hsla(var(--app-text-color), 1);
     font-family: Arial, Helvetica, sans-serif;
 
     &:hover {
-      color: var(--titlebar-color);
+      color: hsla(var(--app-text-color), 1);
       background: var(--titlebar-popup-item-hover-bgcolor);
     }
 

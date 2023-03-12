@@ -8,6 +8,7 @@ import ToolsPanel from './ToolsPanel/ToolsPanel';
 import './ToolsPanel/ToolsPanel.scss';
 
 import { useGeneralContext } from '@components/GeneralContext';
+import PagePlaceholder from './PagePlaceholder';
 
 
 const Page = () => {
@@ -24,7 +25,7 @@ const Page = () => {
         <div className='page-grid'>
           <PageGrid />
           <ToolsPanel />
-        </div> : <></>
+        </div> : <PagePlaceholder/>
       }
     </div>
   );

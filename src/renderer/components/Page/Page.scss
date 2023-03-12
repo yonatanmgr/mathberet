@@ -1,8 +1,9 @@
 @import '../Theme.scss';
+@import '~keyboard-css/dist/css/main.min.css';
 
 ::-webkit-scrollbar {
     width: 0;
-}  
+}
 
 .page {
     transition: 0.3s;
@@ -18,21 +19,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
 
     .page-grid {
-        height: calc(100% - 100px);
-        width: 100%;
+        width: 60%;
+        height: 100%;
+
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
         align-items: center;
 
         .grid-container {
             padding-top: 80px;
-            height: calc(100% + 80px);
-            width: 60%;
+            margin-bottom: 80px;
+            height: 100%;
+            max-height: 100%;
+            width: 100%;
             max-width: 100%;
-            overflow-y: auto;
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
@@ -41,4 +45,42 @@
         }
     }
 
+    .page-placeholder {
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+
+        .placeholder-text {
+            opacity: 70%;
+            font-weight: 100;
+            text-align: center;
+            padding-bottom: 80px;
+            font-size: 20px;
+            color: hsla(var(--app-text-color), 1);
+
+            .kbc-button {
+                font-family: 'Rubik2' !important;
+                font-weight: 100;
+                color: hsla(var(--app-text-color), 1) !important;
+                box-shadow:
+                    0 0 var(--page-border),
+                    0 0 var(--page-border),
+                    0 1px var(--page-border),
+                    0 2px var(--page-border),
+                    0 3px var(--page-border),
+                    0 4px var(--page-border),
+                    0 5px var(--page-border),
+                    2px 2.5px 4px var(--page-border) !important;
+                background-color: var(--page-bgcolor) !important;
+                border: 1px solid var(--page-border) !important;
+                border-bottom: 1px solid var(--page-border) !important;
+
+                &::after {
+                    border: 1px solid var(--page-border) !important;
+                }
+            }
+        }
+    }
 }

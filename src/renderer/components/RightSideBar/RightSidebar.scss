@@ -41,6 +41,7 @@
 
         &:hover::after {
           content: attr(data-tooltip);
+          color: hsla(var(--app-text-color), 1);
           min-width: 90px;
           position: fixed;
           margin-right: 170px;

@@ -35,6 +35,7 @@
 
                 &::after {
                     content: attr(data-tooltip);
+                    color: hsla(var(--app-text-color), 1);
                     min-width: max-content;
                     position: fixed;
                     margin-bottom: 100px;

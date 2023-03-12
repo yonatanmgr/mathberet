@@ -114,7 +114,7 @@ export function KBar() {
     outline: "none",
     border: "none",
     background: "transparent",
-    color: "var(--titlebar-color)",
+    color: "hsla(var(--app-text-color), 1)",
   };
   
   const animatorStyle = {
@@ -124,7 +124,7 @@ export function KBar() {
     outline: "1px solid var(--page-border)",
     backdropFilter: "blur(5px)",
     background: "var(--kbar-bg)",
-    color: "var(--titlebar-color)",
+    color: "hsla(var(--app-text-color), 1)",
     borderRadius: "12px",
     boxShadow: "0 0 10px 1px rgba(0, 0, 0, .25)",
     overflow: "hidden",
