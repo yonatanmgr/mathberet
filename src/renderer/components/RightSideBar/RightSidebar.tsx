@@ -1,26 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './RightSidebar.scss';
 import SidebarButton from './SidebarButton';
 import FileSystem from './FileSystem';
 import { useKBar } from 'kbar';
+import { useGeneralContext } from '@components/GeneralContext';
 
 const RightSidebar = () => {
   const { query } = useKBar();
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const {
+    setIsLeftSidebarOpen,
+    setIsRightSidebarOpen,
+    isLeftSidebarOpen,
+    isRightSidebarOpen,
+  } = useGeneralContext();
 
   const handleOnClickFiles = () => {
-    setIsRightSidebarOpen((isRightSidebarOpen) => !isRightSidebarOpen);
+    setIsRightSidebarOpen((isRightSidebarOpen: boolean) => !isRightSidebarOpen);
   };
 
   const handleOnClickMathPanel = () => {
-    setIsLeftSidebarOpen((isLeftSidebarOpen) => !isLeftSidebarOpen);
-    //todo: should be refactored to React way
-    document.querySelector('.left-sidebar').classList.toggle('open');
+    setIsLeftSidebarOpen((isLeftSidebarOpen: boolean) => !isLeftSidebarOpen);
   };
 
   return (
-    <div className={'right-sidebar' + (isRightSidebarOpen ? ' open' : '')}>
+    <div className={`right-sidebar${isRightSidebarOpen ? ' open' : ''}`}>
       <div className='basic'>
         <section id='top'>
           <SidebarButton

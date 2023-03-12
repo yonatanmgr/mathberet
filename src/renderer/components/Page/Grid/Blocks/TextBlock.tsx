@@ -34,7 +34,7 @@ const SHORTCUTS = {
   '#####': 'heading-five',
   '######': 'heading-six',
   // '$$': 'math-inline',
-  '---': 'divider',
+  // '---': 'divider',
 };
 
 const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
@@ -218,11 +218,11 @@ const Element = ({ attributes, children, element }) => {
       return <h6 {...attributes}>{children}</h6>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
-    case 'divider':
-      return <div {...attributes} contentEditable={true}>
-      <hr />
-      {children}
-    </div>;
+    // case 'divider':
+    //   return <div {...attributes} contentEditable={true}>
+    //   <hr />
+    //   {children}
+    // </div>;
     // case 'math-inline':
     //   return <div {...attributes} contentEditable={true}>
     //     <MathView 

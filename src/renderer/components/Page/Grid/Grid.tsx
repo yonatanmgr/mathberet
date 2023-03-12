@@ -1,24 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
+import Notification from '@components/common/Notification';
+import ConfirmModal from '@components/common/Modals/ConfirmModal';
+
+import { any } from 'prop-types';
 import {
   BlockElement,
   FileStructure,
   newWidgetRequest,
   WidgetType,
 } from '@renderer/common/types';
-import Notification from '../../common/Notification';
 
-import '../Page.scss';
-import './Grid.scss';
-import './Blocks/Blocks.scss';
+import '@components/Page/Page.scss';
+import '@components/Page/Grid/Grid.scss';
+import '@components/Page/Grid/Blocks/Blocks.scss';
+import GridElement from './GridElement';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import ConfirmModal from '@components/common/Modals/ConfirmModal';
-import GridElement from './GridElement';
-import { any } from 'prop-types';
-
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 type PageGridState = {
@@ -34,13 +33,9 @@ const PageGrid = () => {
     cols: 8,
   });
 
-  const [allValues, setAllValues] = useState([]);
-
+  const [allBlockValues, setAllBlockValues] = useState([]);
   const [popupType, setPopupType] = useState('');
-
-  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] =
-    useState(false);
-
+  const [areYouSureDeleteDialogOpen, setAreYouSureDeleteDialogOpen] = useState(false);
   const {
     selectedFile,
     newWidgetRequest,
@@ -48,24 +43,124 @@ const PageGrid = () => {
     saveRequest,
     currentFileTags,
     setCurrentFileTags,
+    isRightSidebarOpen,
+    isLeftSidebarOpen
   } = useGeneralContext();
 
-  useEffect(() => {
-    if (newWidgetRequest) AddWidget(newWidgetRequest);
-  }, [newWidgetRequest]);
 
+  // Send resize event when opening and closing sidebars to fix block size bug
+  useEffect(() => {
+    setTimeout(() => {
+      dispatchEvent(new Event('resize'));
+    }, 300);
+  }, [isRightSidebarOpen, isLeftSidebarOpen]);
+
+  const onBreakpointChange = (breakpoint: string, cols: number) => {
+    setState((prev) => ({ ...prev, breakpoint: breakpoint, cols: cols }));
+  };
+
+  const onLayoutChange = (layout: Array<BlockElement>) => {
+    layout.map((block) => {
+      block.type = state.items.find((item) => {
+        return item.i == block.i;
+      }).type;
+      block.metaData = state.items.find((item) => {
+        return item.i == block.i;
+      }).metaData;
+    });
+
+    setState((prev) => ({ ...prev, items: layout }));
+  };
+
+
+  // Page clearing
   useEffect(() => {
     if (clearPageRequest?.cmd === 'clear') setAreYouSureDeleteDialogOpen(true);
   }, [clearPageRequest]);
 
+  const handleDialogConfirm = () => {
+    setAreYouSureDeleteDialogOpen(false);
+    setState((prev) => ({ ...prev, items: [] }));
+    setAllBlockValues([]);
+  };
+
+  const handleDialogCancel = () => setAreYouSureDeleteDialogOpen(false);
+
+
+  // Block adding
   useEffect(() => {
+    if (newWidgetRequest) AddWidget(newWidgetRequest);
+  }, [newWidgetRequest]);
+
+  const AddWidget = (newWidgetRequest: newWidgetRequest) => {
+    const handler = addWidgetHandlersMap.get(newWidgetRequest.widgetType);
+    if (handler) handler();
+  };
+
+  function addBlockByType(
+    blockType: number,
+    height: number,
+    width?: number,
+    minHeight?: number,
+    minWidth?: number,
+    maxHeight?: number,
+    maxWidth?: number
+  ) {
+    setState((prev) => ({
+      ...prev,
+      items: [
+        ...prev.items,
+        {
+          type: blockType,
+          i: crypto.randomUUID(),
+          metaData: {},
+          x: Infinity,
+          y: Infinity,
+          h: height,
+          w: width ? width : 8,
+          minH: minHeight ? minHeight : 1,
+          minW: minWidth ? minWidth : 1,
+          maxH: maxHeight ? maxHeight : 100,
+          maxW: maxWidth ? maxWidth : 8,
+        } as BlockElement,
+      ],
+    }));
+  }
+
+  const addWidgetHandlersMap = new Map<WidgetType, () => void>([
+    [WidgetType.Divider, () => addBlockByType(WidgetType.Divider, 1, 8, 1, 1, 1)],
+    [WidgetType.Graph, () => addBlockByType(WidgetType.Graph, 6, 8, 2, 2)],
+    [WidgetType.Text, () => addBlockByType(WidgetType.Text, 2)],
+    [WidgetType.Math, () => addBlockByType(WidgetType.Math, 2)],
+    [WidgetType.Draw, () => addBlockByType(WidgetType.Draw, 6, 8, 4, 4)],
+    [WidgetType.Picture, () => console.error('not implemented')],
+    [WidgetType.Group, () => console.error('not implemented')],
+  ]);
+
+
+  // Block removing
+  const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    setState((prev) => ({
+      ...prev,
+      items: prev.items.filter((item) => item.i !== e.target.name),
+    }));
+
+    setAllBlockValues((allValues) =>
+      allValues.filter((value) => value.id !== e.target.name),
+    );
+  };
+  
+
+  // File loading
+  useEffect(() => {
+    if (selectedFile) window.api.loadX(selectedFile);
     window.api.receive('gotLoadedDataX', (data: string) => {
       if (!data) {
         setState((prev) => ({ ...prev, items: [] }));
         return;
       }
 
-      const parsedData = JSON.parse(data)
+      const parsedData = JSON.parse(data);
 
       const blocksData: Array<BlockElement> = parsedData.blocks;
       parsedData.tags
@@ -93,167 +188,14 @@ const PageGrid = () => {
         return { id: block.i, metaData: block.metaData };
       });
 
-      setAllValues(newData);
+      setAllBlockValues(newData);
     });
   }, [selectedFile]);
 
-  useEffect(() => {
-    if (selectedFile) window.api.loadX(selectedFile);
-  }, [selectedFile]);
 
-  const onBreakpointChange = (breakpoint: string, cols: number) => {
-    setState((prev) => ({ ...prev, breakpoint: breakpoint, cols: cols }));
-  };
-
-  const onLayoutChange = (layout: Array<BlockElement>) => {
-    layout.map((block) => {
-      block.type = state.items.find((item) => {
-        return item.i == block.i;
-      }).type;
-      block.metaData = state.items.find((item) => {
-        return item.i == block.i;
-      }).metaData;
-    });
-
-    setState((prev) => ({ ...prev, items: layout }));
-  };
-
-  const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setState((prev) => ({
-      ...prev,
-      items: prev.items.filter((item) => item.i !== e.target.name),
-    }));
-
-    setAllValues((allValues) =>
-      allValues.filter((value) => value.id !== e.target.name),
-    );
-  };
-
-  const handleConfirm = () => {
-    setAreYouSureDeleteDialogOpen(false);
-    setState((prev) => ({ ...prev, items: [] }));
-    setAllValues([]);
-  };
-
-  const handleCancel = () => setAreYouSureDeleteDialogOpen(false);
-
-  const AddWidget = (newWidgetRequest: newWidgetRequest) => {
-    const handler = addWidgetHandlersMap.get(newWidgetRequest.widgetType);
-    if (handler) handler();
-  };
-
-  function addText() {
-    setState((prev) => ({
-      ...prev,
-      items: [
-        ...prev.items,
-        {
-          type: WidgetType.Text,
-          i: crypto.randomUUID(),
-          metaData: {},
-          x: Infinity,
-          y: Infinity,
-          w: 8,
-          h: 2,
-        } as BlockElement,
-      ],
-    }));
-  }
-
-  function addDraw() {
-    setState((prev) => ({
-      ...prev,
-      items: [
-        ...prev.items,
-        {
-          type: WidgetType.Draw,
-          metaData: {},
-          i: crypto.randomUUID(),
-          x: Infinity,
-          y: Infinity,
-          w: 8,
-          h: 6,
-          minH: 4,
-          minW: 4,
-        } as BlockElement,
-      ],
-    }));
-  }
-
-  function addPicture() {
-    console.error('not implemented');
-  }
-
-  function addGgb() {
-    setState((prev) => ({
-      ...prev,
-      items: [
-        ...prev.items,
-        {
-          type: WidgetType.Graph,
-          metaData: {},
-          i: crypto.randomUUID(),
-          x: Infinity,
-          y: Infinity,
-          w: 8,
-          h: 6,
-        } as BlockElement,
-      ],
-    }));
-  }
-
-  function addMath() {
-    setState((prev) => ({
-      ...prev,
-      items: [
-        ...prev.items,
-        {
-          type: WidgetType.Math,
-          metaData: {},
-          i: crypto.randomUUID(),
-          x: Infinity,
-          y: Infinity,
-          w: 8,
-          h: 2,
-        } as BlockElement,
-      ],
-    }));
-  }
-
-  function addGroup() {
-    console.error('not implemented');
-  }
-
-  function addDivider() {
-    setState((prev) => ({
-      ...prev,
-      items: [
-        ...prev.items,
-        {
-          type: WidgetType.Divider,
-          maxH: 1,
-          i: crypto.randomUUID(),
-          x: Infinity,
-          y: Infinity, // puts it at the bottom
-          w: 8,
-          h: 1,
-        } as BlockElement,
-      ],
-    }));
-  }
-
-  const addWidgetHandlersMap = new Map<WidgetType, () => void>([
-    [WidgetType.Divider, addDivider],
-    [WidgetType.Graph, addGgb],
-    [WidgetType.Group, addGroup],
-    [WidgetType.Text, addText],
-    [WidgetType.Math, addMath],
-    [WidgetType.Picture, addPicture],
-    [WidgetType.Draw, addDraw],
-  ]);
-
-  const saveMetaData = (block: BlockElement) => {
-    const found = allValues.find((state) => state.id == block.i).metaData;
+  // Block saving
+  const saveMetaDataPerBlock = (block: BlockElement) => {
+    const found = allBlockValues.find((state) => state.id == block.i).metaData;
 
     block.metaData = {
       content: found.content,
@@ -261,9 +203,9 @@ const PageGrid = () => {
     };
   };
 
-  const saveGridData = () => {
+  const saveGridDataToFile = () => {
     const currentItems = state.items;
-    currentItems.map(saveMetaData);
+    currentItems.map(saveMetaDataPerBlock);
 
     const fileData: FileStructure = {
       blocks: currentItems,
@@ -274,7 +216,24 @@ const PageGrid = () => {
     window.api.saveX(JSON.stringify(fileData), selectedFile);
   };
 
-  const popupAnimation = (type: string) => {
+
+  // File saving
+  useEffect(() => {
+    if (saveRequest?.cmd === 'save') {
+      if (selectedFile) {
+        try {
+          saveGridDataToFile();
+          triggerPopupAnimation('save');
+        } catch (error) {
+          triggerPopupAnimation('error');
+          console.error(error);
+        }
+      } else triggerPopupAnimation('firstSelect');
+    }
+  }, [saveRequest]);
+
+
+  const triggerPopupAnimation = (type: string) => {
     setTimeout(() => {
       setPopupType(type);
       setTimeout(() => {
@@ -282,20 +241,6 @@ const PageGrid = () => {
       }, 1200);
     }, 0);
   };
-
-  useEffect(() => {
-    if (saveRequest?.cmd === 'save') {
-      if (selectedFile) {
-        try {
-          saveGridData();
-          popupAnimation('save');
-        } catch (error) {
-          popupAnimation('error');
-          console.error(error);
-        }
-      } else popupAnimation('firstSelect');
-    }
-  }, [saveRequest]);
 
   return (
     <div className='grid-container'>
@@ -307,7 +252,7 @@ const PageGrid = () => {
         rowHeight={50}
         resizeHandles={['sw']}
         containerPadding={[0, 0]}
-        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100  }}
+        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100 }}
         draggableHandle='.block-handle'
       >
         {state.items.map((element) => (
@@ -317,16 +262,16 @@ const PageGrid = () => {
             key={element.i}
             data-grid={element}
             blockValue={element.metaData}
-            setValuesFunction={setAllValues}
-            allValues={allValues}
+            setValuesFunction={setAllBlockValues}
+            allValues={allBlockValues}
           />
         ))}
       </ResponsiveGridLayout>
-      
+
       <ConfirmModal
         open={areYouSureDeleteDialogOpen}
-        onConfirm={handleConfirm}
-        onCancel={handleCancel}
+        onConfirm={handleDialogConfirm}
+        onCancel={handleDialogCancel}
       >
         האם למחוק את תכולת הדף?
       </ConfirmModal>

@@ -14,20 +14,19 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [clearPageRequest, setClearPageRequest] = useState({ cmd: {} });
   const [selectedFile, setSelectedFile] = useState<string>();
   const [currentFileTags, setCurrentFileTags] = useState<string[]>([]);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
 
   return (
     <GeneralContext.Provider
       value={{
-        newWidgetRequest,
-        setNewWidgetRequest,
-        clearPageRequest,
-        setClearPageRequest,
-        selectedFile,
-        setSelectedFile,
-        saveRequest,
-        setSaveRequest,
-        currentFileTags,
-        setCurrentFileTags
+        newWidgetRequest, setNewWidgetRequest,
+        clearPageRequest, setClearPageRequest,
+        selectedFile, setSelectedFile,
+        saveRequest, setSaveRequest,
+        currentFileTags, setCurrentFileTags,
+        isLeftSidebarOpen, setIsLeftSidebarOpen,
+        isRightSidebarOpen, setIsRightSidebarOpen
       }}
     >
       {children}
