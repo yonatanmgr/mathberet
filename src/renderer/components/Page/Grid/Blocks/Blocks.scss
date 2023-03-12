@@ -3,8 +3,6 @@
 @import '../Grid.scss';
 @import "/node_modules/mafs/core.css";
 
-
-
 .block-content{
     transition: 0.2s;
     width: 100%;
@@ -13,7 +11,6 @@
     border-radius: 5px;
     margin: 3px;
     direction: rtl;
-    // background-color: var(--tool-bgcolor);
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -34,8 +31,6 @@
             margin-top: 5px;
         }
     }
-
-
 
     // Text
     .textbox{

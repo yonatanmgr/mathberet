@@ -22,13 +22,6 @@ export const Notification = ({ scene }: NotificationProps) => {
       content = 'הייתה תקלה בשמירת הקובץ!';
       break;
 
-    // NOT IMPLEMENTED YET
-    case 'cantCreate':
-      content = 'לא ניתן ליצור קובץ חדש, קיים קובץ בעל שם זהה!';
-      break;
-    case 'cantMove':
-      content = 'לא ניתן להזיז את הקובץ למיקום זה!';
-      break;
     default:
       break;
   }

@@ -12,7 +12,7 @@ export const Tag = ({ text, color }: TagProps) => {
   const handleRemoveTag = () => {
     setCurrentFileTags(currentFileTags.filter((tag: string) => tag != text));
 
-    // @todo: figure out how to check if tag is not in all of the files
+    //TODO: figure out how to check if tag is not in all of the files
     
     // localStorage.setItem(
     //   'all-tags',
