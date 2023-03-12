@@ -5,7 +5,7 @@ export function useDialog(
   clearPageRequest: { cmd: string | object },
   setStateFunction: (...args: unknown[]) => unknown,
   setAllBlockValues: (...args: unknown[]) => unknown,
-  setClearModalOpen: (args: boolean) => unknown,
+  setClearModalOpen: (args: boolean) => void,
 ) {
 
   const emptyArray: BlockElement[] = [];

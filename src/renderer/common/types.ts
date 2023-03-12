@@ -12,21 +12,26 @@ export enum WidgetType {
 }
 
 type canvasProps = {
-      shapes: TDShape[];
-      bindings?: TDBinding[];
-      assets?: TDAsset[];
-    }
+  shapes: TDShape[];
+  bindings?: TDBinding[];
+  assets?: TDAsset[];
+};
 
 export type ValueProps = {
   blockStateFunction: (...args: unknown[]) => unknown;
   content: string | string[] | Descendant[] | canvasProps;
 };
 
-export type FileStructure = {
-  tags: string[],
-  blocks: Array<BlockElement>,
-  mathMemory: object
+export type BlockState = {
+  id: string,
+  metaData: {content: string | string[] | Descendant[] | canvasProps},
 }
+
+export type FileStructure = {
+  tags: string[];
+  blocks: Array<BlockElement>;
+  mathMemory: object;
+};
 
 export type BlockElement = {
   type: WidgetType;

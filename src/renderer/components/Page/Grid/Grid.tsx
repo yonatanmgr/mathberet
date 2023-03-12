@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
 
-import { Notification, triggerPopupAnimation } from '@components/common/Notification';
+import { Notification } from '@components/common/Notification';
 import ConfirmModal from '@components/common/Modals/ConfirmModal';
 
-import { any } from 'prop-types';
-import { BlockElement, FileStructure, PageGridState } from '@renderer/common/types';
+import { BlockElement, PageGridState } from '@renderer/common/types';
 
 import '@components/Page/Page.scss';
 import '@components/Page/Grid/Grid.scss';
@@ -17,6 +16,7 @@ import GridElement from './GridElement';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useAddBlock } from '@renderer/hooks/useAddBlock';
 import { useDialog } from '@renderer/hooks/useDialog';
+import { useFileSaveLoad } from '@renderer/hooks/useFileSaveLoad';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -29,99 +29,27 @@ const PageGrid = () => {
   const [allBlockValues, setAllBlockValues] = useState([]);
   const [popupType, setPopupType] = useState('');
   const [clearModalOpen, setClearModalOpen] = useState(false);
+  
   const {
-    selectedFile,
     newWidgetRequest,
     clearPageRequest,
-    saveRequest,
-    currentFileTags,
-    setCurrentFileTags,
     isRightSidebarOpen,
     isLeftSidebarOpen,
   } = useGeneralContext();
 
-
-  useEffect(function adjustGridWidth() {
+  useEffect( function adjustGridWidth() {
       setTimeout(() => {
         dispatchEvent(new Event('resize'));
       }, 300);
   }, [isRightSidebarOpen, isLeftSidebarOpen]);
 
-  useEffect(function loadFile() {
-    if (selectedFile) window.api.loadX(selectedFile);
-    window.api.receive('gotLoadedDataX', (data: string) => {
-      if (!data) {
-        setState((prev) => ({ ...prev, items: [] }));
-        return;
-      }
-
-      const parsedData = JSON.parse(data);
-
-      const blocksData: Array<BlockElement> = parsedData.blocks;
-      parsedData.tags
-        ? setCurrentFileTags(JSON.parse(data).tags)
-        : setCurrentFileTags([]);
-
-      if (!Array.isArray(blocksData)) {
-        setState((prev) => ({ ...prev, items: [] }));
-        return;
-      }
-
-      blocksData.map((block: BlockElement) => {
-        if (block.y == null) {
-          block.y = Infinity;
-        }
-        if (block.x == null) {
-          block.x = Infinity;
-        }
-      });
-
-      setState((prev) => ({ ...prev, items: blocksData }));
-
-      let newData: Array<object> = blocksData;
-      newData = newData.map((block: BlockElement) => {
-        return { id: block.i, metaData: block.metaData };
-      });
-
-      setAllBlockValues(newData);
-    });
-  }, [selectedFile]);
-
-  useEffect(function saveFile() {
-    const saveGridDataToFile = () => {
-      const saveMetaDataPerBlock = (block: BlockElement) => {
-        const found = allBlockValues.find((state) => state.id == block.i).metaData;
-    
-        block.metaData = {
-          content: found.content,
-          blockStateFunction: () => any,
-        };
-      };
-
-      const currentItems = state.items;
-      currentItems.map(saveMetaDataPerBlock);
-
-      const fileData: FileStructure = {
-        blocks: currentItems,
-        tags: currentFileTags,
-        mathMemory: {},
-      };
-
-      window.api.saveX(JSON.stringify(fileData), selectedFile);
-    };
-
-    if (saveRequest?.cmd === 'save') {
-      if (selectedFile) {
-        try {
-          saveGridDataToFile();
-          triggerPopupAnimation('save', setPopupType);
-        } catch (error) {
-          triggerPopupAnimation('error', setPopupType);
-          console.error(error);
-        }
-      } else triggerPopupAnimation('firstSelect', setPopupType);
-    }
-  }, [saveRequest]);
+  useFileSaveLoad(
+    state,
+    setState,
+    allBlockValues,
+    setAllBlockValues,
+    setPopupType,
+  );
 
   useAddBlock(newWidgetRequest, setState);
 
@@ -132,15 +60,10 @@ const PageGrid = () => {
     setClearModalOpen,
   );
 
-
   const onLayoutChange = (layout: Array<BlockElement>) => {
     layout.map((block) => {
-      block.type = state.items.find((item) => {
-        return item.i == block.i;
-      }).type;
-      block.metaData = state.items.find((item) => {
-        return item.i == block.i;
-      }).metaData;
+      block.type = state.items.find((item) => item.i == block.i).type;
+      block.metaData = state.items.find((item) => item.i == block.i).metaData;
     });
 
     setState((prev) => ({ ...prev, items: layout }));
