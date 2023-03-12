@@ -5,7 +5,7 @@ type NotificationProps = {
   scene: string;
 };
 
-const Notification = ({ scene }: NotificationProps) => {
+export const Notification = ({ scene }: NotificationProps) => {
   let content = '';
 
   switch (scene) {
@@ -40,4 +40,11 @@ const Notification = ({ scene }: NotificationProps) => {
   );
 };
 
-export default Notification;
+export const triggerPopupAnimation = (type: string, setPopupType: (args: string) => unknown) => {
+  setTimeout(() => {
+    setPopupType(type);
+    setTimeout(() => {
+      setPopupType('');
+    }, 1200);
+  }, 0);
+};

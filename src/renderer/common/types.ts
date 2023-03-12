@@ -36,3 +36,9 @@ export type BlockElement = {
 export type newWidgetRequest = {
   widgetType: WidgetType;
 };
+
+export type PageGridState = {
+  items: BlockElement[];
+  breakpoint: string;
+  cols: number;
+};

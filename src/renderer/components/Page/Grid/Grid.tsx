@@ -1,36 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useGeneralContext } from '@components/GeneralContext';
-import Notification from '@components/common/Notification';
+
+import { Notification, triggerPopupAnimation } from '@components/common/Notification';
 import ConfirmModal from '@components/common/Modals/ConfirmModal';
 
 import { any } from 'prop-types';
-import { BlockElement, FileStructure } from '@renderer/common/types';
+import { BlockElement, FileStructure, PageGridState } from '@renderer/common/types';
 
 import '@components/Page/Page.scss';
 import '@components/Page/Grid/Grid.scss';
 import '@components/Page/Grid/Blocks/Blocks.scss';
-import GridElement from './GridElement';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+
+import GridElement from './GridElement';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useAddBlock } from '@renderer/hooks/useAddBlock';
 import { useDialog } from '@renderer/hooks/useDialog';
+
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-type PageGridState = {
-  items: BlockElement[];
-  breakpoint: string;
-  cols: number;
-};
-
-const defaultPageState: PageGridState = {
-  items: [],
-  breakpoint: 'lg',
-  cols: 8,
-}
-
 const PageGrid = () => {
-  const [state, setState] = useState<PageGridState>(defaultPageState);
+  const [state, setState] = useState<PageGridState>({
+    items: [],
+    breakpoint: 'lg',
+    cols: 8,
+  });
   const [allBlockValues, setAllBlockValues] = useState([]);
   const [popupType, setPopupType] = useState('');
   const [clearModalOpen, setClearModalOpen] = useState(false);
@@ -93,16 +88,38 @@ const PageGrid = () => {
   }, [selectedFile]);
 
   useEffect(function saveFile() {
+    const saveGridDataToFile = () => {
+      const saveMetaDataPerBlock = (block: BlockElement) => {
+        const found = allBlockValues.find((state) => state.id == block.i).metaData;
+    
+        block.metaData = {
+          content: found.content,
+          blockStateFunction: () => any,
+        };
+      };
+
+      const currentItems = state.items;
+      currentItems.map(saveMetaDataPerBlock);
+
+      const fileData: FileStructure = {
+        blocks: currentItems,
+        tags: currentFileTags,
+        mathMemory: {},
+      };
+
+      window.api.saveX(JSON.stringify(fileData), selectedFile);
+    };
+
     if (saveRequest?.cmd === 'save') {
       if (selectedFile) {
         try {
           saveGridDataToFile();
-          triggerPopupAnimation('save');
+          triggerPopupAnimation('save', setPopupType);
         } catch (error) {
-          triggerPopupAnimation('error');
+          triggerPopupAnimation('error', setPopupType);
           console.error(error);
         }
-      } else triggerPopupAnimation('firstSelect');
+      } else triggerPopupAnimation('firstSelect', setPopupType);
     }
   }, [saveRequest]);
 
@@ -143,38 +160,6 @@ const PageGrid = () => {
       allValues.filter((value) => value.id !== e.target.name),
     );
   };
-
-  const saveMetaDataPerBlock = (block: BlockElement) => {
-    const found = allBlockValues.find((state) => state.id == block.i).metaData;
-
-    block.metaData = {
-      content: found.content,
-      blockStateFunction: () => any,
-    };
-  };
-
-  const saveGridDataToFile = () => {
-    const currentItems = state.items;
-    currentItems.map(saveMetaDataPerBlock);
-
-    const fileData: FileStructure = {
-      blocks: currentItems,
-      tags: currentFileTags,
-      mathMemory: {},
-    };
-
-    window.api.saveX(JSON.stringify(fileData), selectedFile);
-  };
-
-  const triggerPopupAnimation = (type: string) => {
-    setTimeout(() => {
-      setPopupType(type);
-      setTimeout(() => {
-        setPopupType('');
-      }, 1200);
-    }, 0);
-  };
-
 
   return (
     <div className='grid-container'>
