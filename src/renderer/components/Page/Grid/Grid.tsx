@@ -102,7 +102,7 @@ const PageGrid = () => {
   }, [selectedFile]);
 
   const onBreakpointChange = (breakpoint: string, cols: number) => {
-    setState((prev) => ({ ...prev, breakpoint, cols }));
+    setState((prev) => ({ ...prev, breakpoint: breakpoint, cols: cols }));
   };
 
   const onLayoutChange = (layout: Array<BlockElement>) => {
@@ -303,11 +303,11 @@ const PageGrid = () => {
         onLayoutChange={onLayoutChange}
         onBreakpointChange={onBreakpointChange}
         className='layout'
-        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xxs: 1 }}
+        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xss: 1 }}
         rowHeight={50}
         resizeHandles={['sw']}
         containerPadding={[0, 0]}
-        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xxs: 100 }}
+        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100  }}
         draggableHandle='.block-handle'
       >
         {state.items.map((element) => (

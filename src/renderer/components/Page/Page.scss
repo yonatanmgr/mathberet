@@ -22,7 +22,9 @@
     justify-content: flex-start;
 
     .page-grid {
-        width: 60%;
+        min-width: 60%;
+        width: max-content;
+        max-width: 80%;
         height: 100%;
 
         display: flex;
