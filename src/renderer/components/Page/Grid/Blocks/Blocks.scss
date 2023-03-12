@@ -51,6 +51,23 @@
                 margin-top: 0 !important;
             }
         }
+
+        [role="math"]{
+            --hue: var(--theme-hue);
+            --selection-background-color: var(--math-block-selection-bg);
+            --selection-color: var(--math-block-selection);
+            font-size: 25px;
+            color: hsla(var(--app-text-color), 1);
+            width: 100%;
+            height: 100%;
+            outline: none;
+            display: flex;
+            justify-content: center;
+            background-color: var(--math-block-bgcolor);
+            &::part(content){
+                margin-top: 5px;
+            }
+        }
     }
     
     // Divider

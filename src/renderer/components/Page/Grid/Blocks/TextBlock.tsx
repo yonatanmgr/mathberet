@@ -12,6 +12,9 @@ import {
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ValueProps } from '@renderer/common/types';
+import MathView from 'react-math-view';
+import ML_KEYBINDINGS from '@common/keybindings';
+import ML_SHORTCUTS from '@common/shortcuts';
 
 type BulletedListElement = {
   type: 'bulleted-list';
@@ -30,6 +33,8 @@ const SHORTCUTS = {
   '####': 'heading-four',
   '#####': 'heading-five',
   '######': 'heading-six',
+  // '$$': 'math-inline',
+  '---': 'divider',
 };
 
 const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
@@ -213,6 +218,23 @@ const Element = ({ attributes, children, element }) => {
       return <h6 {...attributes}>{children}</h6>;
     case 'list-item':
       return <li {...attributes}>{children}</li>;
+    case 'divider':
+      return <div {...attributes} contentEditable={true}>
+      <hr />
+      {children}
+    </div>;
+    // case 'math-inline':
+    //   return <div {...attributes} contentEditable={true}>
+    //     <MathView 
+    //       value='x'
+    //       inlineShortcuts={ML_SHORTCUTS}
+    //       keybindings={ML_KEYBINDINGS}
+    //       onExport={(ref, latex) => latex}
+    //       plonkSound={null}
+    //       keypressSound={null}
+    //     />
+    //   {children}
+    // </div>;
     default:
       return <p {...attributes}>{children}</p>;
   }

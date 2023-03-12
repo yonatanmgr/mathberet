@@ -111,6 +111,13 @@
           height: inherit;
 
           [role='treeitem'] {
+            input {
+              text-shadow: none;
+              font-family: 'Rubik2';
+              font-size: 16px;
+              height: 40px;
+          }
+
             .rct-tree-item-title-container {
               .rct-tree-item-button {
                 overflow: hidden;
