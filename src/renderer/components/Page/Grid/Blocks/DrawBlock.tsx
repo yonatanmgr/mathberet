@@ -19,7 +19,7 @@ function DrawBlockContent({ content, blockStateFunction }: ValueProps) {
         showStyles={false}
         showZoom={false}
         onMount={(app: TldrawApp) => {
-          app.setSetting('showGrid', true);
+          // app.setSetting('showGrid', true);
           app.insertContent(content ? content : { shapes: [] });
           app.zoomToContent();
         }}
