@@ -76,11 +76,11 @@ const PageGrid = () => {
   const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setState((prev) => ({
       ...prev,
-      items: prev.items.filter((item) => item.i !== e.target.name),
+      items: prev.items.filter((item) => item.i !== (e.target as HTMLTextAreaElement).name),
     }));
 
     setAllBlockValues((allValues) =>
-      allValues.filter((value) => value.id !== e.target.name),
+      allValues.filter((value) => value.id !== (e.target as HTMLTextAreaElement).name),
     );
   };
 

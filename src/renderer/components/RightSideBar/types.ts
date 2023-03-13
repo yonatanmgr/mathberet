@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import { TreeItem } from 'react-complex-tree';
 
 export type MathTreeItem = {

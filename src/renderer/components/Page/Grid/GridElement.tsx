@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { LegacyRef, useEffect, useState } from 'react';
 import TextBlockContent from './Blocks/TextBlock';
 import MathBlockContent from './Blocks/MathBlock';
 import GraphBlockContent from './Blocks/GraphBlock';
@@ -109,7 +109,7 @@ const GridElement = React.forwardRef(
     const ReactElement = (
       <div
         className={['block', className].join(' ')}
-        ref={ref}
+        ref={(ref as LegacyRef<HTMLDivElement>)}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onTouchEnd={onTouchEnd}

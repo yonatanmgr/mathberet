@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import {
   TreeItem,
   DraggingPositionItem,
@@ -15,8 +16,8 @@ export const draggedToTheSameParent = (
 
   if (prev[target.parentItem].data != 'root') {
     draggedToSameParent = prev[target.parentItem].children.includes(item.index);
-  } else if (target.targetItem == 'root') {
-    draggedToSameParent = prev[target.targetItem].children.includes(item.index);
+  } else if ((target as DraggingPositionItem).targetItem == 'root') {
+    draggedToSameParent = prev[(target as DraggingPositionItem).targetItem].children.includes(item.index);
   }
   return draggedToSameParent;
 };
@@ -75,7 +76,7 @@ export const updateItemsPosition = (
   target: DraggingPositionItem | DraggingPositionBetweenItems,
 ) => {
   deleteItemFromItsPreviousParent(prev, item);
-  if (target.targetItem == 'root') return prev;
+  if ((target as DraggingPositionItem).targetItem == 'root') return prev;
   addItemToNewParent(target, prev, item as MathTreeItem);
   return prev;
 };
@@ -167,7 +168,7 @@ export const generateStateWithNewFile = (
     [newFileKey]: {
       index: newFileKey,
       data: newFileKey,
-      children: [],
+      children: ([] as Array<any>),
       path: newFilePath,
       isFolder: false,
     },

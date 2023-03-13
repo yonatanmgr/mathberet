@@ -1,4 +1,5 @@
 import { TDShape, TDBinding, TDAsset } from '@tldraw/tldraw';
+// eslint-disable-next-line import/named
 import { Descendant } from 'slate';
 
 export enum WidgetType {
@@ -11,7 +12,7 @@ export enum WidgetType {
   Draw,
 }
 
-type canvasProps = {
+export type canvasProps = {
   shapes: TDShape[];
   bindings?: TDBinding[];
   assets?: TDAsset[];

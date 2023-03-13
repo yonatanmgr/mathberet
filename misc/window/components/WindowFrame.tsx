@@ -12,7 +12,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import Titlebar from './Titlebar';
-import logo from '@assets/images/logo.png';
+const logo = require('@assets/images/logo.png')
 
 type Props = {
   title?: string;

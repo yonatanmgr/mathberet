@@ -1,5 +1,6 @@
-import { Mafs, Coordinates, Plot, Point, Theme } from 'mafs';
+import { Mafs, Coordinates, Plot, Theme } from 'mafs';
 import React, { useEffect, useRef, useState } from 'react';
+// eslint-disable-next-line import/named
 import MathView, { MathViewRef } from 'react-math-view';
 import { parseTex } from 'tex-math-parser';
 import ML_SHORTCUTS from '@common/shortcuts';
@@ -18,7 +19,7 @@ function latex2function(latex: string, i: number) {
 }
 
 function GraphBlockContent({ content, blockStateFunction }: ValueProps) {
-  const [value, setValue] = useState(content ? content : ['']);
+  const [value, setValue] = useState(content ? (content as string[]) : ['']);
 
   useEffect(() => {
     blockStateFunction(value);

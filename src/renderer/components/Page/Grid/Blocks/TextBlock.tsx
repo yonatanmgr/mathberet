@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   createEditor,
+  // eslint-disable-next-line import/named
   Descendant,
   Editor,
   Element as SlateElement,
@@ -8,19 +9,26 @@ import {
   Point,
   Range,
   Transforms,
+  // eslint-disable-next-line import/named
+  BaseElement,
 } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
-import { ValueProps } from '@renderer/common/types';
-import MathView from 'react-math-view';
-import ML_KEYBINDINGS from '@common/keybindings';
-import ML_SHORTCUTS from '@common/shortcuts';
+import { ValueProps, canvasProps } from '@renderer/common/types';
+// import MathView from 'react-math-view';
+// import ML_KEYBINDINGS from '@common/keybindings';
+// import ML_SHORTCUTS from '@common/shortcuts';
 
 type BulletedListElement = {
   type: 'bulleted-list';
   align?: string;
   children: Descendant[];
 };
+
+interface CustomElement extends BaseElement {
+  type?: string;
+  children: Descendant[];
+  }
 
 const SHORTCUTS = {
   '*': 'list-item',
@@ -37,11 +45,24 @@ const SHORTCUTS = {
   // '---': 'divider',
 };
 
+function isDescendant(content: string | string[] | Descendant[] | canvasProps): content is Descendant[] {
+  return (content as Descendant[]) !== undefined;
+}
+
 const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
-  const valueToSet = content
+  const valueToSet = isDescendant(content)
     ? content
     : [{ type: 'paragraph', children: [{ text: '' }] }];
-  const renderElement = useCallback((props) => <Element {...props} />, []);
+  const renderElement = useCallback(
+    (
+      props: JSX.IntrinsicAttributes & {
+        attributes: unknown;
+        children: unknown;
+        element: unknown;
+      },
+    ) => <Element {...props} />,
+    [],
+  );
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
     [],
@@ -53,7 +74,7 @@ const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
     blockStateFunction(value);
   }, [value]);
 
-  const handleDOMBeforeInput = useCallback((e: InputEvent) => {
+  const handleDOMBeforeInput = useCallback(() => {
     queueMicrotask(() => {
       const pendingDiffs = ReactEditor.androidPendingDiffs(editor);
 
@@ -103,7 +124,7 @@ const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
   );
 };
 
-const withShortcuts = (editor) => {
+const withShortcuts = (editor: ReactEditor) => {
   const { deleteBackward, insertText } = editor;
 
   editor.insertText = (text) => {
@@ -118,7 +139,7 @@ const withShortcuts = (editor) => {
       const start = Editor.start(editor, path);
       const range = { anchor, focus: start };
       const beforeText = Editor.string(editor, range) + text.slice(0, -1);
-      const type = SHORTCUTS[beforeText];
+      const type = (SHORTCUTS as any)[beforeText];
 
       if (type) {
         Transforms.select(editor, range);
@@ -127,7 +148,7 @@ const withShortcuts = (editor) => {
           Transforms.delete(editor);
         }
 
-        const newProperties: Partial<SlateElement> = {
+        const newProperties: Partial<CustomElement> = {
           type,
         };
         Transforms.setNodes<SlateElement>(editor, newProperties, {
@@ -143,7 +164,7 @@ const withShortcuts = (editor) => {
             match: (n) =>
               !Editor.isEditor(n) &&
               SlateElement.isElement(n) &&
-              n.type === 'list-item',
+              (n as CustomElement).type === 'list-item',
           });
         }
 
@@ -169,20 +190,21 @@ const withShortcuts = (editor) => {
         if (
           !Editor.isEditor(block) &&
           SlateElement.isElement(block) &&
-          block.type !== 'paragraph' &&
+          (block as CustomElement).type !== 'paragraph' &&
           Point.equals(selection.anchor, start)
         ) {
-          const newProperties: Partial<SlateElement> = {
+          const newProperties: CustomElement = {
             type: 'paragraph',
+            children: []
           };
           Transforms.setNodes(editor, newProperties);
 
-          if (block.type === 'list-item') {
+          if ((block as CustomElement).type === 'list-item') {
             Transforms.unwrapNodes(editor, {
               match: (n) =>
                 !Editor.isEditor(n) &&
                 SlateElement.isElement(n) &&
-                n.type === 'bulleted-list',
+                (n as CustomElement).type === 'bulleted-list',
               split: true,
             });
           }
@@ -198,7 +220,7 @@ const withShortcuts = (editor) => {
   return editor;
 };
 
-const Element = ({ attributes, children, element }) => {
+const Element = ({ attributes, children, element }: any) => {
   switch (element.type) {
     case 'block-quote':
       return <blockquote {...attributes}>{children}</blockquote>;
@@ -225,7 +247,7 @@ const Element = ({ attributes, children, element }) => {
     // </div>;
     // case 'math-inline':
     //   return <div {...attributes} contentEditable={true}>
-    //     <MathView 
+    //     <MathView
     //       value='x'
     //       inlineShortcuts={ML_SHORTCUTS}
     //       keybindings={ML_KEYBINDINGS}

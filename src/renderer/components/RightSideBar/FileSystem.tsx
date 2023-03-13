@@ -1,6 +1,7 @@
+/* eslint-disable import/named */
 import ErrorModal from '@components/common/Modals/ErrorModal';
 import { useGeneralContext } from '@components/GeneralContext';
-import React, { useEffect, useState } from 'react';
+import React, { SetStateAction, useEffect, useState } from 'react';
 import {
   Tree,
   ControlledTreeEnvironment,
@@ -21,6 +22,12 @@ import {
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 
+type receivedProps = {filesPath: string, root: SetStateAction<TreeItemsObj>}
+declare global {
+  interface Window {
+      api: any;
+  }
+}
 function FileSystem() {
   const { setSelectedFile } = useGeneralContext();
 
@@ -43,7 +50,7 @@ function FileSystem() {
   }, []);
 
   useEffect(() => {
-    window.api.receive('gotNotebooks', (data) => {
+    window.api.receive('gotNotebooks', (data: receivedProps) => {
       setItems(data.root);
     });
   }, []);

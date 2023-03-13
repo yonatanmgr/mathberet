@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+// eslint-disable-next-line import/named
 import MathView, { MathViewRef } from 'react-math-view';
 import ML_SHORTCUTS from '@common/shortcuts';
 import ML_KEYBINDINGS from '@common/keybindings';

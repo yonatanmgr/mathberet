@@ -16,7 +16,8 @@
       {
         "button-name": "off"
       }
-    ]
+    ],
+    "typescript-config/strict": "off"
   },
   "browserslist": [
     "defaults",

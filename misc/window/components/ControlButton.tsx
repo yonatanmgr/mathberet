@@ -17,7 +17,7 @@ const ControlButton: React.FC<
 
   return (
     <div
-      aria-label={name}
+      data-label={name}
       className={className}
       onClick={onClick}
       title={title}

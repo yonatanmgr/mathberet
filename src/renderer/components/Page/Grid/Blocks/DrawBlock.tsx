@@ -1,4 +1,4 @@
-import { ValueProps } from '@renderer/common/types';
+import { ValueProps, canvasProps } from '@renderer/common/types';
 import { Tldraw, TldrawApp } from '@tldraw/tldraw';
 import React, { useEffect, useState } from 'react';
 
@@ -20,7 +20,7 @@ function DrawBlockContent({ content, blockStateFunction }: ValueProps) {
         showZoom={false}
         onMount={(app: TldrawApp) => {
           // app.setSetting('showGrid', true);
-          app.insertContent(content ? content : { shapes: [] });
+          app.insertContent(content ? (content as canvasProps) : { shapes: [] });
           app.zoomToContent();
         }}
         onPersist={(app: TldrawApp) => setCanvasState(app.getContent())}

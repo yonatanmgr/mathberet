@@ -1,5 +1,5 @@
-import erwt from '@assets/icons/erwt.png';
-import logo from '@assets/icons/logo.svg';
+const erwt = require('@assets/icons/erwt.png');
+const logo = require('@assets/icons/logo.svg');
 
 
 export const icons = {
