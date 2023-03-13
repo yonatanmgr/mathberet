@@ -89,9 +89,9 @@
 
   // KBar
   --kbar-bg: linear-gradient(120deg,
-      hsla(var(--theme-hue), 10%, 12%, 0.2),
-      hsla(var(--theme-hue), 10%, 12%, 0.7), 70%,
-      hsla(var(--theme-hue), 10%, 12%, 0.2));
+      hsla(var(--theme-hue), 10%, 5%, 0.7),
+      hsla(var(--theme-hue), 10%, 9%, 0.9), 70%,
+      hsla(var(--theme-hue), 10%, 5%, 0.7));
 
   // Titlebar
   --titlebar-bgcolor: var(--app-bgcolor);

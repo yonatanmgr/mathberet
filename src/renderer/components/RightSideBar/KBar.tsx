@@ -122,7 +122,7 @@ export function KBar() {
     width: "100%",
     padding: "10px 8px",
     outline: "1px solid var(--page-border)",
-    backdropFilter: "blur(5px)",
+    backdropFilter: "blur(7px)",
     background: "var(--kbar-bg)",
     color: "hsla(var(--app-text-color), 1)",
     borderRadius: "12px",
