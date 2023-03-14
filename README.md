@@ -1,4 +1,4 @@
-![](https://i.imgur.com/I9J1zVb.png)
+![](https://user-images.githubusercontent.com/31913495/225077627-82fa032c-88e7-4e25-971f-98a37a436d40.jpg)
 
 > Mathberet (מַתְבֶּרֶת) - A digital mathematics notebook, written in React and built with Electron.
 Currently only in Hebrew, English support will be added in future versions.
