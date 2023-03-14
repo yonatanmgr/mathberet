@@ -1,17 +1,20 @@
 import React from 'react';
 import Shortcut from '@components/common/Shortcut';
 import './Page.scss';
+import { useTranslation } from 'react-i18next';
 
 const PagePlaceholder = () => {
+  const { t, i18n } = useTranslation();
+
   return (
     <div className='page-placeholder'>
       <div className='placeholder-text'>
-        כדי להתחיל, <br />
-        לחצו על כפתור המחברות בצד ימין{' '}
+        {t("Placeholder 1")}, <br />
+        {t("Placeholder 2")}{' '}
         <kbd className='kbc-button'>
           <i className='fi fi-rr-notebook'></i>
         </kbd>{' '}
-        (או <Shortcut shortcut={['Ctrl', 'o']} />) ובחרו/צרו קובץ!
+        ({t("Placeholder Or")} <Shortcut shortcut={['Ctrl', 'o']} />) {t("Placeholder 3")}!
       </div>
     </div>
   );

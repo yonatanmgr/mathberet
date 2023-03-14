@@ -1,7 +1,7 @@
 @import '../Theme.scss';
 
 #notification {
-    direction: rtl;
+    direction: var(--app-direction);
     visibility: hidden;
     z-index: 1;
     padding: 6px 10px 6px 10px;

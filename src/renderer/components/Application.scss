@@ -10,7 +10,6 @@
 @import './Theme.scss';
 @import './Fonts.css';
 
-
 /**
  *==========================================================================
  * Application Specific Stylesheet
@@ -47,6 +46,7 @@ body,
   transition: 0.3s;
   height: 100%;
   overflow: hidden;
+  direction: var(--app-direction);
 }
 
 body {
@@ -61,7 +61,6 @@ body {
 
 h1 {
   margin: 0;
-
 }
 
 #app {
@@ -92,8 +91,8 @@ button {
   align-items: center;
   outline: none;
 
-  &.tool{
-    background-color: #1A2428
+  &.tool {
+    background-color: #1a2428;
   }
 
   &:hover {
@@ -103,7 +102,6 @@ button {
     background: var(--button-active-bgcolor);
   }
 }
-
 
 .rotate {
   animation: rotate 4.5s linear infinite;
@@ -115,8 +113,6 @@ button {
   }
 }
 
-
-
 .hidden {
   display: none !important;
 }
@@ -125,7 +121,6 @@ button {
   text-align: center;
 }
 
-
 #erwt {
   // user-select: none;
   display: flex;
@@ -133,27 +128,25 @@ button {
   height: 100%;
   background: var(--erwt-gradient);
   gap: 5px;
+  overflow-x: hidden;
 
- 
   .workspace {
     width: calc(100% - 20px);
     align-self: center;
     height: 100%;
     display: flex;
     flex-direction: row;
-    direction: rtl;
+    direction: var(--app-direction);
     justify-content: center;
     gap: 10px;
-    
-    
 
-    .left-sidebar.open{
+    .left-sidebar.open {
       width: 100%;
       min-width: 230px;
       max-width: 15vw;
     }
 
-    .left-sidebar{
+    .left-sidebar {
       transition: 0.2s;
       width: 45px;
       min-width: 45px;
@@ -163,6 +156,36 @@ button {
       flex-direction: column;
       gap: 20px;
     }
+  }
+}
+
+.kbar-search {
+  padding: 12px 16px;
+  font-size: 16px;
+  width: 100%;
+  font-family: 'Rubik2';
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  background: transparent;
+  color: hsla(var(--app-text-color), 1);
+}
+
+.kbar-result {
+  padding: 14px 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  user-select: none;
+  background: transparent;
+
+  &.active{
+    background: hsla(var(--theme-hue), 50%, 50%, 0.1);
+  }
+}
+
+body:has(#erwt.rtl) {
+  .kbar-search, .kbar-result {
+    direction: rtl !important;
   }
 }
 

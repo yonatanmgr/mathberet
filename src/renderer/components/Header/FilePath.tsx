@@ -12,7 +12,7 @@ const FilePath = ({ filePath }: FilePathProps) => {
 
   return (
     <div className='filepath'>
-      <span className='filepath-folder'>
+      <span className={`filepath-folder${folderPath == 'files' || fileName == '' ? ' hide': ''}`}>
         {folderPath == 'files' || fileName == '' ? '' : `${folderPath} /`}
       </span>
       <span className='filepath-name'>{fileName}</span>

@@ -17,10 +17,12 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useAddBlock } from '@renderer/hooks/useAddBlock';
 import { useDialog } from '@renderer/hooks/useDialog';
 import { useFileSaveLoad } from '@renderer/hooks/useFileSaveLoad';
+import { useTranslation } from 'react-i18next';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const PageGrid = () => {
+  const { t, i18n } = useTranslation();
   const [state, setState] = useState<PageGridState>({
     items: [],
     breakpoint: 'lg',
@@ -83,7 +85,7 @@ const PageGrid = () => {
       allValues.filter((value) => value.id !== (e.target as HTMLTextAreaElement).name),
     );
   };
-
+  
   return (
     <div className='grid-container'>
       <ResponsiveGridLayout
@@ -92,7 +94,7 @@ const PageGrid = () => {
         className='layout'
         cols={{ lg: 8, md: 6, sm: 4, xs: 2, xss: 1 }}
         rowHeight={50}
-        resizeHandles={['sw']}
+        resizeHandles={document.querySelector('#erwt').classList.contains('rtl') ? ['sw'] : ['se']}
         containerPadding={[0, 0]}
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100 }}
         draggableHandle='.block-handle'
@@ -114,7 +116,7 @@ const PageGrid = () => {
         open={clearModalOpen}
         onConfirm={ModalChoice.handleDialogConfirm}
         onCancel={ModalChoice.handleDialogCancel}
-        text='האם למחוק את תכולת הדף?'
+        text={t("Modal 1")}
       />
 
       <Notification scene={popupType} />

@@ -10,7 +10,7 @@
     outline: 1px solid transparent;
     border-radius: 5px;
     margin: 3px;
-    direction: rtl;
+    direction: var(--app-direction);
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -69,7 +69,7 @@
     &:has(.pageDivider){
         background: gray;
         opacity: 40%;
-        direction: rtl;
+        direction: var(--app-direction);
         margin-right: 0px;
         max-width: 100%;
         width: 100%;

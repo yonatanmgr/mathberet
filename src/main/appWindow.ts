@@ -177,6 +177,8 @@ function buildTree(dir: string, root: any) {
 
 ipcMain.on('getNotebooks', () => {
   const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
+  if (!fs.existsSync(filesPath)) fs.mkdirSync(filesPath, {recursive: true})
+
   const root = {};
   buildTree(filesPath, root);
   firstTime = true;

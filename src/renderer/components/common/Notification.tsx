@@ -1,11 +1,13 @@
 import React from 'react';
 import './Notification.scss';
+import { useTranslation } from 'react-i18next';
 
 type NotificationProps = {
   scene: string;
 };
 
 export const Notification = ({ scene }: NotificationProps) => {
+  const { t, i18n } = useTranslation();
   let content = '';
 
   switch (scene) {
@@ -13,13 +15,11 @@ export const Notification = ({ scene }: NotificationProps) => {
       content = '';
       break;
     case 'save':
-      content = 'הקובץ נשמר!';
+      content = t("Saved");
       break;
-    case 'firstSelect':
-      content = 'יש לבחור קובץ כדי לשמור!';
-      break;
+
     case 'error':
-      content = 'הייתה תקלה בשמירת הקובץ!';
+      content = t("Save Error");
       break;
 
     default:

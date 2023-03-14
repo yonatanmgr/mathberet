@@ -21,6 +21,7 @@ import {
   newFileKey,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
+import { useTranslation } from 'react-i18next';
 
 type receivedProps = {filesPath: string, root: SetStateAction<TreeItemsObj>}
 declare global {
@@ -29,6 +30,7 @@ declare global {
   }
 }
 function FileSystem() {
+  const { t, i18n } = useTranslation();
   const { setSelectedFile } = useGeneralContext();
 
   const [errorModalContent, setErrorModalContent] = useState('');
@@ -70,7 +72,7 @@ function FileSystem() {
   const addFolder = () => {
     //Todo: check also that they are in the same folder - compare paths
     if (items[newFolderKey]?.isFolder) {
-      setErrorModalContent('תיקיה חדשה כבר קיימת');
+      setErrorModalContent(t("Modal 3"));
       setErrorModalOpen(true);
       return;
     }
@@ -80,7 +82,7 @@ function FileSystem() {
   const addFile = () => {
     //Todo: check also that they are in the same folder - compare paths
     if (items[newFileKey]?.isFolder == false) {
-      setErrorModalContent(`קובץ חדש כבר קיים`);
+      setErrorModalContent(t("Modal 2"));
       setErrorModalOpen(true);
       return;
     }
@@ -89,7 +91,7 @@ function FileSystem() {
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
     if (items[name]) {
-      setErrorModalContent('כבר קיים שם כזה');
+      setErrorModalContent(t("Modal 4"));
       setErrorModalOpen(true);
     } else {
       let newPath: string;
@@ -142,23 +144,23 @@ function FileSystem() {
     <div className='file-system'>
       <div className='file-system-header'>
         <span
-          data-tooltip='לחצו פעמיים כדי לפתוח את התיקייה'
+          data-tooltip={t("Notebooks Tooltip")}
           className='file-system-header-title'
           onDoubleClick={() => window.api.openFiles()}
         >
-          המחברות שלי
+          {t("My Notebooks")}
         </span>
         <div className='file-system-header-buttons'>
-          <button onClick={addFolder} data-tooltip='תיקיה חדשה'>
+          <button onClick={addFolder} data-tooltip={t("New Folder")}>
             <i className='fi fi-rr-add-folder' />
           </button>
-          <button onClick={addFile} data-tooltip='קובץ חדש'>
+          <button onClick={addFile} data-tooltip={t("New File")}>
             <i className='fi-rr-add-document' />
           </button>
         </div>
       </div>
       <div className='files-tree-container'>
-        <button onClick={() => console.table(items)}>X</button>
+        {/* <button onClick={() => console.table(items)}>X</button> */}
         <ControlledTreeEnvironment
           items={items}
           canDragAndDrop={true}

@@ -11,6 +11,7 @@
     justify-content: center;
 
     .tools-panel {
+        direction: var(--app-direction);
         transition: 0.2s;
         position: fixed;
         padding: 8px 10px 8px 10px;
@@ -18,7 +19,7 @@
         bottom: -50px;
         width: max-content;
         display: flex;
-        flex-direction: row-reverse;
+        flex-direction: row;
         border-radius: 8px;
         gap: 8px;
         background: var(--panel-bgcolor);

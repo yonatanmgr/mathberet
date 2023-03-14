@@ -1,6 +1,11 @@
 @import '~react-complex-tree/lib/style-modern.css';
 @import '../Theme.scss';
 
+#erwt.rtl .rct-tree-item-title-container {
+  margin-inline-end: 10px !important;
+  margin-inline-start: unset !important;
+}
+
 .file-system {
   display: flex;
   flex-direction: column;
@@ -12,7 +17,7 @@
   .file-system-header {
     display: flex;
     flex-direction: row;
-    direction: rtl;
+    direction: var(--app-direction);
     height: max-content;
     padding-bottom: 10px;
     padding-top: 3px;
@@ -34,7 +39,7 @@
         min-width: max-content;
         position: fixed;
         margin-top: 40px;
-        margin-right: -130px;
+        margin-inline-start: -130px;
         z-index: 1000;
         padding: 6px 10px 6px 10px;
         background-color: var(--button-bgcolor);
@@ -44,14 +49,13 @@
         opacity: 0%;
         animation: tooltip 0.1s ease-in-out 0.2s forwards;
       }
-      
     }
 
     .file-system-header-buttons {
       border-radius: 10px;
       display: flex;
       flex-direction: row;
-      direction: rtl;
+      direction: var(--app-direction);
       width: max-content;
       gap: 3px;
 
@@ -116,16 +120,22 @@
               font-family: 'Rubik2';
               font-size: 16px;
               height: 40px;
-          }
+            }
 
             .rct-tree-item-title-container {
+              margin-inline-start: 10px;
+              margin-inline-end: unset;            
+              padding-inline-end: 10px !important;
+              padding-right: 0px !important;
+              padding-left: 0px !important;
+
               .rct-tree-item-button {
                 overflow: hidden;
                 min-width: inherit;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 height: 100%;
-                direction: rtl;
+                direction: var(--app-direction);
                 background-color: transparent;
                 color: hsla(var(--app-text-color), 1);
                 border-radius: 10px;
@@ -135,15 +145,16 @@
                 height: 40px;
                 flex-direction: row;
                 justify-content: flex-start;
+                padding-inline-start: 10px;
                 // direction: ltr;
-                padding: 0 var(--rct-item-padding) 0
-                  calc(
-                    var(--rct-item-padding) + var(--rct-arrow-container-size) +
-                      var(--rct-arrow-padding)
-                  );
-                margin-right: calc(-1 * var(--rct-arrow-size));
-                margin-left: calc(-1 * var(--rct-arrow-size));
-                padding-right: 12px;
+                // padding: 0 var(--rct-item-padding) 0
+                //   calc(
+                //     var(--rct-item-padding) + var(--rct-arrow-container-size) +
+                //       var(--rct-arrow-padding)
+                //   );
+                // margin-right: calc(-1 * var(--rct-arrow-size));
+                // margin-left: calc(-1 * var(--rct-arrow-size));
+                // padding-right: 12px;
                 cursor: var(--rct-cursor);
                 transition: color 100ms ease-out,
                   background-color 100ms ease-out, font-weight 100ms ease-in;
@@ -174,7 +185,9 @@
                   font-weight: 300;
                   font-size: large;
                   content: '\f35d';
-                  padding-left: 10px;
+                  padding-inline-end: 10px !important;
+
+                  // padding-left: 10px;
                 }
 
                 &.rct-tree-item-button-isFolder {
@@ -226,11 +239,7 @@
             [role='group'] {
               height: fit-content;
               // padding-top: 10px;
-              padding-right: 20px;
-
-              .rct-tree-item-title-container {
-                padding-left: 10px !important;
-              }
+              padding-inline-start: 20px;
             }
           }
         }

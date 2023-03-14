@@ -13,7 +13,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    direction: rtl;
+    direction: var(--app-direction);
     height: 100%;
     width: 100%;
 
@@ -22,7 +22,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      direction: rtl;
+      direction: var(--app-direction);
       height: 100%;
       max-width: calc(100% - 200px);
       white-space: nowrap;
@@ -42,8 +42,8 @@
         max-width: inherit;
         display: flex;
         flex-direction: row;
-        direction: rtl;
-        padding-right: 10px;
+        direction: var(--app-direction);
+        padding-inline-start: 5px;
         gap: 10px;
       }
 
@@ -122,7 +122,7 @@
         font-size: 23px;
         display: flex;
         flex-direction: row;
-        direction: rtl;
+        direction: var(--app-direction);
         gap: 6px;
         padding-bottom: 3px;
 
@@ -132,6 +132,10 @@
           &:focus {
             outline: none;
           }
+        }
+
+        &-folder.hide {
+          display: none;
         }
       }
 

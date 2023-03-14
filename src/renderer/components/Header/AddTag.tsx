@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { TagProps } from './Tag';
 import { useGeneralContext } from '@components/GeneralContext';
+import { useTranslation } from 'react-i18next';
 
 const AddTag = () => {
+  const { t, i18n } = useTranslation();
+
   const [clickState, setClickState] = useState(false);
   const [currentValue, setCurrentValue] = useState('');
   const [savedValue, setSavedValue] = useState('');
@@ -65,7 +68,7 @@ const AddTag = () => {
       autoFocus={true}
       type='text'
       title=''
-      placeholder='הוספת תגית'
+      placeholder={t("Add Tag")}
       className='tag-text-adding'
       onChange={(e) => setCurrentValue(e.target.value)}
       onKeyDown={handleKeyDown}
@@ -73,7 +76,7 @@ const AddTag = () => {
     />
   ) : (
     <>
-      <span className='tag-text'>הוספת תגית</span>
+      <span className='tag-text'>{t("Add Tag")}</span>
     </>
   );
 

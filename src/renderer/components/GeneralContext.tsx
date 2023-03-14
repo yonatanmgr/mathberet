@@ -16,6 +16,7 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [currentFileTags, setCurrentFileTags] = useState<string[]>([]);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const [isRtl, setIsRtl] = useState(true);
 
   return (
     <GeneralContext.Provider
@@ -26,7 +27,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
         saveRequest, setSaveRequest,
         currentFileTags, setCurrentFileTags,
         isLeftSidebarOpen, setIsLeftSidebarOpen,
-        isRightSidebarOpen, setIsRightSidebarOpen
+        isRightSidebarOpen, setIsRightSidebarOpen,
+        isRtl, setIsRtl
       }}
     >
       {children}

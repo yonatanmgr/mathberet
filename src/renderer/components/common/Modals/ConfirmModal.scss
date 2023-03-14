@@ -1,5 +1,11 @@
 @import '../../Theme.scss';
 
+body:has(#erwt.rtl){
+  .modal-text{
+    direction: rtl;
+  }
+}
+
 #portal {
   display: flex;
   align-items: center;
@@ -19,7 +25,7 @@
 
   .modal {
     transform-origin: center;
-    direction: rtl;
+    direction: var(--app-direction);
     font-size: larger;
     animation: popup 0.15s ease-in-out forwards;
     color: hsla(var(--app-text-color), 1);

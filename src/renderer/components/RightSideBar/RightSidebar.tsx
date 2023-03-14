@@ -4,8 +4,11 @@ import SidebarButton from './SidebarButton';
 import FileSystem from './FileSystem';
 import { useKBar } from 'kbar';
 import { useGeneralContext } from '@components/GeneralContext';
+import { useTranslation } from 'react-i18next';
 
 const RightSidebar = () => {
+  const { t, i18n } = useTranslation();
+
   const { query } = useKBar();
   const {
     setIsLeftSidebarOpen,
@@ -27,14 +30,14 @@ const RightSidebar = () => {
       <div className='basic'>
         <section id='top'>
           <SidebarButton
-            title='המחברות שלי'
+            title={t('My Notebooks')}
             buttonType='files'
             state={isRightSidebarOpen}
             icon='notebook'
             onClick={handleOnClickFiles}
           />
           <SidebarButton
-            title='חיפוש ופעולות'
+            title={t('Command Bar')}
             buttonType='search'
             icon='terminal'
             onClick={() => query.toggle()}
@@ -42,14 +45,14 @@ const RightSidebar = () => {
         </section>
         <section id='bottom'>
           <SidebarButton
-            title='זיכרון מתמטי'
+            title={t('Math Panel')}
             buttonType='mathPanel'
             state={isLeftSidebarOpen}
             icon='calculator'
             onClick={handleOnClickMathPanel}
           />
           <SidebarButton
-            title='הארכיון שלי'
+            title={t('Archive')}
             buttonType='archive'
             icon='archive'
           />

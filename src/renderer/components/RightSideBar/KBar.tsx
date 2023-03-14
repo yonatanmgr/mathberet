@@ -1,81 +1,130 @@
 import React from 'react';
+
 import {
   KBarPortal,
   KBarPositioner,
   KBarAnimator,
   KBarResults,
   KBarSearch,
-  useMatches
+  useMatches,
+  Action,
 } from 'kbar';
 
-import { setColor, setTheme } from '@components/Application';
+import {
+  setColor,
+  setLang,
+  setTheme,
+} from '@components/Application';
 
-export const actions = [
+
+import i18n from '@common/i18n';
+import { useTranslation } from 'react-i18next';
+
+export const actions: Action[] = [
   {
-    id: "preferences",
-    name: "העדפות משתמש"
+    id: 'preferences',
+    name: i18n.t('Preferences'),
   },
   {
-    id: "theme",
-    name: "ערכת נושא",
-    parent: "preferences"
+    id: 'language',
+    name: i18n.t('Language'),
+    parent: 'preferences',
   },
   {
-    id: "color",
-    name: "צבע נושא",
-    parent: "preferences"
+    id: 'theme',
+    name: i18n.t('Theme'),
+    parent: 'preferences',
   },
   {
-    id: "blue",
-    name: "כחול",
-    perform: () => { setColor('blue', 210) },
-    parent: 'color'
+    id: 'color',
+    name: i18n.t('Color'),
+    parent: 'preferences',
   },
   {
-    id: "pink",
-    name: "ורוד",
-    perform: () => { setColor('pink', 300) },
-    parent: 'color'
+    id: 'hebrew',
+    name: i18n.t('Hebrew'),
+    perform: () => {
+      setLang('he');
+    },
+    parent: 'language',
   },
   {
-    id: "yellow",
-    name: "צהוב",
-    perform: () => { setColor('yellow', 35) },
-    parent: 'color'
+    id: 'english',
+    name: i18n.t('English'),
+    perform: () => {
+      setLang('en');
+    },
+    parent: 'language',
   },
   {
-    id: "purple",
-    name: "סגול",
-    perform: () => { setColor('purple', 250) },
-    parent: 'color'
+    id: 'blue',
+    name: i18n.t('Blue'),
+    perform: () => {
+      setColor('blue', 210);
+    },
+    parent: 'color',
   },
   {
-    id: "red",
-    name: "אדום",
-    perform: () => { setColor('red', 0) },
-    parent: 'color'
+    id: 'pink',
+    name: i18n.t('Pink'),
+    perform: () => {
+      setColor('pink', 300);
+    },
+    parent: 'color',
   },
   {
-    id: "green",
-    name: "ירוק",
-    perform: () => { setColor('green', 140) },
-    parent: 'color'
+    id: 'yellow',
+    name: i18n.t('Yellow'),
+    perform: () => {
+      setColor('yellow', 35);
+    },
+    parent: 'color',
   },
   {
-    id: "light",
-    name: "מצב אור",
-    perform: () => { setTheme(0) },
-    parent: 'theme'
+    id: 'purple',
+    name: i18n.t('Purple'),
+    perform: () => {
+      setColor('purple', 250);
+    },
+    parent: 'color',
   },
   {
-    id: "dark",
-    name: "מצב חושך",
-    perform: () => { setTheme(1) },
-    parent: 'theme'
+    id: 'red',
+    name: i18n.t('Red'),
+    perform: () => {
+      setColor('red', 0);
+    },
+    parent: 'color',
   },
-]
+  {
+    id: 'green',
+    name: i18n.t('Green'),
+    perform: () => {
+      setColor('green', 140);
+    },
+    parent: 'color',
+  },
+  {
+    id: 'light',
+    name: i18n.t('Light'),
+    perform: () => {
+      setTheme(0);
+    },
+    parent: 'theme',
+  },
+  {
+    id: 'dark',
+    name: i18n.t('Dark'),
+    perform: () => {
+      setTheme(1);
+    },
+    parent: 'theme',
+  },
+];
 
 export function KBar() {
+  const { t, i18n } = useTranslation();
+  
   function RenderResults() {
     const { results } = useMatches();
 
@@ -83,17 +132,10 @@ export function KBar() {
       <KBarResults
         items={results}
         onRender={({ item, active }) =>
-          typeof item === "string" ? (
+          typeof item === 'string' ? (
             <div>{item}</div>
           ) : (
-            <div style={{
-              direction: 'rtl',
-              padding: "14px 10px",
-              borderRadius: "8px",
-              fontSize: 16,
-              userSelect: "none",
-              background: active ? "hsla(var(--theme-hue), 50%, 50%, 0.1)" : "transparent"
-              }}>
+            <div className={`kbar-result${active ? ' active' : ''}`}>
               {item.name}
             </div>
           )
@@ -101,41 +143,28 @@ export function KBar() {
       />
     );
   }
-  
 
-
-  const searchStyle = {
-    padding: "12px 16px",
-    fontSize: "16px",
-    width: "100%",
-    fontFamily: 'Rubik',
-    direction: 'rtl' as const,
-    boxSizing: "border-box" as React.CSSProperties["boxSizing"],
-    outline: "none",
-    border: "none",
-    background: "transparent",
-    color: "hsla(var(--app-text-color), 1)",
-  };
-  
   const animatorStyle = {
-    maxWidth: "600px",
-    width: "100%",
-    padding: "10px 8px",
-    outline: "1px solid var(--page-border)",
-    backdropFilter: "blur(7px)",
-    background: "var(--kbar-bg)",
-    color: "hsla(var(--app-text-color), 1)",
-    borderRadius: "12px",
-    boxShadow: "0 0 10px 1px rgba(0, 0, 0, .25)",
-    overflow: "hidden",
+    maxWidth: '600px',
+    width: '100%',
+    padding: '10px 8px',
+    outline: '1px solid var(--page-border)',
+    backdropFilter: 'blur(7px)',
+    background: 'var(--kbar-bg)',
+    color: 'hsla(var(--app-text-color), 1)',
+    borderRadius: '12px',
+    boxShadow: '0 0 10px 1px rgba(0, 0, 0, .25)',
+    overflow: 'hidden',
   };
-  
 
   return (
-    <KBarPortal> 
-      <KBarPositioner> 
+    <KBarPortal>
+      <KBarPositioner>
         <KBarAnimator style={animatorStyle}>
-          <KBarSearch style={searchStyle} defaultPlaceholder='הקלידו פקודה או חפשו...' />
+          <KBarSearch
+            className='kbar-search'
+            defaultPlaceholder={t('Prompt')}
+          />
           <RenderResults />
         </KBarAnimator>
       </KBarPositioner>
