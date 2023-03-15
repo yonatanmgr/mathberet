@@ -147,6 +147,7 @@ export function KBar() {
   const animatorStyle = {
     maxWidth: '600px',
     width: '100%',
+    zIndex: '10000',
     padding: '10px 8px',
     outline: '1px solid var(--page-border)',
     backdropFilter: 'blur(7px)',
@@ -159,7 +160,7 @@ export function KBar() {
 
   return (
     <KBarPortal>
-      <KBarPositioner>
+      <KBarPositioner style={{width: 'unset'}}>
         <KBarAnimator style={animatorStyle}>
           <KBarSearch
             className='kbar-search'

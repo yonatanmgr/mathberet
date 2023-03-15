@@ -112,20 +112,20 @@ const Application = () => {
 
   return (
     <GeneralContextProvider>
-      <div id='erwt'>
-        <Header />
-        <div className='workspace'>
-          <KBarProvider
-            actions={actions}
-            options={{ toggleShortcut: '$mod+Shift+p' }}
-          >
+      <KBarProvider
+        actions={actions}
+        options={{ toggleShortcut: '$mod+Shift+p' }}
+      >
+        <div id='erwt'>
+          <Header />
+          <div className='workspace'>
             <RightSidebar />
             <KBar />
             <Page />
             <LeftSidebar />
-          </KBarProvider>
+          </div>
         </div>
-      </div>
+      </KBarProvider>
     </GeneralContextProvider>
   );
 };
