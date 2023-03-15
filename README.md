@@ -1,6 +1,6 @@
 <div align="center">
 <img height=175 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
-<p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A digital mathematics notebook, written in React and built with Electron</p>
+<p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A self-hosted digital mathematics notebook, written in React and built with Electron</p>
 <p><b>🚧 In active development, open for contributions! 🚧</b></p>
 </div>
 
