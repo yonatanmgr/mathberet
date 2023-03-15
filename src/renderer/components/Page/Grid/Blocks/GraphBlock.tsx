@@ -69,3 +69,33 @@ function GraphBlockContent({ content, blockStateFunction }: ValueProps) {
 }
 
 export default GraphBlockContent;
+
+// TESTS
+// function CreatePolygon() {
+//   const [pointsList, setPointsList] = React.useState([[1,1], [2,2], [3,-2]] as vec.Vector2[]);
+//   const [movePoints, setMovePoints] = React.useState(false);
+
+//   const handleMove = (point, newPoint) =>{
+//     setPointsList([...pointsList.filter((p) => p != point), newPoint])
+//   }
+//   return (
+//     <Mafs
+//       onClick={(point) =>
+//         movePoints
+//           ? setPointsList([...pointsList, point])
+//           : null
+//       }
+//     >
+//       <Coordinates.Cartesian />
+//       <Polygon points={pointsList} color={Theme.blue} />
+
+//       {pointsList.map((point, i) => (
+//         <MovablePoint
+//           key={i}
+//           point={point}
+//           onMove={newPoint => handleMove(point, newPoint)}
+//         />
+//       ))}
+//     </Mafs>
+//   );
+// }
