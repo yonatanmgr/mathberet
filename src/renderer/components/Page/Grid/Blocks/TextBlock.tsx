@@ -15,6 +15,7 @@ import {
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { ValueProps, canvasProps } from '@renderer/common/types';
+import { useTranslation } from 'react-i18next';
 // import MathView from 'react-math-view';
 // import ML_KEYBINDINGS from '@common/keybindings';
 // import ML_SHORTCUTS from '@common/shortcuts';
@@ -50,6 +51,7 @@ function isDescendant(content: string | string[] | Descendant[] | canvasProps): 
 }
 
 const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
+  const { t, i18n } = useTranslation();
   const valueToSet = isDescendant(content)
     ? content
     : [{ type: 'paragraph', children: [{ text: '' }] }];
@@ -117,7 +119,7 @@ const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
         className='textbox'
         onDOMBeforeInput={handleDOMBeforeInput}
         renderElement={renderElement}
-        placeholder='כתבו טקסט כאן...'
+        placeholder={t("Text Placeholder")}
         autoFocus
       />
     </Slate>

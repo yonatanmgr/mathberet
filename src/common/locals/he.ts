@@ -43,4 +43,5 @@ export const HE_TRANSLATION = {
     'OK': 'אישור',
     'Saved': 'הקובץ נשמר!',
     'Save Error': 'התרחשה שגיאה בשמירת הקובץ',
+    'Text Placeholder': 'כתבו טקסט כאן...',
 };

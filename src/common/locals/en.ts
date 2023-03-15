@@ -43,4 +43,5 @@ export const EN_TRANSLATION = {
     'OK': 'OK',
     'Saved': 'File saved!',
     'Save Error': 'Error while saving file',
+    'Text Placeholder': 'Insert text...',
 };
