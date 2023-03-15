@@ -1,6 +1,7 @@
 <div align="center">
 <img height=175 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
 <p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A digital mathematics notebook, written in React and built with Electron</p>
+<p><b>🚧 In active development, open for contributions! 🚧</b></p>
 </div>
 
 ---
@@ -12,10 +13,13 @@ Built with [slate](https://github.com/ianstormtaylor/slate), [Mathlive](https://
 ## ✅ Features
 - [x] Block based drag-n-drop editor
 - [x] Text, Math, Graph and Drawing blocks are currently available
+- [x] LaTeX shortcuts and snippets
 - [x] Local files can be saved and loaded from the file system
 - [x] File tags (currently useless)
 - [x] Command bar (currently only used for user preferences)
 - [x] 6 color themes and light/dark theme
+- [ ] Customize LaTeX shortcuts
+- [ ] Shortcuts help menu
 - [ ] Searching from command bar
 - [ ] Adding points and polygons to graph blocks
 - [ ] Math memory sidebar (for variable assignments and quick functions)
@@ -44,7 +48,7 @@ Built with [slate](https://github.com/ianstormtaylor/slate), [Mathlive](https://
 </details>
 
 
-## 🧑‍💻 Building from source
+## 🏗️ Building from source
 1. Clone the repository to a folder on your machine:
 ```
 git clone https://github.com/yonatanmgr/mathberet.git
