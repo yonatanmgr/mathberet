@@ -23,7 +23,6 @@ Built with [slate](https://github.com/ianstormtaylor/slate), [Mathlive](https://
 
 ## 📷 Screenshots
 ### Hebrew
-<details><summary><b>Dark theme and blue accent color</b></summary>
 
 ![image](https://user-images.githubusercontent.com/31913495/225077627-82fa032c-88e7-4e25-971f-98a37a436d40.jpg)
 </details>
