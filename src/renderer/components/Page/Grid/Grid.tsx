@@ -35,15 +35,15 @@ const PageGrid = () => {
   const {
     newWidgetRequest,
     clearPageRequest,
-    isRightSidebarOpen,
-    isLeftSidebarOpen,
+    isFilesSidebarOpen,
+    isMathSidebarOpen,
   } = useGeneralContext();
 
   useEffect( function adjustGridWidth() {
       setTimeout(() => {
         dispatchEvent(new Event('resize'));
       }, 300);
-  }, [isRightSidebarOpen, isLeftSidebarOpen]);
+  }, [isFilesSidebarOpen, isMathSidebarOpen]);
 
   useFileSaveLoad(
     state,

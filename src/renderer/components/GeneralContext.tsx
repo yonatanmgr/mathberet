@@ -14,8 +14,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [selectedFile, setSelectedFile] = useState<string>();
   const [currentFileTags, setCurrentFileTags] = useState<string[]>([]);
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
-  const [isLeftSidebarOpen, setIsLeftSidebarOpen] = useState(false);
+  const [isFilesSidebarOpen, setIsFilesSidebarOpen] = useState(false);
+  const [isMathSidebarOpen, setIsMathSidebarOpen] = useState(false);
   const [isRtl, setIsRtl] = useState(true);
 
   return (
@@ -26,8 +26,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
         selectedFile, setSelectedFile,
         saveRequest, setSaveRequest,
         currentFileTags, setCurrentFileTags,
-        isLeftSidebarOpen, setIsLeftSidebarOpen,
-        isRightSidebarOpen, setIsRightSidebarOpen,
+        isMathSidebarOpen, setIsMathSidebarOpen,
+        isFilesSidebarOpen, setIsFilesSidebarOpen,
         isRtl, setIsRtl
       }}
     >

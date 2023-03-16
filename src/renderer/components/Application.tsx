@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import './Application.scss';
 import Page from './Page/Page';
-import RightSidebar from './RightSidebar/RightSidebar';
-import LeftSidebar from './LeftSidebar/LeftSidebar';
+import FilesSidebar from './FilesSidebar/FilesSidebar';
+import MathSidebar from './MathSidebar/MathSidebar';
 import Header from './Header/Header';
 import '../../../node_modules/react-grid-layout/css/styles.css';
 import '../../../node_modules/react-resizable/css/styles.css';
 import { GeneralContextProvider } from './GeneralContext';
 import { KBarProvider, useRegisterActions } from 'kbar';
-import { KBar, actions } from './RightSidebar/KBar';
+import { KBar, actions } from './FilesSidebar/KBar';
 import i18n from '@common/i18n';
 import { useTranslation } from 'react-i18next';
 
@@ -119,10 +119,10 @@ const Application = () => {
         <div id='erwt'>
           <Header />
           <div className='workspace'>
-            <RightSidebar />
+            <FilesSidebar />
             <KBar />
             <Page />
-            <LeftSidebar />
+            <MathSidebar />
           </div>
         </div>
       </KBarProvider>

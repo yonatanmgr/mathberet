@@ -3,19 +3,19 @@ import ActionsGroup from './ActionsGroup';
 import { useGeneralContext } from '@components/GeneralContext';
 import { useTranslation } from 'react-i18next';
 
-const LeftSidebar = () => {
+const MathSidebar = () => {
   const { t, i18n } = useTranslation();
-  const { isLeftSidebarOpen } = useGeneralContext()
+  const { isMathSidebarOpen } = useGeneralContext()
   const [showClass, setShowClass] = useState('');
 
   useEffect(() => {
-    setShowClass(isLeftSidebarOpen);
-  }, [isLeftSidebarOpen])
+    setShowClass(isMathSidebarOpen);
+  }, [isMathSidebarOpen])
 
-  return <div className={`left-sidebar${showClass ? ' open' : ''}`}>
+  return <div className={`math-sidebar${showClass ? ' open' : ''}`}>
     <ActionsGroup title={t("Variables")} groupType='variables'/>
     <ActionsGroup title={t("Functions")} groupType='functions'/>
   </div>;
 };
 
-export default LeftSidebar;
+export default MathSidebar;

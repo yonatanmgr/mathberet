@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Application.scss';
-import './RightSidebar.scss';
+import './FilesSidebar.scss';
 
 type SidebarButtonProps = {
   title: string;

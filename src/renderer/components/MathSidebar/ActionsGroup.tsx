@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Application.scss';
-import './LeftSidebar.scss'
+import './MathSidebar.scss'
 
 type ActionsGroupProps = { title: string; groupType: string };
 const ActionsGroup = ({ groupType, title }: ActionsGroupProps) => {

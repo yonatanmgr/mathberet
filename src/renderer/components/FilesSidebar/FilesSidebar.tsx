@@ -1,38 +1,38 @@
 import React from 'react';
-import './RightSidebar.scss';
+import './FilesSidebar.scss';
 import SidebarButton from './SidebarButton';
 import FileSystem from './FileSystem';
 import { useKBar } from 'kbar';
 import { useGeneralContext } from '@components/GeneralContext';
 import { useTranslation } from 'react-i18next';
 
-const RightSidebar = () => {
+const FilesSidebar = () => {
   const { t, i18n } = useTranslation();
 
   const { query } = useKBar();
   const {
-    setIsLeftSidebarOpen,
-    setIsRightSidebarOpen,
-    isLeftSidebarOpen,
-    isRightSidebarOpen,
+    setIsMathSidebarOpen,
+    setIsFilesSidebarOpen,
+    isMathSidebarOpen,
+    isFilesSidebarOpen,
   } = useGeneralContext();
 
   const handleOnClickFiles = () => {
-    setIsRightSidebarOpen((isRightSidebarOpen: boolean) => !isRightSidebarOpen);
+    setIsFilesSidebarOpen((isFilesSidebarOpen: boolean) => !isFilesSidebarOpen);
   };
 
   const handleOnClickMathPanel = () => {
-    setIsLeftSidebarOpen((isLeftSidebarOpen: boolean) => !isLeftSidebarOpen);
+    setIsMathSidebarOpen((isMathSidebarOpen: boolean) => !isMathSidebarOpen);
   };
 
   return (
-    <div className={`right-sidebar${isRightSidebarOpen ? ' open' : ''}`}>
+    <div className={`files-sidebar${isFilesSidebarOpen ? ' open' : ''}`}>
       <div className='basic'>
         <section id='top'>
           <SidebarButton
             title={t('My Notebooks')}
             buttonType='files'
-            state={isRightSidebarOpen}
+            state={isFilesSidebarOpen}
             icon='notebook'
             onClick={handleOnClickFiles}
           />
@@ -47,7 +47,7 @@ const RightSidebar = () => {
           <SidebarButton
             title={t('Math Panel')}
             buttonType='mathPanel'
-            state={isLeftSidebarOpen}
+            state={isMathSidebarOpen}
             icon='calculator'
             onClick={handleOnClickMathPanel}
           />
@@ -58,7 +58,7 @@ const RightSidebar = () => {
           />
         </section>
       </div>
-      {isRightSidebarOpen && (
+      {isFilesSidebarOpen && (
         <section className='extension'>
           <FileSystem />
         </section>
@@ -67,4 +67,4 @@ const RightSidebar = () => {
   );
 };
 
-export default RightSidebar;
+export default FilesSidebar;
