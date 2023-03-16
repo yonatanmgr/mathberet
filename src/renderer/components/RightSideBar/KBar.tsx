@@ -10,12 +10,7 @@ import {
   Action,
 } from 'kbar';
 
-import {
-  setColor,
-  setLang,
-  setTheme,
-} from '@components/Application';
-
+import { setColor, setLang, setTheme } from '@components/Application';
 
 import i18n from '@common/i18n';
 import { useTranslation } from 'react-i18next';
@@ -41,10 +36,10 @@ export const actions: Action[] = [
     parent: 'preferences',
   },
   {
-    id: 'hebrew',
-    name: i18n.t('Hebrew'),
+    id: 'arabic',
+    name: i18n.t('Arabic'),
     perform: () => {
-      setLang('he');
+      setLang('ar');
     },
     parent: 'language',
   },
@@ -57,6 +52,14 @@ export const actions: Action[] = [
     parent: 'language',
   },
   {
+    id: 'hebrew',
+    name: i18n.t('Hebrew'),
+    perform: () => {
+      setLang('he');
+    },
+    parent: 'language',
+  },
+  {
     id: 'russian',
     name: i18n.t('Russian'),
     perform: () => {
@@ -65,10 +68,10 @@ export const actions: Action[] = [
     parent: 'language',
   },
   {
-    id: 'arabic',
-    name: i18n.t('Arabic'),
+    id: 'spanish',
+    name: i18n.t('Spanish'),
     perform: () => {
-      setLang('ar');
+      setLang('es');
     },
     parent: 'language',
   },
@@ -140,7 +143,7 @@ export const actions: Action[] = [
 
 export function KBar() {
   const { t, i18n } = useTranslation();
-  
+
   function RenderResults() {
     const { results } = useMatches();
 
@@ -176,7 +179,7 @@ export function KBar() {
 
   return (
     <KBarPortal>
-      <KBarPositioner style={{width: 'unset'}}>
+      <KBarPositioner style={{ width: 'unset' }}>
         <KBarAnimator style={animatorStyle}>
           <KBarSearch
             className='kbar-search'

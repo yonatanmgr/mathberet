@@ -19,6 +19,7 @@ export const RU_TRANSLATION = {
   English: 'Английский',
   Russian: 'Русский',
   Arabic: 'арабский',
+  Spanish: 'испанский',
   Red: 'Красный',
   Blue: 'Синий',
   Green: 'Зеленый',

@@ -19,6 +19,7 @@ export const AR_TRANSLATION = {
   Russian: 'الروسية',
   English: 'الإنجليزية',
   Arabic: 'العربية',
+  Spanish: 'الأسبانية',
   Red: 'أحمر',
   Blue: 'أزرق',
   Green: 'أخضر',
