@@ -1,6 +1,6 @@
 @import '../../Theme.scss';
 
-body:has(#erwt.rtl){
+body:has(#main-app.rtl){
   .modal-text{
     direction: rtl;
   }

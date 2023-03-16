@@ -7,10 +7,9 @@ import Header from './Header/Header';
 import '../../../node_modules/react-grid-layout/css/styles.css';
 import '../../../node_modules/react-resizable/css/styles.css';
 import { GeneralContextProvider } from './GeneralContext';
-import { KBarProvider, useRegisterActions } from 'kbar';
-import { KBar, actions } from './FilesSidebar/KBar';
+import { KBarProvider } from 'kbar';
+import { CommandBar, actions } from './CommandBar/CommandBar';
 import i18n from '@common/i18n';
-import { useTranslation } from 'react-i18next';
 
 export const setColor = (name: string, hue: number) => {
   localStorage.setItem('color', name);
@@ -22,9 +21,9 @@ export const setLang = (language: string) => {
 
   localStorage.setItem('language', language);
   if (isRtlLang(language)) {
-    document.querySelector('#erwt').classList.add('rtl');
+    document.querySelector('#main-app').classList.add('rtl');
   } else {
-    document.querySelector('#erwt').classList.remove('rtl');
+    document.querySelector('#main-app').classList.remove('rtl');
   }
 };
 
@@ -116,11 +115,11 @@ const Application = () => {
         actions={actions}
         options={{ toggleShortcut: '$mod+Shift+p' }}
       >
-        <div id='erwt'>
+        <div id='main-app'>
           <Header />
           <div className='workspace'>
             <FilesSidebar />
-            <KBar />
+            <CommandBar />
             <Page />
             <MathSidebar />
           </div>

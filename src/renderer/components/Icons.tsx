@@ -1,8 +1,8 @@
-const erwt = require('@assets/icons/erwt.png');
+const pngLogo = require('@assets/icons/pngLogo.png');
 const logo = require('@assets/icons/logo.svg');
 
 
 export const icons = {
-  erwt,
+  pngLogo,
   logo
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import './CommandBar.scss';
 
 import {
   KBarPortal,
@@ -141,7 +142,7 @@ export const actions: Action[] = [
   },
 ];
 
-export function KBar() {
+export function CommandBar() {
   const { t, i18n } = useTranslation();
 
   function RenderResults() {
@@ -154,7 +155,7 @@ export function KBar() {
           typeof item === 'string' ? (
             <div>{item}</div>
           ) : (
-            <div className={`kbar-result${active ? ' active' : ''}`}>
+            <div className={`command-bar-result${active ? ' active' : ''}`}>
               {item.name}
             </div>
           )
@@ -170,7 +171,7 @@ export function KBar() {
     padding: '10px 8px',
     outline: '1px solid var(--page-border)',
     backdropFilter: 'blur(7px)',
-    background: 'var(--kbar-bg)',
+    background: 'var(--command-bar-bg)',
     color: 'hsla(var(--app-text-color), 1)',
     borderRadius: '12px',
     boxShadow: '0 0 10px 1px rgba(0, 0, 0, .25)',
@@ -182,7 +183,7 @@ export function KBar() {
       <KBarPositioner style={{ width: 'unset' }}>
         <KBarAnimator style={animatorStyle}>
           <KBarSearch
-            className='kbar-search'
+            className='command-bar-search'
             defaultPlaceholder={t('Prompt')}
           />
           <RenderResults />

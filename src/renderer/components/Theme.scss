@@ -1,4 +1,4 @@
-#erwt.rtl {
+#main-app.rtl {
   --app-direction: rtl;
 }
 
@@ -75,8 +75,8 @@
   --selected-active-bgcolor: hsl(var(--theme-hue), 25%, 16%);
 
 
-  // KBar
-  --kbar-bg: linear-gradient(120deg,
+  // Command Bar
+  --command-bar-bg: linear-gradient(120deg,
       hsla(var(--theme-hue), 10%, 5%, 0.7),
       hsla(var(--theme-hue), 10%, 9%, 0.9), 70%,
       hsla(var(--theme-hue), 10%, 5%, 0.7));
@@ -177,8 +177,8 @@ body:not(.dark-mode) {
   --selected-hover-bgcolor: hsl(var(--theme-hue), 25%, 86%);
   --selected-active-bgcolor: hsl(var(--theme-hue), 25%, 84%);
 
-  // KBar
-  --kbar-bg: linear-gradient(120deg,
+  // Command Bar
+  --command-bar-bg: linear-gradient(120deg,
       hsla(var(--theme-hue), 30%, 90%, 0.7),
       hsla(var(--theme-hue), 30%, 90%, 0.2), 70%,
       hsla(var(--theme-hue), 30%, 90%, 0.7));

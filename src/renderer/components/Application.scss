@@ -10,14 +10,6 @@
 @import './Theme.scss';
 @import './Fonts.css';
 
-/**
- *==========================================================================
- * Application Specific Stylesheet
- *==========================================================================
- *
- * Here we use the codes to apply application specific style
- */
-
 ::selection {
   background: var(--selection-bgcolor);
   color: var(--selection-color);
@@ -121,12 +113,10 @@ button {
   text-align: center;
 }
 
-#erwt {
-  // user-select: none;
+#main-app {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--erwt-gradient);
   gap: 5px;
   overflow-x: hidden;
 
@@ -155,147 +145,6 @@ button {
       display: flex;
       flex-direction: column;
       gap: 20px;
-    }
-  }
-}
-
-.kbar-search {
-  padding: 12px 16px;
-  font-size: 16px;
-  width: 100%;
-  font-family: 'Rubik2', 'NotoSansArabic';
-  box-sizing: border-box;
-  outline: none;
-  border: none;
-  background: transparent;
-  color: hsla(var(--app-text-color), 1);
-}
-
-.kbar-result {
-  padding: 14px 10px;
-  border-radius: 8px;
-  font-size: 16px;
-  user-select: none;
-  background: transparent;
-
-  &.active{
-    background: hsla(var(--theme-hue), 50%, 50%, 0.1);
-  }
-}
-
-body:has(#erwt.rtl) {
-  .kbar-search, .kbar-result {
-    direction: rtl !important;
-  }
-}
-
-/**
- *==========================================================================
- * Titlebar Overrides
- *==========================================================================
- *
- * Here we override color, style, layout sizes for custom electron window
- */
-
-.window-titlebar {
-  background: var(--titlebar-bgcolor);
-  height: auto;
-  overflow: hidden;
-
-  &-icon {
-    min-height: 33px;
-    img {
-      border-radius: 50%;
-    }
-  }
-
-  .window-title {
-    color: var(--titlebar-title-color);
-  }
-
-  .menu-item {
-    &.active .menu-title {
-      background: var(--titlebar-menu-title-active-bgcolor);
-      box-shadow: var(--titlebar-menu-title-shadow);
-      color: hsla(var(--app-text-color), 1);
-      border-color: var(--titlebar-menu-title-active-border-color);
-      border-radius: 4px 4px 0 0;
-      border-top-color: var(--app-accent-color);
-    }
-  }
-
-  .menu-title {
-    font-weight: normal;
-    text-shadow: none;
-    color: hsla(var(--app-text-color), 1);
-    border-color: transparent;
-    border-width: 1px 1px 0 1px;
-    border-style: solid;
-    padding: 2px 8px;
-    margin-block-start: 2px;
-    border-radius: 4px;
-
-    &:hover {
-      background-color: var(--titlebar-menu-title-hover-bgcolor);
-    }
-  }
-
-  .menu-popup {
-    display: none;
-    position: fixed;
-    background-color: var(--titlebar-popup-bgcolor);
-    min-width: 70px;
-    border: var(--titlebar-popup-border);
-    border-top: 0;
-    padding: 0.25rem 0;
-    box-shadow: 4px 10px 10px #0000002e;
-    z-index: 10000;
-    border-radius: 0 6px 6px 6px;
-
-    &-item {
-      padding: 0.3125rem 1rem;
-
-      &:hover {
-        background: var(--titlebar-popup-item-hover-bgcolor);
-
-        .popup-item-shortcut {
-          color: var(--titlebar-popup-item-hover-shortcut-color);
-        }
-
-        .popup-item-name {
-          color: var(--titlebar-popup-item-hover-color);
-        }
-      }
-    }
-  }
-
-  .popup-item-separator {
-    background: var(--titlebar-menu-separator-bgcolor);
-  }
-
-  .popup-item-name {
-    padding-right: 2rem;
-    color: var(--titlebar-popup-item-name-color);
-    text-shadow: 0px 1px var(--titlebar-popup-item-name-shadow-color);
-  }
-
-  .popup-item-shortcut {
-    color: var(--titlebar-popup-item-shortcut-color);
-    text-shadow: none;
-    letter-spacing: 0.5px;
-  }
-
-  &-controls.type-windows .control {
-    color: hsla(var(--app-text-color), 1);
-    font-family: Arial, Helvetica, sans-serif;
-
-    &:hover {
-      color: hsla(var(--app-text-color), 1);
-      background: var(--titlebar-popup-item-hover-bgcolor);
-    }
-
-    &.close:hover {
-      color: #fff;
     }
   }
 }

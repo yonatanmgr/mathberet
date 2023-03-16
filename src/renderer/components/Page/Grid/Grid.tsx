@@ -94,7 +94,7 @@ const PageGrid = () => {
         className='layout'
         cols={{ lg: 8, md: 6, sm: 4, xs: 2, xss: 1 }}
         rowHeight={50}
-        resizeHandles={document.querySelector('#erwt').classList.contains('rtl') ? ['sw'] : ['se']}
+        resizeHandles={document.querySelector('#main-app').classList.contains('rtl') ? ['sw'] : ['se']}
         containerPadding={[0, 0]}
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100 }}
         draggableHandle='.block-handle'

@@ -1,5 +1,5 @@
 <div align="center">
-<img width=512 height=160 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
+<img width=350 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
 <p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A self-hosted digital mathematics notebook, written in React and built with Electron</p>
 <p><b>🚧 In active development, open for contributions! 🚧</b></p>
 </div>
@@ -9,6 +9,7 @@
 > Currently works in Hebrew, English, Arabic, Russian and Spanish, localized using [i18next](https://github.com/i18next/i18next). Still buggy.
 
 ## :white_check_mark: Features
+
 - [x] Block based drag-n-drop editor
 - [x] Text, Math, Graph and Drawing blocks are currently available
 - [x] LaTeX shortcuts and snippets
@@ -23,13 +24,15 @@
 - [ ] Math memory sidebar (for variable assignments and quick functions)
 - [ ] Archive
 
-## 📷 Screenshots
+## :camera_flash: Screenshots
+
 ### Hebrew
 
 ![image](https://user-images.githubusercontent.com/31913495/225077627-82fa032c-88e7-4e25-971f-98a37a436d40.jpg)
 </details>
 
 ### English
+
 <details><summary><b>Dark theme and purple accent color</b></summary>
 
 ![image](https://user-images.githubusercontent.com/31913495/225168731-13afd8f2-7e17-448d-a434-5b6bd1f43494.png)
@@ -45,32 +48,37 @@
 ![image](https://user-images.githubusercontent.com/31913495/225170120-e3dcdeb3-bdf2-4fa9-80dc-f2ebbfe2051b.png)
 </details>
 
-## 🧱 Built With
+## :bricks: Built With
+
+- [ERWT](https://github.com/codesbiome/electron-react-webpack-typescript-2023): Electron + React apps boilerplate
 - [react-grid-layout](https://github.com/react-grid-layout/react-grid-layout): Grid layout for the blocks
 - [slate](https://github.com/ianstormtaylor/slate): Text block component
-- [MathLive](https://cortexjs.io/mathlive/) ([react-math-view][https://github.com/arnog/react-mathlive]: Math block component
+- [MathLive](https://cortexjs.io/mathlive/) ([react-math-view](https://github.com/arnog/react-mathlive)): Math block component
 - [Mafs](https://mafs.dev/): Graph block component
 - [tldraw](https://github.com/tldraw/tldraw): Drawing block component
 - [kbar](https://kbar.vercel.app/): Command bar
 - [react-complex-tree](https://rct.lukasbach.com/): Used for displaying the file system
-- [ERWT](https://github.com/codesbiome/electron-react-webpack-typescript-2023): Electron + React apps boilerplate
 - [UIcons](https://github.com/freepik-company/flaticon-uicons): App icons
 
-## 🏗️ Building from source
+## :building_construction: Building from source
+
 1. Clone the repository to a folder on your machine:
-```
+```bash
 git clone https://github.com/yonatanmgr/mathberet.git
 ```
 2. Run `npm install` in the project root folder
 3. Run `npm start` in the project root folder
 
-## 🤝 Contributing
+## :handshake: Contributing
+
 We welcome any positive contribution towards our project's growth! Whether you choose to work on a [listed feature](https://github.com/yonatanmgr/mathberet#white_check_mark-features) or create a new one, your help is appreciated. Simply submit a Pull Request after adding your code. To ensure a smooth process, please review our `CODE OF CONDUCT` and read the `CONTRIBUTING` guidelines for further details on submitting pull requests.
 
-## ⚖️ Liscense
+## :balance_scale: Liscense
+
 This project is licensed under the MIT License - see the `LICENSE` file for details.
 
-## 🧑‍💻 Contributors
+## :technologist: Contributors
+
 <table>
   <tbody>
     <tr>
