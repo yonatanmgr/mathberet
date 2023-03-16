@@ -1,7 +1,7 @@
 @import '~react-complex-tree/lib/style-modern.css';
 @import '../Theme.scss';
 
-#erwt.rtl .rct-tree-item-title-container {
+#main-app.rtl .rct-tree-item-title-container {
   margin-inline-end: 10px !important;
   margin-inline-start: unset !important;
 }

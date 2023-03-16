@@ -1,13 +1,13 @@
 import { BlockElement } from '@renderer/common/types';
 import { useEffect } from 'react';
+import { useGeneralContext } from '@components/GeneralContext';
 
 export function useDialog(
-  clearPageRequest: { cmd: string | object },
   setStateFunction: (...args: unknown[]) => unknown,
   setAllBlockValues: (...args: unknown[]) => unknown,
   setClearModalOpen: (args: boolean) => void,
 ) {
-
+  const { clearPageRequest } = useGeneralContext();
   const emptyArray: BlockElement[] = [];
 
   useEffect(() => {

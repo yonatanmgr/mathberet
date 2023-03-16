@@ -31,19 +31,17 @@ const PageGrid = () => {
   const [allBlockValues, setAllBlockValues] = useState([]);
   const [popupType, setPopupType] = useState('');
   const [clearModalOpen, setClearModalOpen] = useState(false);
-  
-  const {
-    newWidgetRequest,
-    clearPageRequest,
-    isFilesSidebarOpen,
-    isMathSidebarOpen,
-  } = useGeneralContext();
 
-  useEffect( function adjustGridWidth() {
+  const { isFilesSidebarOpen, isMathSidebarOpen } = useGeneralContext();
+
+  useEffect(
+    function adjustGridWidth() {
       setTimeout(() => {
         dispatchEvent(new Event('resize'));
       }, 300);
-  }, [isFilesSidebarOpen, isMathSidebarOpen]);
+    },
+    [isFilesSidebarOpen, isMathSidebarOpen],
+  );
 
   useFileSaveLoad(
     state,
@@ -53,14 +51,9 @@ const PageGrid = () => {
     setPopupType,
   );
 
-  useAddBlock(newWidgetRequest, setState);
+  useAddBlock(setState);
 
-  const ModalChoice = useDialog(
-    clearPageRequest,
-    setState,
-    setAllBlockValues,
-    setClearModalOpen,
-  );
+  const ModalChoice = useDialog(setState, setAllBlockValues, setClearModalOpen);
 
   const onLayoutChange = (layout: Array<BlockElement>) => {
     layout.map((block) => {
@@ -78,14 +71,18 @@ const PageGrid = () => {
   const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setState((prev) => ({
       ...prev,
-      items: prev.items.filter((item) => item.i !== (e.target as HTMLTextAreaElement).name),
+      items: prev.items.filter(
+        (item) => item.i !== (e.target as HTMLTextAreaElement).name,
+      ),
     }));
 
     setAllBlockValues((allValues) =>
-      allValues.filter((value) => value.id !== (e.target as HTMLTextAreaElement).name),
+      allValues.filter(
+        (value) => value.id !== (e.target as HTMLTextAreaElement).name,
+      ),
     );
   };
-  
+
   return (
     <div className='grid-container'>
       <ResponsiveGridLayout
@@ -94,7 +91,11 @@ const PageGrid = () => {
         className='layout'
         cols={{ lg: 8, md: 6, sm: 4, xs: 2, xss: 1 }}
         rowHeight={50}
-        resizeHandles={document.querySelector('#main-app').classList.contains('rtl') ? ['sw'] : ['se']}
+        resizeHandles={
+          document.querySelector('#main-app').classList.contains('rtl')
+            ? ['sw']
+            : ['se']
+        }
         containerPadding={[0, 0]}
         breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100 }}
         draggableHandle='.block-handle'
@@ -116,7 +117,7 @@ const PageGrid = () => {
         open={clearModalOpen}
         onConfirm={ModalChoice.handleDialogConfirm}
         onCancel={ModalChoice.handleDialogCancel}
-        text={t("Modal 1")}
+        text={t('Modal 1')}
       />
 
       <Notification scene={popupType} />

@@ -4,11 +4,11 @@ import {
   WidgetType,
   newWidgetRequest,
 } from '@renderer/common/types';
+import { useGeneralContext } from '@components/GeneralContext';
 
-export function useAddBlock(
-  newWidgetRequest: newWidgetRequest,
-  setStateFunction: (...args: unknown[]) => unknown,
-) {
+export function useAddBlock(setStateFunction: (...args: unknown[]) => unknown) {
+  const { newWidgetRequest } = useGeneralContext();
+
   useEffect(() => {
     if (newWidgetRequest) AddWidget(newWidgetRequest);
   }, [newWidgetRequest]);
@@ -49,10 +49,7 @@ export function useAddBlock(
   }
 
   const addWidgetHandlersMap = new Map<WidgetType, () => void>([
-    [
-      WidgetType.Divider,
-      () => addBlockByType(WidgetType.Divider, 1, 8, 1, 1, 1),
-    ],
+    [WidgetType.Divider, () => addBlockByType(WidgetType.Divider, 1, 8, 1, 1, 1)],
     [WidgetType.Graph, () => addBlockByType(WidgetType.Graph, 6, 8, 2, 2)],
     [WidgetType.Text, () => addBlockByType(WidgetType.Text, 2)],
     [WidgetType.Math, () => addBlockByType(WidgetType.Math, 2)],
