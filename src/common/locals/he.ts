@@ -18,6 +18,7 @@ export const HE_TRANSLATION = {
   Hebrew: 'עברית',
   Russian: 'רוסית',
   English: 'אנגלית',
+  Arabic: 'ערבית',
   Red: 'אדום',
   Blue: 'כחול',
   Green: 'ירוק',

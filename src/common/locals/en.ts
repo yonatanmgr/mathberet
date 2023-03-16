@@ -18,6 +18,7 @@ export const EN_TRANSLATION = {
   Hebrew: 'Hebrew',
   Russian: 'Russian',
   English: 'English',
+  Arabic: 'Arabic',
   Red: 'Red',
   Blue: 'Blue',
   Green: 'Green',

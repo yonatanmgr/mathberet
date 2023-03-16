@@ -18,6 +18,7 @@ export const RU_TRANSLATION = {
   Hebrew: 'Иврит',
   English: 'Английский',
   Russian: 'Русский',
+  Arabic: 'арабский',
   Red: 'Красный',
   Blue: 'Синий',
   Green: 'Зеленый',
