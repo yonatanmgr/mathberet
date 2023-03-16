@@ -8,7 +8,7 @@
 
 Built with [slate](https://github.com/ianstormtaylor/slate), [Mathlive](https://cortexjs.io/mathlive/), [Mafs](https://mafs.dev/), [tldraw](https://github.com/tldraw/tldraw), [react-grid-layout](https://github.com/react-grid-layout/react-grid-layout), [react-complex-tree](https://rct.lukasbach.com/) and [kbar](https://kbar.vercel.app/) using the [ERWT](https://github.com/codesbiome/electron-react-webpack-typescript-2023) boilerplate.
 
-> Currently works in Hebrew and English, localized using [i18next](https://github.com/i18next/i18next). Still buggy.
+> Currently works in Hebrew, English, Arabic, Russian and Spanish, localized using [i18next](https://github.com/i18next/i18next). Still buggy.
 
 ## ✅ Features
 - [x] Block based drag-n-drop editor
@@ -56,7 +56,7 @@ git clone https://github.com/yonatanmgr/mathberet.git
 2. Run `npm install` in the project root folder
 3. Run `npm start` in the project root folder
 
-## Contributors
+## 🧑‍💻 Contributors
 <table>
   <tbody>
     <tr>
