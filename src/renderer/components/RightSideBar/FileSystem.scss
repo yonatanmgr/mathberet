@@ -117,7 +117,7 @@
           [role='treeitem'] {
             input {
               text-shadow: none;
-              font-family: 'Rubik2';
+              font-family: 'Rubik2', 'NotoSansArabic';
               font-size: 16px;
               height: 40px;
             }
@@ -140,7 +140,7 @@
                 color: hsla(var(--app-text-color), 1);
                 border-radius: 10px;
                 text-shadow: none;
-                font-family: 'Rubik2';
+                font-family: 'Rubik2', 'NotoSansArabic';
                 font-size: 16px;
                 height: 40px;
                 flex-direction: row;
