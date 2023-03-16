@@ -1,5 +1,5 @@
 <div align="center">
-<img width=350 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
+<img width=500 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
 <p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A self-hosted digital mathematics notebook, written in React and built with Electron</p>
 <p><b>🚧 In active development, open for contributions! 🚧</b></p>
 </div>
@@ -72,6 +72,8 @@ git clone https://github.com/yonatanmgr/mathberet.git
 ## :handshake: Contributing
 
 We welcome any positive contribution towards our project's growth! Whether you choose to work on a [listed feature](https://github.com/yonatanmgr/mathberet#white_check_mark-features) or create a new one, your help is appreciated. Simply submit a Pull Request after adding your code. To ensure a smooth process, please review our `CODE OF CONDUCT` and read the `CONTRIBUTING` guidelines for further details on submitting pull requests.
+
+Make sure to visit Mathberet's [project](https://github.com/users/yonatanmgr/projects/2) to view our roadmap and plans, and our [wiki](https://github.com/yonatanmgr/mathberet/wiki/%F0%9F%8F%A0-Home) to read the documentation!
 
 ## :balance_scale: Liscense
 
