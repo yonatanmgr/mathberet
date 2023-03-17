@@ -165,7 +165,7 @@
 
     .header-controls {
       z-index: 1000;
-      background-color: var(--app-bgcolor);
+      background-color: transparent;
       height: inherit;
       -webkit-app-region: no-drag;
 
@@ -176,7 +176,14 @@
         .control {
           border-radius: 10px;
           transition: 0.1s;
+          color: var(--app-text-color);
 
+          &:hover{
+            background-color: var(--file-hover-bgcolor);
+            &.close {
+              background: var(--button-danger);
+            }
+          }
           &:active {
             transform: scale(0.95);
           }

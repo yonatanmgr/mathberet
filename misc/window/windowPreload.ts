@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld('api', {
       'gotUserTheme',
       'gotArchive',
       'gotUserColor',
+      'gotOS',
       'openFiles',
       'newFile',
       'Save',
@@ -70,6 +71,9 @@ contextBridge.exposeInMainWorld('api', {
   },
   loadX: (filePath:string) => {
     ipcRenderer.send('loadX',filePath);
+  },
+  getOS: () => {
+    ipcRenderer.send('getOS');
   },
   maximize: () => {
     ipcRenderer.send('maximize');

@@ -9,7 +9,7 @@ import { useGeneralContext } from '@components/GeneralContext';
 
 const Header = () => {
   const allTags = JSON.parse(localStorage.getItem('all-tags'));
-  const { selectedFile, currentFileTags, setCurrentFileTags } = useGeneralContext();
+  const { selectedFile, currentFileTags, setCurrentFileTags, currentOS } = useGeneralContext();
   const [currentFilePath, setCurrentFilePath] = useState('');
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const Header = () => {
         </section>
         <section className='header-draggable'></section>
         <section className='header-controls'>
-          <WindowControls platform='windows'></WindowControls>
+          <WindowControls platform={currentOS}></WindowControls>
         </section>
       </div>
     </div>

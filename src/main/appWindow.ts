@@ -3,6 +3,7 @@ import path from 'path';
 import { registerTitlebarIpc } from '@misc/window/titlebarIPC';
 import * as fs from 'fs';
 const { resolve } = require('path');
+const os = require('os');
 
 // Electron Forge automatically creates these entry points
 declare const APP_WINDOW_WEBPACK_ENTRY: string;
@@ -55,6 +56,24 @@ export function createAppWindow(): BrowserWindow {
   return appWindow;
 }
 
+ipcMain.on('getOS', () => {
+  let OS = '';
+  switch (os.platform()) {
+    case "darwin":
+      OS = "mac";
+      break;
+    case "win32":
+      OS = "windows"
+      break;
+    case "linux":
+      OS = "linux"
+      break;
+  
+    default:
+      break;
+  }
+  appWindow.webContents.send('gotOS', OS);
+});
 
 ipcMain.on('saveX', (event, data, filePath) => {
   const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');

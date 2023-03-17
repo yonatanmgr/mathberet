@@ -159,7 +159,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    color: #969799;
+    color: hsla(var(--app-text-color), 0.5);
 
     &.type-windows {
       .control {
@@ -169,14 +169,6 @@
         height: 100%;
         align-items: center;
         -webkit-app-region: no-drag;
-
-        &.close:hover {
-          background: var(--button-danger);
-        }
-        &:hover {
-          background: #242d38;
-          color: #d8d9db;
-        }
       }
     }
 

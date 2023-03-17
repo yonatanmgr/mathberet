@@ -2,6 +2,7 @@ import React, {
   createContext,
   PropsWithChildren,
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import { newWidgetRequest } from '@renderer/common/types';
@@ -17,6 +18,18 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [isFilesSidebarOpen, setIsFilesSidebarOpen] = useState(false);
   const [isMathSidebarOpen, setIsMathSidebarOpen] = useState(false);
   const [isRtl, setIsRtl] = useState(true);
+  const [currentOS, setCurrentOS] = useState('');
+
+  useEffect(() => {  
+    window.api.getOS();
+  }, [])
+
+  useEffect(() => {  
+    window.api.receive('gotOS', (data: string) => {
+      setCurrentOS(data);
+    });
+  }, [])
+  
 
   return (
     <GeneralContext.Provider
@@ -28,7 +41,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
         currentFileTags, setCurrentFileTags,
         isMathSidebarOpen, setIsMathSidebarOpen,
         isFilesSidebarOpen, setIsFilesSidebarOpen,
-        isRtl, setIsRtl
+        isRtl, setIsRtl,
+        currentOS
       }}
     >
       {children}
