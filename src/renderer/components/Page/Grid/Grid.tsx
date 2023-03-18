@@ -4,7 +4,7 @@ import { useGeneralContext } from '@components/GeneralContext';
 import { Notification } from '@components/common/Notification';
 import ConfirmModal from '@components/common/Modals/ConfirmModal';
 
-import { BlockElement, PageGridState } from '@renderer/common/types';
+import { BlockElement, CustomLayouts } from '@renderer/common/types';
 
 import '@components/Page/Page.scss';
 import '@components/Page/Grid/Grid.scss';
@@ -13,7 +13,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import GridElement from './GridElement';
-import { Responsive, WidthProvider } from 'react-grid-layout';
+import { Layout, Layouts, Responsive, WidthProvider } from 'react-grid-layout';
 import { useAddBlock } from '@renderer/hooks/useAddBlock';
 import { useDialog } from '@renderer/hooks/useDialog';
 import { useFileSaveLoad } from '@renderer/hooks/useFileSaveLoad';
@@ -23,11 +23,8 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const PageGrid = () => {
   const { t, i18n } = useTranslation();
-  const [state, setState] = useState<PageGridState>({
-    items: [],
-    breakpoint: 'lg',
-    cols: 8,
-  });
+  const [breakpoint, setBreakpoint] = useState('')
+  const [layouts, setLayouts] = useState<CustomLayouts>({})
   const [allBlockValues, setAllBlockValues] = useState([]);
   const [popupType, setPopupType] = useState('');
   const [clearModalOpen, setClearModalOpen] = useState(false);
@@ -44,32 +41,32 @@ const PageGrid = () => {
   );
 
   useFileSaveLoad(
-    state,
-    setState,
+    layouts[breakpoint],
+    setLayouts,
     allBlockValues,
     setAllBlockValues,
     setPopupType,
   );
 
-  useAddBlock(setState);
+  useAddBlock(setLayouts);
 
-  const ModalChoice = useDialog(setState, setAllBlockValues, setClearModalOpen);
+  const ModalChoice = useDialog(setLayouts, setAllBlockValues, setClearModalOpen);
 
-  const onLayoutChange = (layout: Array<BlockElement>) => {
+  const onLayoutChange = (layout: BlockElement[], layouts: CustomLayouts) => {
     layout.map((block) => {
-      block.type = state.items.find((item) => item.i == block.i).type;
-      block.metaData = state.items.find((item) => item.i == block.i).metaData;
+      block.type = layouts[breakpoint].find((item) => item.i == block.i).type;
+      block.metaData = layouts[breakpoint].find((item) => item.i == block.i).metaData;
     });
 
-    setState((prev) => ({ ...prev, items: layout }));
+    setLayouts(layouts)
   };
 
   const onBreakpointChange = (breakpoint: string, cols: number) => {
-    setState((prev) => ({ ...prev, breakpoint: breakpoint, cols: cols }));
+    setBreakpoint(breakpoint)
   };
 
   const onRemoveItem = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    setState((prev) => ({
+    setLayouts((prev) => ({
       ...prev,
       items: prev.items.filter(
         (item) => item.i !== (e.target as HTMLTextAreaElement).name,
@@ -86,21 +83,24 @@ const PageGrid = () => {
   return (
     <div className='grid-container'>
       <ResponsiveGridLayout
-        onLayoutChange={onLayoutChange}
+        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xss: 1 }}
+        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100 }}
+        layouts={layouts}
+        onLayoutChange={(layout: BlockElement[], layouts: CustomLayouts) =>
+          onLayoutChange(layout, layouts)
+        }
         onBreakpointChange={onBreakpointChange}
         className='layout'
-        cols={{ lg: 8, md: 6, sm: 4, xs: 2, xss: 1 }}
         rowHeight={50}
         resizeHandles={
           document.querySelector('#main-app').classList.contains('rtl')
-            ? ['sw']
-            : ['se']
+          ? ['sw']
+          : ['se']
         }
         containerPadding={[0, 0]}
-        breakpoints={{ lg: 800, md: 600, sm: 400, xs: 200, xss: 100 }}
         draggableHandle='.block-handle'
       >
-        {state.items.map((element) => (
+        {layouts[breakpoint].map((element) => (
           <GridElement
             blockElement={element}
             onRemoveItem={onRemoveItem}

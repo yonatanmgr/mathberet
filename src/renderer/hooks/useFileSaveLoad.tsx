@@ -4,12 +4,11 @@ import { triggerPopupAnimation } from '@components/common/Notification';
 import {
   BlockElement,
   FileStructure,
-  PageGridState,
   BlockState,
 } from '@renderer/common/types';
 
 export function useFileSaveLoad(
-  state: PageGridState,
+  state: BlockElement[],
   setStateFunction: (...args: unknown[]) => unknown,
   allBlockValues: BlockState[],
   setAllBlockValues: (...args: unknown[]) => unknown,
@@ -100,7 +99,7 @@ export function useFileSaveLoad(
   };
 
   const saveGridDataToFile = () => {
-    const currentItems = state.items;
+    const currentItems = state;
     currentItems.map(saveMetaDataPerBlock);
 
     const fileData: FileStructure = {

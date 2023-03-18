@@ -1,4 +1,5 @@
 import { TDShape, TDBinding, TDAsset } from '@tldraw/tldraw';
+import { Layout, Layouts } from 'react-grid-layout';
 // eslint-disable-next-line import/named
 import { Descendant } from 'slate';
 
@@ -37,14 +38,12 @@ export type FileStructure = {
 export type BlockElement = {
   type: WidgetType;
   metaData?: ValueProps;
-} & ReactGridLayout.Layout;
+} & Layout;
 
 export type newWidgetRequest = {
   widgetType: WidgetType;
 };
 
-export type PageGridState = {
-  items: BlockElement[];
-  breakpoint: string;
-  cols: number;
-};
+export interface CustomLayouts {
+  [P: string]: BlockElement[];
+}
