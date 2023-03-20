@@ -1,4 +1,5 @@
 /* eslint-disable import/named */
+import i18next from '@common/i18n';
 import {
   TreeItem,
   DraggingPositionItem,
@@ -95,7 +96,7 @@ export const deleteItemFromItsPreviousParent = (
   }
 };
 
-export const newFolderKey = 'תיקיה חדשה';
+export const newFolderKey = i18next.t("New Folder");
 
 export const generateStateWithNewFolder = (
   prev: TreeItemsObj,
@@ -137,7 +138,7 @@ export const generateStateWithNewFolder = (
   return newState;
 };
 
-export const newFileKey = 'קובץ חדש';
+export const newFileKey = i18next.t("New File");
 
 export const generateStateWithNewFile = (
   prev: TreeItemsObj,

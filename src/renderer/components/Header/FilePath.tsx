@@ -5,8 +5,9 @@ type FilePathProps = { filePath: string };
 
 const FilePath = ({ filePath }: FilePathProps) => {
   const resolvedFilePath = filePath
-    ? filePath.replace('/', '\\').split('\\')
+    ? filePath.split(/[\/\\]/)
     : [''];
+  
   const folderPath = resolvedFilePath.slice(resolvedFilePath.length - 2)[0];
   const fileName = resolvedFilePath.pop().replace('.json', '');
 

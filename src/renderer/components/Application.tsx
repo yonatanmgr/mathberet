@@ -46,7 +46,7 @@ export const setTheme = (theme: number) => {
 };
 
 const Application = () => {
-  const [language, setLanguage] = useState('he');
+  const [language, setLanguage] = useState('en');
   const [darkTheme, setDarkTheme] = useState(true);
   const [colorTheme, setColorTheme] = useState('');
 
