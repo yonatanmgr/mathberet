@@ -49,6 +49,7 @@ function GraphBlockContent({ content, blockStateFunction }: ValueProps) {
     <div className='graph-block-wrapper'>
       <GraphBlockSetter />
       <Mafs
+        preserveAspectRatio='contain'
         zoom={{ min: 0.5, max: 2 }}
         // onClick={
         //     (point)=> {

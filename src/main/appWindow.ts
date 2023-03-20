@@ -4,6 +4,7 @@ import { registerTitlebarIpc } from '@misc/window/titlebarIPC';
 import * as fs from 'fs';
 const { resolve } = require('path');
 const os = require('os');
+import onboardingContent from './Onboarding';
 
 // Electron Forge automatically creates these entry points
 declare const APP_WINDOW_WEBPACK_ENTRY: string;
@@ -87,9 +88,6 @@ ipcMain.on('saveX', (event, data, filePath) => {
 });
 
 ipcMain.on('loadX', (event, filePath) => {
-  // fs.existsSync(filesPath)
-  //   ? null
-  //   : fs.mkdirSync(filesPath, { recursive: true });
 
   if (fs.existsSync(filePath)) {
     fs.readFile(filePath, 'utf-8', (error, data) => {
@@ -128,34 +126,6 @@ ipcMain.on('newFolder', (event, folderPath) => {
   fs.mkdirSync(folderPath);
 });
 
-// ipcMain.on('setUserColor', (event, color) => {
-//   store.set('color', color);
-// });
-
-// ipcMain.on('setPageStyle', (event, style) => {
-//   store.set('pageStyle', style);
-// });
-
-// ipcMain.on('getPageStyle', (event, args) => {
-//   appWindow.webContents.send('gotPageStyle', store.get('pageStyle'));
-// });
-// ipcMain.on('getUserTheme', (event, args) => {
-//   appWindow.webContents.send('gotUserTheme', store.get('theme'));
-// });
-
-// ipcMain.on('getUserColor', (event, args) => {
-//   appWindow.webContents.send('gotUserColor', store.get('color'));
-// });
-
-// ipcMain.on('dark-mode', () => {
-//   if (nativeTheme.shouldUseDarkColors) {
-//     nativeTheme.themeSource = 'light';
-//     store.set('theme', 'light');
-//   } else {
-//     nativeTheme.themeSource = 'dark';
-//     store.set('theme', 'dark');
-//   }
-// });
 
 let firstTime = true;
 
@@ -196,7 +166,10 @@ function buildTree(dir: string, root: any) {
 
 ipcMain.on('getNotebooks', () => {
   const filesPath = path.join(app.getPath('documents'), 'Mathberet', 'files');
-  if (!fs.existsSync(filesPath)) fs.mkdirSync(filesPath, {recursive: true})
+  if (!fs.existsSync(filesPath)) {
+    fs.mkdirSync(filesPath, {recursive: true});
+    fs.writeFileSync(path.join(filesPath, "Welcome to Mathberet!"), JSON.stringify(onboardingContent))
+  }
 
   const root = {};
   buildTree(filesPath, root);
@@ -220,33 +193,6 @@ ipcMain.on('getPicture', (event, id) => {
   return;
 });
 
-// ipcMain.on('getAllPictures', (event, file) => {
-//   let allPics = fs.readdirSync(path.join(__dirname, "..", "attachments"), {withFileTypes: true});
-//   let allPicsArr = []
-//   let foundPath;
-//   for (const picture of allPics) {
-//     foundPath = path.join(__dirname, "..", "attachments", picture.name);
-//     let b64 = fs.readFileSync(foundPath, "base64")
-//     allPicsArr.push({"Path": foundPath, "Base64": `data:image/png;base64,${b64}`})
-//   }
-//   let res;
-//   if (file == '') {
-//     res = JSON.parse(
-//       fs.readFileSync(
-//         path.join(__dirname, '..', 'allAttachments.json'),
-//         'utf-8',
-//       ),
-//     );
-//   } else {
-//     res = JSON.parse(
-//       fs.readFileSync(
-//         path.join(__dirname, '..', 'allAttachments.json'),
-//         'utf-8',
-//       ),
-//     ).filter((pic: { filePath: unknown }) => pic.filePath == file);
-//   }
-//   appWindow.webContents.send('gotAllPictures', res);
-// });
 
 ipcMain.on('getArchive', () => {
   const filesPath = path.join(__dirname, '..', 'files');
@@ -306,10 +252,6 @@ ipcMain.on('getArchive', () => {
       (groupTitle) => (groupTitle = { groupName: groupTitle, subGroups: [] }),
     );
   }
-
-  // for (const group of allGroups) {
-  //   groupsToFilter.push(group.groupTitle);
-  // }
 
   const finalArr = [];
   for (const group of removeDups(groupsToFilter)) {

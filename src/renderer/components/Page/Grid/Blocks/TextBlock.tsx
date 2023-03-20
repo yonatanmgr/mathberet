@@ -116,6 +116,7 @@ const TextBlockContent = ({ content, blockStateFunction }: ValueProps) => {
       onChange={(currentValue) => setValue(currentValue)}
     >
       <Editable
+        spellCheck={false}
         className='textbox'
         onDOMBeforeInput={handleDOMBeforeInput}
         renderElement={renderElement}
