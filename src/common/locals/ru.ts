@@ -20,6 +20,7 @@ export const RU_TRANSLATION = {
   Russian: 'Русский',
   Arabic: 'арабский',
   Spanish: 'испанский',
+  'Mandarin Chinese': 'Мандариновый китайский',
   Red: 'Красный',
   Blue: 'Синий',
   Green: 'Зеленый',

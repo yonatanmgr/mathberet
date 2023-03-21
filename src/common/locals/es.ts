@@ -19,6 +19,7 @@ export const ES_TRANSLATION = {
   Russian: 'Ruso',
   English: 'Inglés',
   Arabic: 'Árabe',
+  'Mandarin Chinese': 'Chino mandarín',
   Red: 'Rojo',
   Blue: 'Azul',
   Green: 'Verde',
@@ -46,4 +47,4 @@ export const ES_TRANSLATION = {
   Saved: '¡Archivo guardado!',
   'Save Error': 'Error al guardar archivo',
   'Text Placeholder': 'Inserte texto...',
-  };
+};
