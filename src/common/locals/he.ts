@@ -21,6 +21,7 @@ export const HE_TRANSLATION = {
   Spanish: 'ספרדית',
   Arabic: 'ערבית',
   'Mandarin Chinese': 'סינית מנדרינית',
+  French: 'צרפתית',
   Red: 'אדום',
   Blue: 'כחול',
   Green: 'ירוק',
