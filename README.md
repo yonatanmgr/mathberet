@@ -100,6 +100,7 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
       <td align="center"><a href="https://github.com/Nadav0077"><img src="https://avatars.githubusercontent.com/u/18245584?v=3?s=100" width="100px;" alt="Nadav Magier"/><br /><sub><b>Nadav Magier</b></sub></a><br />
         <a href="https://github.com/yonatanmgr/mathberet/commits?author=Nadav0077" title="Code">💻</a>
         <a href="https://github.com/yonatanmgr/mathberet/commits?author=Nadav0077" title="Maintenance">🚧</a>
+        <a href="https://github.com/yonatanmgr/mathberet/tree/master/src/common/locals" title="Translation">🌍</a>
         <span title="Security">🛡️</span>
       </td>
     </tr>
