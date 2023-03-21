@@ -17,6 +17,7 @@ export const AR_TRANSLATION = {
   Language: 'اللغة',
   Hebrew: 'عبرية',
   Russian: 'الروسية',
+  'Mandarin Chinese': 'الصينية الماندرين',
   English: 'الإنجليزية',
   Arabic: 'العربية',
   Spanish: 'الأسبانية',
@@ -47,4 +48,4 @@ export const AR_TRANSLATION = {
   Saved: 'تم حفظ الملف!',
   'Save Error': 'خطأ أثناء حفظ الملف',
   'Text Placeholder': 'إدراج نص...',
-  };
+};
