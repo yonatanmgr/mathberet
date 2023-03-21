@@ -21,6 +21,7 @@ export const ZH_TRANSLATION = {
   English: '英语',
   Arabic: '阿拉伯语',
   Spanish: '西班牙语',
+  French: '法语',
   Red: '红色',
   Blue: '蓝色',
   Green: '绿色',

@@ -69,6 +69,14 @@ export const actions: Action[] = [
     parent: 'language',
   },
   {
+    id: 'french',
+    name: i18n.t('French'),
+    perform: () => {
+      setLang('fr');
+    },
+    parent: 'language',
+  },
+  {
     id: 'russian',
     name: i18n.t('Russian'),
     perform: () => {

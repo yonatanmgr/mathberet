@@ -21,6 +21,7 @@ export const EN_TRANSLATION = {
   Arabic: 'Arabic',
   Spanish: 'Spanish',
   'Mandarin Chinese': 'Mandarin Chinese',
+  French: 'French',
   Red: 'Red',
   Blue: 'Blue',
   Green: 'Green',

@@ -6,6 +6,7 @@ import { RU_TRANSLATION } from './locals/ru';
 import { AR_TRANSLATION } from './locals/ar';
 import { ES_TRANSLATION } from './locals/es';
 import { ZH_TRANSLATION } from './locals/zh';
+import { FR_TRANSLATION } from './locals/fr';
 
 const resources = {
   ar: { translation: AR_TRANSLATION },
@@ -14,6 +15,7 @@ const resources = {
   he: { translation: HE_TRANSLATION },
   ru: { translation: RU_TRANSLATION },
   zh: { translation: ZH_TRANSLATION },
+  fr: { translation: FR_TRANSLATION }
 };
 
 i18n.use(initReactI18next).init({
