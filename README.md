@@ -85,15 +85,22 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/yonatanmgr"><img src="https://avatars.githubusercontent.com/u/31913495?v=3?s=100" width="100px;" alt="Yonatan Magier"/><br /><sub><b>Yonatan Magier</b></sub></a><br />
-      <span title="Ideas & Planning">🤔</span>
-      <a href="https://github.com/yonatanmgr/mathberet/commits?author=yonatanmgr" title="Code">💻</a>
-      <a href="https://github.com/yonatanmgr/mathberet/commits?author=yonatanmgr" title="Maintenance">🚧</a>
-      <span title="Design">🎨</span>
+        <span title="Ideas & Planning">🤔</span>
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=yonatanmgr" title="Code">💻</a>
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=yonatanmgr" title="Maintenance">🚧</a>
+        <a href="https://github.com/yonatanmgr/mathberet/tree/master/src/common/locals" title="Translation">🌍</a>
+        <span title="Design">🎨</span>
       </td>
-            <td align="center"><a href="https://github.com/ErezBiren"><img src="https://avatars.githubusercontent.com/u/7828909?v=3?s=100" width="100px;" alt="Erez Birenholz"/><br /><sub><b>Erez Birenholz</b></sub></a><br />
-      <span title="Mentoring">🧑‍🏫</span>
-      <a href="https://github.com/yonatanmgr/mathberet/commits?author=ErezBiren" title="Code">💻</a>
-      <a href="https://github.com/yonatanmgr/mathberet/commits?author=ErezBiren" title="Maintenance">🚧</a>
+      <td align="center"><a href="https://github.com/ErezBiren"><img src="https://avatars.githubusercontent.com/u/7828909?v=3?s=100" width="100px;" alt="Erez Birenholz"/><br /><sub><b>Erez Birenholz</b></sub></a><br />
+        <span title="Mentoring">🧑‍🏫</span>
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=ErezBiren" title="Code">💻</a>
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=ErezBiren" title="Maintenance">🚧</a>
+        <a href="https://github.com/yonatanmgr/mathberet/tree/master/src/common/locals" title="Translation">🌍</a>
+      </td>
+      <td align="center"><a href="https://github.com/Nadav0077"><img src="https://avatars.githubusercontent.com/u/18245584?v=3?s=100" width="100px;" alt="Nadav Magier"/><br /><sub><b>Nadav Magier</b></sub></a><br />
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=Nadav0077" title="Code">💻</a>
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=Nadav0077" title="Maintenance">🚧</a>
+        <span title="Security">🛡️</span>
       </td>
     </tr>
   </tbody>
