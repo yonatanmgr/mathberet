@@ -19,6 +19,7 @@ export const FR_TRANSLATION = {
     Russian: 'Russe',
     English: 'Anglaise',
     Arabic: 'Arabe',
+    Hindi: 'hindi',
     'Mandarin Chinese': 'Chinois Mandarin',
     French: 'Française',
     Red: 'Rouge',
