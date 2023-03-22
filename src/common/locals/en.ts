@@ -20,6 +20,7 @@ export const EN_TRANSLATION = {
   English: 'English',
   Arabic: 'Arabic',
   Spanish: 'Spanish',
+  Hindi: 'Hindi',
   'Mandarin Chinese': 'Mandarin Chinese',
   French: 'French',
   Red: 'Red',

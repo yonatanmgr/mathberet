@@ -22,6 +22,8 @@ export const ZH_TRANSLATION = {
   Arabic: '阿拉伯语',
   Spanish: '西班牙语',
   French: '法语',
+  'Mandarin Chinese': '中文普通话',
+  Hindi: 'हिंदी',
   Red: '红色',
   Blue: '蓝色',
   Green: '绿色',
@@ -49,4 +51,4 @@ export const ZH_TRANSLATION = {
   Saved: '文件已保存！',
   'Save Error': '保存文件时出错',
   'Text Placeholder': '插入文本...',
-  };
+};

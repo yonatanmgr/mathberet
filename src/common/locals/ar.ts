@@ -18,6 +18,7 @@ export const AR_TRANSLATION = {
   Hebrew: 'عبرية',
   Russian: 'الروسية',
   'Mandarin Chinese': 'الصينية الماندرين',
+  Hindi: 'هندي',
   French: 'فرنسي',
   English: 'الإنجليزية',
   Arabic: 'العربية',
