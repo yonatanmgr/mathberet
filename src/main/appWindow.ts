@@ -132,36 +132,39 @@ let firstTime = true;
 function buildTree(dir: string, root: any) {
   const stats = fs.statSync(dir);
   let name = path.basename(dir).split('.')[0];
+  let key = dir;
 
   if (firstTime) {
     name = 'root';
+    key = 'root';
     firstTime = false;
   }
 
   if (!stats.isDirectory()) {
-    root[name] = {
-      index: name,
+    root[key] = {
+      index: key,
       data: name,
       children: [],
       path: dir,
       isFolder: false,
     };
-    return name;
+
+    return key;
   }
 
   const children = fs
     .readdirSync(dir)
     .map((child) => buildTree(path.join(dir, child), root));
 
-  root[name] = {
-    index: name,
+  root[key] = {
+    index: key,
     isFolder: true,
     data: name,
     children,
     path: dir,
   };
 
-  return name;
+  return key;
 }
 
 ipcMain.on('getNotebooks', () => {
