@@ -8,168 +8,24 @@ import {
   KBarResults,
   KBarSearch,
   useMatches,
-  Action,
+  useRegisterActions,
 } from 'kbar';
 
-import { setColor, setLang, setTheme } from '@components/Application';
-
-import i18n from '@common/i18n';
 import { useTranslation } from 'react-i18next';
-
-export const actions: Action[] = [
-  {
-    id: 'preferences',
-    name: i18n.t('Preferences'),
-  },
-  {
-    id: 'language',
-    name: i18n.t('Language'),
-    parent: 'preferences',
-  },
-  {
-    id: 'theme',
-    name: i18n.t('Theme'),
-    parent: 'preferences',
-  },
-  {
-    id: 'color',
-    name: i18n.t('Color'),
-    parent: 'preferences',
-  },
-  {
-    id: 'arabic',
-    name: i18n.t('Arabic'),
-    perform: () => {
-      setLang('ar');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'english',
-    name: i18n.t('English'),
-    perform: () => {
-      setLang('en');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'hebrew',
-    name: i18n.t('Hebrew'),
-    perform: () => {
-      setLang('he');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'hindi',
-    name: i18n.t('Hindi'),
-    perform: () => {
-      setLang('hi');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'mandarin Chinese',
-    name: i18n.t('Mandarin Chinese'),
-    perform: () => {
-      setLang('zh');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'french',
-    name: i18n.t('French'),
-    perform: () => {
-      setLang('fr');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'russian',
-    name: i18n.t('Russian'),
-    perform: () => {
-      setLang('ru');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'spanish',
-    name: i18n.t('Spanish'),
-    perform: () => {
-      setLang('es');
-    },
-    parent: 'language',
-  },
-  {
-    id: 'blue',
-    name: i18n.t('Blue'),
-    perform: () => {
-      setColor('blue', 210);
-    },
-    parent: 'color',
-  },
-  {
-    id: 'pink',
-    name: i18n.t('Pink'),
-    perform: () => {
-      setColor('pink', 300);
-    },
-    parent: 'color',
-  },
-  {
-    id: 'yellow',
-    name: i18n.t('Yellow'),
-    perform: () => {
-      setColor('yellow', 35);
-    },
-    parent: 'color',
-  },
-  {
-    id: 'purple',
-    name: i18n.t('Purple'),
-    perform: () => {
-      setColor('purple', 250);
-    },
-    parent: 'color',
-  },
-  {
-    id: 'red',
-    name: i18n.t('Red'),
-    perform: () => {
-      setColor('red', 0);
-    },
-    parent: 'color',
-  },
-  {
-    id: 'green',
-    name: i18n.t('Green'),
-    perform: () => {
-      setColor('green', 140);
-    },
-    parent: 'color',
-  },
-  {
-    id: 'light',
-    name: i18n.t('Light'),
-    perform: () => {
-      setTheme(0);
-    },
-    parent: 'theme',
-  },
-  {
-    id: 'dark',
-    name: i18n.t('Dark'),
-    perform: () => {
-      setTheme(1);
-    },
-    parent: 'theme',
-  },
-];
+import { useGeneralContext } from '@components/GeneralContext';
 
 export function CommandBar() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+
+  const { actions } = useGeneralContext();
 
   function RenderResults() {
+    // updating the actions using `useRegisterActions` *before*
+    // getting the results from `useMatches` so the results
+    // are always up to date. the actions are also up to date
+    // cause they are now stateful
+
+    useRegisterActions(actions);
     const { results } = useMatches();
 
     return (
