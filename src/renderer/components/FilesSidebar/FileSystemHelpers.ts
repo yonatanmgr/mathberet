@@ -17,7 +17,9 @@ export const draggedToTheSameParent = (
   if (prev[target.parentItem].data != 'root') {
     draggedToSameParent = prev[target.parentItem].children.includes(item.index);
   } else if ((target as DraggingPositionItem).targetItem == 'root') {
-    draggedToSameParent = prev[(target as DraggingPositionItem).targetItem].children.includes(item.index);
+    draggedToSameParent = prev[
+      (target as DraggingPositionItem).targetItem
+    ].children.includes(item.index);
   }
   return draggedToSameParent;
 };
@@ -38,7 +40,7 @@ export const addItemToNewParent = (
       item,
       prev[target.parentItem].path +
         '\\' +
-        item.index +
+        item.data +
         (item.isFolder ? '' : '.json'),
     );
   } else {
@@ -48,7 +50,7 @@ export const addItemToNewParent = (
         item,
         prev[target.targetItem].path +
           '\\' +
-          item.index +
+          item.data +
           (item.isFolder ? '' : '.json'),
       );
     } else {
@@ -61,7 +63,7 @@ export const addItemToNewParent = (
             item,
             mathTreeItem.path +
               '\\' +
-              item.index +
+              item.data +
               (item.isFolder ? '' : '.json'),
           );
         }
@@ -95,7 +97,7 @@ export const deleteItemFromItsPreviousParent = (
   }
 };
 
-export const newFolderKey = 'New Folder';
+export const newFolderName = 'New Folder';
 
 export const generateStateWithNewFolder = (
   prev: TreeItemsObj,
@@ -104,7 +106,7 @@ export const generateStateWithNewFolder = (
   let parentValue;
   let parentKey;
 
-  if (focusedItem) {
+  if (focusedItem != -1) {
     for (const [key, value] of Object.entries(prev)) {
       const mathTreeItem = value as MathTreeItem;
       if (mathTreeItem.children.includes(focusedItem)) {
@@ -117,15 +119,15 @@ export const generateStateWithNewFolder = (
     parentKey = 'root';
   }
 
-  parentValue.children.push(newFolderKey);
+  const newFolderPath = parentValue.path + '\\' + newFolderName;
+  parentValue.children.push(newFolderPath);
 
-  const newFolderPath = parentValue.path + '\\' + newFolderKey;
   const newState = {
     ...prev,
     [parentKey]: parentValue,
-    [newFolderKey]: {
-      index: newFolderKey,
-      data: newFolderKey,
+    [newFolderPath]: {
+      index: newFolderPath,
+      data: newFolderName,
       children: [] as TreeItemIndex[],
       path: newFolderPath,
       isFolder: true,
@@ -137,7 +139,7 @@ export const generateStateWithNewFolder = (
   return newState;
 };
 
-export const newFileKey = 'New File';
+export const newFileName = 'New File';
 
 export const generateStateWithNewFile = (
   prev: TreeItemsObj,
@@ -146,7 +148,7 @@ export const generateStateWithNewFile = (
   let parentValue;
   let parentKey;
 
-  if (focusedItem) {
+  if (focusedItem != -1) {
     for (const [key, value] of Object.entries(prev)) {
       const mathTreeItem = value as MathTreeItem;
       if (mathTreeItem.children.includes(focusedItem)) {
@@ -159,16 +161,16 @@ export const generateStateWithNewFile = (
     parentKey = 'root';
   }
 
-  parentValue.children.push(newFileKey);
+  const newFilePath = parentValue.path + '\\' + newFileName + '.json';
+  parentValue.children.push(newFilePath);
 
-  const newFilePath = parentValue.path + '\\' + newFileKey + '.json';
   const newState = {
     ...prev,
     [parentKey]: parentValue,
-    [newFileKey]: {
-      index: newFileKey,
-      data: newFileKey,
-      children: ([] as Array<any>),
+    [newFilePath]: {
+      index: newFilePath,
+      data: newFileName,
+      children: [] as Array<any>,
       path: newFilePath,
       isFolder: false,
     },
@@ -177,4 +179,13 @@ export const generateStateWithNewFile = (
   window.api.newFile(newFilePath);
 
   return newState;
+};
+
+export const checkIfItemNameIsFolder = (name: string, items: TreeItemsObj) => {
+  for (const [, value] of Object.entries(items)) {
+    const mathTreeItem = value as MathTreeItem;
+    if (mathTreeItem.data == name) {
+      return mathTreeItem.isFolder;
+    }
+  }
 };

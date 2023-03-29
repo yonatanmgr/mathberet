@@ -16,17 +16,18 @@ import {
   updateItemsPosition,
   changeItemPath,
   generateStateWithNewFolder,
-  newFolderKey,
+  newFolderName,
   generateStateWithNewFile,
-  newFileKey,
+  newFileName,
+  checkIfItemNameIsFolder,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 import { useTranslation } from 'react-i18next';
 
-type receivedProps = {filesPath: string, root: SetStateAction<TreeItemsObj>}
+type receivedProps = { filesPath: string; root: SetStateAction<TreeItemsObj> };
 declare global {
   interface Window {
-      api: any;
+    api: any;
   }
 }
 function FileSystem() {
@@ -71,8 +72,8 @@ function FileSystem() {
 
   const addFolder = () => {
     //Todo: check also that they are in the same folder - compare paths
-    if (items[newFolderKey]?.isFolder) {
-      setErrorModalContent(t("Modal 3"));
+    if (checkIfItemNameIsFolder(newFileName, items)) {
+      setErrorModalContent(t('Modal 3'));
       setErrorModalOpen(true);
       return;
     }
@@ -81,8 +82,8 @@ function FileSystem() {
 
   const addFile = () => {
     //Todo: check also that they are in the same folder - compare paths
-    if (items[newFileKey]?.isFolder == false) {
-      setErrorModalContent(t("Modal 2"));
+    if (checkIfItemNameIsFolder(newFileName, items) == false) {
+      setErrorModalContent(t('Modal 2'));
       setErrorModalOpen(true);
       return;
     }
@@ -91,7 +92,7 @@ function FileSystem() {
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
     if (items[name]) {
-      setErrorModalContent(t("Modal 4"));
+      setErrorModalContent(t('Modal 4'));
       setErrorModalOpen(true);
     } else {
       let newPath: string;
@@ -144,17 +145,17 @@ function FileSystem() {
     <div className='file-system'>
       <div className='file-system-header'>
         <span
-          data-tooltip={t("Notebooks Tooltip")}
+          data-tooltip={t('Notebooks Tooltip')}
           className='file-system-header-title'
           onDoubleClick={() => window.api.openFiles()}
         >
-          {t("My Notebooks")}
+          {t('My Notebooks')}
         </span>
         <div className='file-system-header-buttons'>
-          <button onClick={addFolder} data-tooltip={t("New Folder")}>
+          <button onClick={addFolder} data-tooltip={t('New Folder')}>
             <i className='fi fi-rr-add-folder' />
           </button>
-          <button onClick={addFile} data-tooltip={t("New File")}>
+          <button onClick={addFile} data-tooltip={t('New File')}>
             <i className='fi-rr-add-document' />
           </button>
         </div>
