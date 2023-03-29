@@ -103,6 +103,10 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
         <a href="https://github.com/yonatanmgr/mathberet/tree/master/src/common/locals" title="Translation">🌍</a>
         <span title="Security">🛡️</span>
       </td>
+      <td align="center"><a href="https://github.com/zivnadel"><img src="https://avatars.githubusercontent.com/u/52624380?v=3?s=100" width="100px;" alt="Ziv Nadel"/><br /><sub><b>Ziv Nadel</b></sub></a><br />
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=zivnadel" title="Code">💻</a>
+        <a href="https://github.com/yonatanmgr/mathberet/commits?author=zivnadel" title="Maintenance">🚧</a>
+      </td>
     </tr>
   </tbody>
 </table>
