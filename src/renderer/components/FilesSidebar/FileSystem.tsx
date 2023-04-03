@@ -72,7 +72,7 @@ function FileSystem() {
 
   const addFolder = () => {
     //Todo: check also that they are in the same folder - compare paths
-    if (checkIfItemNameIsFolder(newFileName, items)) {
+    if (checkIfItemNameIsFolder(newFolderName, focusedItem, items)) {
       setErrorModalContent(t('Modal 3'));
       setErrorModalOpen(true);
       return;
@@ -82,7 +82,7 @@ function FileSystem() {
 
   const addFile = () => {
     //Todo: check also that they are in the same folder - compare paths
-    if (checkIfItemNameIsFolder(newFileName, items) == false) {
+    if (checkIfItemNameIsFolder(newFileName, focusedItem, items) == false) {
       setErrorModalContent(t('Modal 2'));
       setErrorModalOpen(true);
       return;

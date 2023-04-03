@@ -181,11 +181,14 @@ export const generateStateWithNewFile = (
   return newState;
 };
 
-export const checkIfItemNameIsFolder = (name: string, items: TreeItemsObj) => {
-  for (const [, value] of Object.entries(items)) {
-    const mathTreeItem = value as MathTreeItem;
-    if (mathTreeItem.data == name) {
-      return mathTreeItem.isFolder;
+export const checkIfItemNameIsFolder = (
+  name: string,
+  parent: TreeItemIndex,
+  items: TreeItemsObj,
+) => {
+  for (const [key, value] of Object.entries(items)) {
+    if (key === parent) {
+      return value.children.includes(name);
     }
   }
 };
