@@ -101,19 +101,14 @@ export const newFolderName = 'New Folder';
 
 export const generateStateWithNewFolder = (
   prev: TreeItemsObj,
-  focusedItem: TreeItemIndex,
+  parentIndex: TreeItemIndex,
 ) => {
   let parentValue;
   let parentKey;
 
-  if (focusedItem != -1) {
-    for (const [key, value] of Object.entries(prev)) {
-      const mathTreeItem = value as MathTreeItem;
-      if (mathTreeItem.children.includes(focusedItem)) {
-        parentValue = mathTreeItem;
-        parentKey = key;
-      }
-    }
+  if (parentIndex != -1) {
+    parentValue = prev[parentIndex];
+    parentKey = parentIndex;
   } else {
     parentValue = prev['root'];
     parentKey = 'root';
@@ -143,24 +138,20 @@ export const newFileName = 'New File';
 
 export const generateStateWithNewFile = (
   prev: TreeItemsObj,
-  focusedItem: TreeItemIndex,
+  parentIndex: TreeItemIndex,
 ) => {
   let parentValue;
   let parentKey;
 
-  if (focusedItem != -1) {
-    for (const [key, value] of Object.entries(prev)) {
-      const mathTreeItem = value as MathTreeItem;
-      if (mathTreeItem.children.includes(focusedItem)) {
-        parentValue = mathTreeItem;
-        parentKey = key;
-      }
-    }
+  if (parentIndex != 'root') {
+    parentValue = prev[parentIndex];
+    parentKey = parentIndex;
   } else {
     parentValue = prev['root'];
     parentKey = 'root';
   }
 
+  // TODO: format \\ and / correctly
   const newFilePath = parentValue.path + '\\' + newFileName + '.json';
   parentValue.children.push(newFilePath);
 
@@ -181,14 +172,37 @@ export const generateStateWithNewFile = (
   return newState;
 };
 
-export const checkIfItemNameIsFolder = (
+// export const checkIfItemNameIsFolder = (
+//   name: string,
+//   parent: TreeItemIndex,
+//   items: TreeItemsObj,
+// ) => {
+//   for (const [key, value] of Object.entries(items)) {
+//     if (key === parent) {
+//       return value.children.includes(name);
+//     }
+//   }
+// };
+
+export function itemExistsInParent(
   name: string,
   parent: TreeItemIndex,
   items: TreeItemsObj,
-) => {
-  for (const [key, value] of Object.entries(items)) {
-    if (key === parent) {
-      return value.children.includes(name);
+  folder: boolean,
+): boolean {
+  const parentItem = items[parent];
+  if (!parentItem || !parentItem.children) {
+    return false; // the parent directory does not exist or is not a folder
+  }
+
+  for (const childIndex of parentItem.children) {
+    const childItem = items[childIndex];
+    // TODO: format \\ and / correctly
+    if (childItem.path.split('\\').pop().split('.')[0] === name) {
+      // if the name matches, check if the item is a folder or a file
+      return folder ? childItem.isFolder === true : !childItem.isFolder;
     }
   }
-};
+
+  return false; // did not find a matching item
+}

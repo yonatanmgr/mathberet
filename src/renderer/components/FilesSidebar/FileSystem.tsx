@@ -19,7 +19,7 @@ import {
   newFolderName,
   generateStateWithNewFile,
   newFileName,
-  checkIfItemNameIsFolder,
+  itemExistsInParent,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 import { useTranslation } from 'react-i18next';
@@ -36,9 +36,11 @@ function FileSystem() {
 
   const [errorModalContent, setErrorModalContent] = useState('');
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
+  const [focusedDirectory, setFocusedDirectory] =
+    useState<TreeItemIndex>('root');
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedFolder, setSelectedFolder] = useState<TreeItemIndex>(-1);
 
   const [items, setItems] = useState<TreeItemsObj>({
     root: {
@@ -71,23 +73,21 @@ function FileSystem() {
   };
 
   const addFolder = () => {
-    //Todo: check also that they are in the same folder - compare paths
-    if (checkIfItemNameIsFolder(newFolderName, focusedItem, items)) {
+    if (itemExistsInParent(newFolderName, focusedDirectory, items, true)) {
       setErrorModalContent(t('Modal 3'));
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFolder(prev, focusedItem));
+    setItems((prev) => generateStateWithNewFolder(prev, focusedDirectory));
   };
 
   const addFile = () => {
-    //Todo: check also that they are in the same folder - compare paths
-    if (checkIfItemNameIsFolder(newFileName, focusedItem, items) == false) {
+    if (itemExistsInParent(newFileName, focusedDirectory, items, false)) {
       setErrorModalContent(t('Modal 2'));
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFile(prev, focusedItem));
+    setItems((prev) => generateStateWithNewFile(prev, focusedDirectory));
   };
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
@@ -171,7 +171,7 @@ function FileSystem() {
           getItemTitle={(item) => item.data}
           viewState={{
             ['tree-2']: {
-              focusedItem,
+              focusedItem: selectedFolder,
               expandedItems,
               selectedItems,
             },
@@ -179,8 +179,10 @@ function FileSystem() {
           onDrop={handleOnDrop}
           onFocusItem={(item) => {
             const mathTreeItem = item as MathTreeItem;
-            setFocusedItem(mathTreeItem.index);
-            if (!item.isFolder) setSelectedFile(mathTreeItem.path);
+            setSelectedFolder(mathTreeItem.index);
+            item.isFolder
+              ? setFocusedDirectory(mathTreeItem.index)
+              : setSelectedFile(mathTreeItem.path);
           }}
           onExpandItem={(item) =>
             setExpandedItems([...expandedItems, item.index])
