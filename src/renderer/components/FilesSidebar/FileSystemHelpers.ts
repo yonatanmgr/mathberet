@@ -106,7 +106,7 @@ export const generateStateWithNewFolder = (
   let parentValue;
   let parentKey;
 
-  if (parentIndex != -1) {
+  if (parentIndex != 'root') {
     parentValue = prev[parentIndex];
     parentKey = parentIndex;
   } else {
@@ -171,18 +171,6 @@ export const generateStateWithNewFile = (
 
   return newState;
 };
-
-// export const checkIfItemNameIsFolder = (
-//   name: string,
-//   parent: TreeItemIndex,
-//   items: TreeItemsObj,
-// ) => {
-//   for (const [key, value] of Object.entries(items)) {
-//     if (key === parent) {
-//       return value.children.includes(name);
-//     }
-//   }
-// };
 
 export function itemExistsInParent(
   name: string,
