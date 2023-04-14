@@ -17,7 +17,9 @@ export const draggedToTheSameParent = (
   if (prev[target.parentItem].data != 'root') {
     draggedToSameParent = prev[target.parentItem].children.includes(item.index);
   } else if ((target as DraggingPositionItem).targetItem == 'root') {
-    draggedToSameParent = prev[(target as DraggingPositionItem).targetItem].children.includes(item.index);
+    draggedToSameParent = prev[
+      (target as DraggingPositionItem).targetItem
+    ].children.includes(item.index);
   }
   return draggedToSameParent;
 };
@@ -38,7 +40,7 @@ export const addItemToNewParent = (
       item,
       prev[target.parentItem].path +
         '\\' +
-        item.index +
+        item.data +
         (item.isFolder ? '' : '.json'),
     );
   } else {
@@ -48,7 +50,7 @@ export const addItemToNewParent = (
         item,
         prev[target.targetItem].path +
           '\\' +
-          item.index +
+          item.data +
           (item.isFolder ? '' : '.json'),
       );
     } else {
@@ -61,7 +63,7 @@ export const addItemToNewParent = (
             item,
             mathTreeItem.path +
               '\\' +
-              item.index +
+              item.data +
               (item.isFolder ? '' : '.json'),
           );
         }
@@ -95,37 +97,32 @@ export const deleteItemFromItsPreviousParent = (
   }
 };
 
-export const newFolderKey = 'New Folder';
+export const newFolderName = 'New Folder';
 
 export const generateStateWithNewFolder = (
   prev: TreeItemsObj,
-  focusedItem: TreeItemIndex,
+  parentIndex: TreeItemIndex,
 ) => {
   let parentValue;
   let parentKey;
 
-  if (focusedItem) {
-    for (const [key, value] of Object.entries(prev)) {
-      const mathTreeItem = value as MathTreeItem;
-      if (mathTreeItem.children.includes(focusedItem)) {
-        parentValue = mathTreeItem;
-        parentKey = key;
-      }
-    }
+  if (parentIndex != 'root') {
+    parentValue = prev[parentIndex];
+    parentKey = parentIndex;
   } else {
     parentValue = prev['root'];
     parentKey = 'root';
   }
 
-  parentValue.children.push(newFolderKey);
+  const newFolderPath = parentValue.path + '\\' + newFolderName;
+  parentValue.children.push(newFolderPath);
 
-  const newFolderPath = parentValue.path + '\\' + newFolderKey;
   const newState = {
     ...prev,
     [parentKey]: parentValue,
-    [newFolderKey]: {
-      index: newFolderKey,
-      data: newFolderKey,
+    [newFolderPath]: {
+      index: newFolderPath,
+      data: newFolderName,
       children: [] as TreeItemIndex[],
       path: newFolderPath,
       isFolder: true,
@@ -137,38 +134,34 @@ export const generateStateWithNewFolder = (
   return newState;
 };
 
-export const newFileKey = 'New File';
+export const newFileName = 'New File';
 
 export const generateStateWithNewFile = (
   prev: TreeItemsObj,
-  focusedItem: TreeItemIndex,
+  parentIndex: TreeItemIndex,
 ) => {
   let parentValue;
   let parentKey;
 
-  if (focusedItem) {
-    for (const [key, value] of Object.entries(prev)) {
-      const mathTreeItem = value as MathTreeItem;
-      if (mathTreeItem.children.includes(focusedItem)) {
-        parentValue = mathTreeItem;
-        parentKey = key;
-      }
-    }
+  if (parentIndex != 'root') {
+    parentValue = prev[parentIndex];
+    parentKey = parentIndex;
   } else {
     parentValue = prev['root'];
     parentKey = 'root';
   }
 
-  parentValue.children.push(newFileKey);
+  // TODO: format \\ and / correctly
+  const newFilePath = parentValue.path + '\\' + newFileName + '.json';
+  parentValue.children.push(newFilePath);
 
-  const newFilePath = parentValue.path + '\\' + newFileKey + '.json';
   const newState = {
     ...prev,
     [parentKey]: parentValue,
-    [newFileKey]: {
-      index: newFileKey,
-      data: newFileKey,
-      children: ([] as Array<any>),
+    [newFilePath]: {
+      index: newFilePath,
+      data: newFileName,
+      children: [] as Array<any>,
       path: newFilePath,
       isFolder: false,
     },
@@ -178,3 +171,26 @@ export const generateStateWithNewFile = (
 
   return newState;
 };
+
+export function itemExistsInParent(
+  name: string,
+  parent: TreeItemIndex,
+  items: TreeItemsObj,
+  folder: boolean,
+): boolean {
+  const parentItem = items[parent];
+  if (!parentItem || !parentItem.children) {
+    return false; // the parent directory does not exist or is not a folder
+  }
+
+  for (const childIndex of parentItem.children) {
+    const childItem = items[childIndex];
+    // TODO: format \\ and / correctly
+    if (childItem.path.split('\\').pop().split('.')[0] === name) {
+      // if the name matches, check if the item is a folder or a file
+      return folder ? childItem.isFolder === true : !childItem.isFolder;
+    }
+  }
+
+  return false; // did not find a matching item
+}
