@@ -36,12 +36,12 @@ function FileSystem() {
 
   const [errorModalContent, setErrorModalContent] = useState('');
   const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [focusedDirectory, setFocusedDirectory] =
-    useState<TreeItemIndex>('root');
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedFolder, setSelectedFolder] = useState<TreeItemIndex>(-1);
-
+  const [selectedDirectory, setSelectedDirectory] =
+  useState<TreeItemIndex>('root');
+  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
+  
   const [items, setItems] = useState<TreeItemsObj>({
     root: {
       index: 'root',
@@ -73,21 +73,21 @@ function FileSystem() {
   };
 
   const addFolder = () => {
-    if (itemExistsInParent(newFolderName, focusedDirectory, items, true)) {
+    if (itemExistsInParent(newFolderName, selectedDirectory, items, true)) {
       setErrorModalContent(t('Modal 3'));
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFolder(prev, focusedDirectory));
+    setItems((prev) => generateStateWithNewFolder(prev, selectedDirectory));
   };
 
   const addFile = () => {
-    if (itemExistsInParent(newFileName, focusedDirectory, items, false)) {
+    if (itemExistsInParent(newFileName, selectedDirectory, items, false)) {
       setErrorModalContent(t('Modal 2'));
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFile(prev, focusedDirectory));
+    setItems((prev) => generateStateWithNewFile(prev, selectedDirectory));
   };
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
@@ -141,6 +141,16 @@ function FileSystem() {
 
   const handleErrorModalClose = () => setErrorModalOpen(false);
 
+  const handleClickedOutsideItem = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = event.target as HTMLElement;
+    if (target.classList.contains('rct-tree-items-container')) {
+      setSelectedDirectory("root");
+      setFocusedItem(-1);
+      setSelectedItems([]);
+      setExpandedItems([]);
+    }
+  }
+
   return (
     <div className='file-system'>
       <div className='file-system-header'>
@@ -160,7 +170,7 @@ function FileSystem() {
           </button>
         </div>
       </div>
-      <div className='files-tree-container'>
+      <div className='files-tree-container' onClick={handleClickedOutsideItem}>
         {/* <button onClick={() => console.table(items)}>X</button> */}
         <ControlledTreeEnvironment
           items={items}
@@ -171,7 +181,7 @@ function FileSystem() {
           getItemTitle={(item) => item.data}
           viewState={{
             ['tree-2']: {
-              focusedItem: selectedFolder,
+              focusedItem,
               expandedItems,
               selectedItems,
             },
@@ -179,9 +189,9 @@ function FileSystem() {
           onDrop={handleOnDrop}
           onFocusItem={(item) => {
             const mathTreeItem = item as MathTreeItem;
-            setSelectedFolder(mathTreeItem.index);
+            setFocusedItem(mathTreeItem.index);
             item.isFolder
-              ? setFocusedDirectory(mathTreeItem.index)
+              ? setSelectedDirectory(mathTreeItem.index)
               : setSelectedFile(mathTreeItem.path);
           }}
           onExpandItem={(item) =>
