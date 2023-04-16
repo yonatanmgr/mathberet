@@ -8,6 +8,7 @@ import React, {
 import { newWidgetRequest } from '@renderer/common/types';
 import i18n from '@common/i18n';
 import { Action, KBarProvider } from 'kbar';
+import useSettings from '@renderer/hooks/useSettings';
 
 const GeneralContext = createContext(null);
 
@@ -17,13 +18,23 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [selectedFile, setSelectedFile] = useState<string>();
   const [currentFileTags, setCurrentFileTags] = useState<string[]>([]);
-  const [isFilesSidebarOpen, setIsFilesSidebarOpen] = useState(false);
-  const [isMathSidebarOpen, setIsMathSidebarOpen] = useState(false);
-  const [isRtl, setIsRtl] = useState(true);
-  const [language, setLanguage] = useState('en');
-  const [darkTheme, setDarkTheme] = useState(true);
-  const [colorTheme, setColorTheme] = useState('');
-  const [currentOS, setCurrentOS] = useState('');
+
+  const {
+    isRtl,
+    setIsRtl,
+    language,
+    setLanguage,
+    darkTheme,
+    setDarkTheme,
+    colorTheme,
+    setColorTheme,
+    currentOS,
+    setCurrentOS,
+    isFilesSidebarOpen,
+    setIsFilesSidebarOpen,
+    isMathSidebarOpen,
+    setIsMathSidebarOpen,
+  } = useSettings();
 
   const setColor = (name: string, hue: number) => {
     localStorage.setItem('color', name);
