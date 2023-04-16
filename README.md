@@ -32,6 +32,7 @@
 </details>
 
 ### English
+ Hey never gonna give you up
 
 <details><summary><b>Dark theme and purple accent color</b></summary>
 
