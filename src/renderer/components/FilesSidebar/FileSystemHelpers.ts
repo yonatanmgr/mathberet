@@ -15,10 +15,15 @@ export const draggedToTheSameParent = (
   let draggedToSameParent;
 
   if (prev[target.parentItem].data != 'root') {
-    draggedToSameParent = prev[target.parentItem].children.includes(item.index);
-  } else if ((target as DraggingPositionItem).targetItem == 'root') {
+    const idx = 'targetItem' in target ? target.targetItem : target.parentItem;
+    draggedToSameParent = prev[idx].children.includes(item.index);
+  } else if ('targetItem' in target && target.targetItem == 'root') {
     draggedToSameParent = prev[
       (target as DraggingPositionItem).targetItem
+    ].children.includes(item.index);
+  } else if (target.parentItem == 'root') {
+    draggedToSameParent = prev[
+      (target as DraggingPositionItem).parentItem
     ].children.includes(item.index);
   }
   return draggedToSameParent;
@@ -114,6 +119,7 @@ export const generateStateWithNewFolder = (
     parentKey = 'root';
   }
 
+  // TODO: format \\ and / correctly
   const newFolderPath = parentValue.path + '\\' + newFolderName;
   parentValue.children.push(newFolderPath);
 
@@ -185,12 +191,16 @@ export function itemExistsInParent(
 
   for (const childIndex of parentItem.children) {
     const childItem = items[childIndex];
-    // TODO: format \\ and / correctly
-    if (childItem.path.split('\\').pop().split('.')[0] === name) {
+    if (getFileNameFromPath(childItem.path) === name) {
       // if the name matches, check if the item is a folder or a file
       return folder ? childItem.isFolder === true : !childItem.isFolder;
     }
   }
 
   return false; // did not find a matching item
+}
+
+export const getFileNameFromPath = (path: string) => {
+  // TODO: format \\ and / correctly
+  return path.split('\\').pop().split('.')[0];
 }

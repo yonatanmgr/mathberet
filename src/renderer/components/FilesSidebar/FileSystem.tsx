@@ -9,6 +9,7 @@ import {
   TreeItem,
   DraggingPositionBetweenItems,
   TreeItemIndex,
+  DraggingPosition,
 } from 'react-complex-tree';
 import './FileSystem.scss';
 import {
@@ -20,6 +21,7 @@ import {
   generateStateWithNewFile,
   newFileName,
   itemExistsInParent,
+  getFileNameFromPath,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 import { useTranslation } from 'react-i18next';
@@ -39,9 +41,9 @@ function FileSystem() {
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedDirectory, setSelectedDirectory] =
-  useState<TreeItemIndex>('root');
+    useState<TreeItemIndex>('root');
   const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
-  
+
   const [items, setItems] = useState<TreeItemsObj>({
     root: {
       index: 'root',
@@ -61,14 +63,33 @@ function FileSystem() {
   }, []);
 
   const handleOnDrop = (
-    items: TreeItem[],
+    draggedItems: TreeItem[],
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
     setItems((prev) => {
       // Handle D&D intentionally only for one item
-      const item = items[0];
-      if (draggedToTheSameParent(prev, item, target)) return prev;
-      return updateItemsPosition(prev, item, target);
+      const draggedItem = draggedItems[0];
+      if (draggedToTheSameParent(prev, draggedItem, target)) return prev;
+      let dest: TreeItemIndex = '';
+      if (
+        'targetItem' in target &&
+        (target as DraggingPositionItem | DraggingPositionBetweenItems)
+          .targetType !== 'item'
+      ) {
+        dest = target.targetItem;
+      } else {
+        dest = target.parentItem;
+      }
+      if (dest) {
+        for (const item of items[dest].children) {
+          if (getFileNameFromPath(item as string) === draggedItem.data) {
+            setErrorModalContent(t('Modal 5'));
+            setErrorModalOpen(true);
+            return prev;
+          }
+        }
+      }
+      return updateItemsPosition(prev, draggedItem, target);
     });
   };
 
@@ -141,15 +162,17 @@ function FileSystem() {
 
   const handleErrorModalClose = () => setErrorModalOpen(false);
 
-  const handleClickedOutsideItem = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClickedOutsideItem = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     const target = event.target as HTMLElement;
     if (target.classList.contains('rct-tree-items-container')) {
-      setSelectedDirectory("root");
+      setSelectedDirectory('root');
       setFocusedItem(-1);
       setSelectedItems([]);
       setExpandedItems([]);
     }
-  }
+  };
 
   return (
     <div className='file-system'>
