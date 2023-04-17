@@ -8,33 +8,27 @@ import React, {
 import { newWidgetRequest } from '@renderer/common/types';
 import i18n from '@common/i18n';
 import { Action, KBarProvider } from 'kbar';
-import useSettings from '@renderer/hooks/useSettings';
 
 const GeneralContext = createContext(null);
 
 function GeneralContextProvider({ children }: PropsWithChildren) {
+  // Needs to reordered properly
+  const getDefaultLang = () => {
+    return localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  }
+
   const [saveRequest, setSaveRequest] = useState({ cmd: '' });
   const [clearPageRequest, setClearPageRequest] = useState({ cmd: '' });
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
   const [selectedFile, setSelectedFile] = useState<string>();
   const [currentFileTags, setCurrentFileTags] = useState<string[]>([]);
-
-  const {
-    isRtl,
-    setIsRtl,
-    language,
-    setLanguage,
-    darkTheme,
-    setDarkTheme,
-    colorTheme,
-    setColorTheme,
-    currentOS,
-    setCurrentOS,
-    isFilesSidebarOpen,
-    setIsFilesSidebarOpen,
-    isMathSidebarOpen,
-    setIsMathSidebarOpen,
-  } = useSettings();
+  const [isFilesSidebarOpen, setIsFilesSidebarOpen] = useState(false);
+  const [isMathSidebarOpen, setIsMathSidebarOpen] = useState(false);
+  const [isRtl, setIsRtl] = useState(true);
+  const [language, setLanguage] = useState(getDefaultLang());
+  const [darkTheme, setDarkTheme] = useState(true);
+  const [colorTheme, setColorTheme] = useState('');
+  const [currentOS, setCurrentOS] = useState('');
 
   const setColor = (name: string, hue: number) => {
     localStorage.setItem('color', name);
@@ -238,7 +232,7 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
     setColorTheme(localStorage.getItem('color'));
 
     if (!localStorage.getItem('language'))
-      localStorage.setItem('language', 'he');
+      localStorage.setItem('language', 'en');
     setLanguage(localStorage.getItem('language'));
   }, []);
 
