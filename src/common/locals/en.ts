@@ -45,6 +45,7 @@ export const EN_TRANSLATION = {
   'Modal 2': 'A new file already exists',
   'Modal 3': 'A new folder already exists',
   'Modal 4': 'This name already exists',
+  'Modal 5': 'You cannot move this item here!',
   Cancel: 'Cancel',
   OK: 'OK',
   Saved: 'File saved!',
