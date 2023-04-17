@@ -32,16 +32,15 @@ declare global {
 }
 function FileSystem() {
   const { t, i18n } = useTranslation();
-  const { setSelectedFile } = useGeneralContext();
-
+  const { currentOS, setSelectedFile } = useGeneralContext();
   const [errorModalContent, setErrorModalContent] = useState('');
   const [errorModalOpen, setErrorModalOpen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedDirectory, setSelectedDirectory] =
-  useState<TreeItemIndex>('root');
+    useState<TreeItemIndex>('root');
   const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
-  
+
   const [items, setItems] = useState<TreeItemsObj>({
     root: {
       index: 'root',
@@ -68,26 +67,46 @@ function FileSystem() {
       // Handle D&D intentionally only for one item
       const item = items[0];
       if (draggedToTheSameParent(prev, item, target)) return prev;
-      return updateItemsPosition(prev, item, target);
+      return updateItemsPosition(prev, item, target, currentOS);
     });
   };
 
   const addFolder = () => {
-    if (itemExistsInParent(newFolderName, selectedDirectory, items, true)) {
+    if (
+      itemExistsInParent(
+        newFolderName,
+        selectedDirectory,
+        items,
+        true,
+        currentOS,
+      )
+    ) {
       setErrorModalContent(t('Modal 3'));
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFolder(prev, selectedDirectory));
+    setItems((prev) =>
+      generateStateWithNewFolder(prev, selectedDirectory, currentOS),
+    );
   };
 
   const addFile = () => {
-    if (itemExistsInParent(newFileName, selectedDirectory, items, false)) {
+    if (
+      itemExistsInParent(
+        newFileName,
+        selectedDirectory,
+        items,
+        false,
+        currentOS,
+      )
+    ) {
       setErrorModalContent(t('Modal 2'));
       setErrorModalOpen(true);
       return;
     }
-    setItems((prev) => generateStateWithNewFile(prev, selectedDirectory));
+    setItems((prev) =>
+      generateStateWithNewFile(prev, selectedDirectory, currentOS),
+    );
   };
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
@@ -141,15 +160,17 @@ function FileSystem() {
 
   const handleErrorModalClose = () => setErrorModalOpen(false);
 
-  const handleClickedOutsideItem = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClickedOutsideItem = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
     const target = event.target as HTMLElement;
     if (target.classList.contains('rct-tree-items-container')) {
-      setSelectedDirectory("root");
+      setSelectedDirectory('root');
       setFocusedItem(-1);
       setSelectedItems([]);
       setExpandedItems([]);
     }
-  }
+  };
 
   return (
     <div className='file-system'>
