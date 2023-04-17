@@ -70,11 +70,15 @@ function FileSystem() {
       // Handle D&D intentionally only for one item
       const draggedItem = draggedItems[0];
       if (draggedToTheSameParent(prev, draggedItem, target)) return prev;
-      let dest = '';
-      if ('targetItem' in target) {
-        dest = target.targetItem as string;
+      let dest: TreeItemIndex = '';
+      if (
+        'targetItem' in target &&
+        (target as DraggingPositionItem | DraggingPositionBetweenItems)
+          .targetType !== 'item'
+      ) {
+        dest = target.targetItem;
       } else {
-        dest = target.parentItem as string;
+        dest = target.parentItem;
       }
       if (dest) {
         for (const item of items[dest].children) {

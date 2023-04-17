@@ -15,7 +15,8 @@ export const draggedToTheSameParent = (
   let draggedToSameParent;
 
   if (prev[target.parentItem].data != 'root') {
-    draggedToSameParent = prev[target.parentItem].children.includes(item.index);
+    const idx = 'targetItem' in target ? target.targetItem : target.parentItem;
+    draggedToSameParent = prev[idx].children.includes(item.index);
   } else if ('targetItem' in target && target.targetItem == 'root') {
     draggedToSameParent = prev[
       (target as DraggingPositionItem).targetItem
