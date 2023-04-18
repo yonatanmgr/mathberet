@@ -73,8 +73,9 @@ function FileSystem() {
       let dest: TreeItemIndex = '';
       if (
         'targetItem' in target &&
-        (target as DraggingPositionItem | DraggingPositionBetweenItems)
-          .targetType !== 'item'
+        ((target as DraggingPositionItem | DraggingPositionBetweenItems)
+          .targetType !== 'item' ||
+          prev[target.targetItem].isFolder)
       ) {
         dest = target.targetItem;
       } else {
