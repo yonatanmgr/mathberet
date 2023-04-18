@@ -46,6 +46,7 @@ export const ZH_TRANSLATION = {
   'Modal 2': '一个新文件已经存在',
   'Modal 3': '一个新文件夹已经存在',
   'Modal 4': '此名称已经存在',
+  'Modal 5': '您不能在此处移动此文件',
   Cancel: '取消',
   OK: '确定',
   Saved: '文件已保存！',

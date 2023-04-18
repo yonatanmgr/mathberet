@@ -44,6 +44,7 @@ export const FR_TRANSLATION = {
     'Modal 2': 'Un nouveau fichier existe déjà',
     'Modal 3': 'Un nouveau dossier existe déjà',
     'Modal 4': 'Ce nom existe déjà',
+    'Modal 5': 'Vous ne pouvez pas déplacer ce fichier ici !',
     Cancel: 'Annuler',
     OK: 'OK',
     Saved: 'Fichier enregistré !',

@@ -12,6 +12,11 @@ import { Action, KBarProvider } from 'kbar';
 const GeneralContext = createContext(null);
 
 function GeneralContextProvider({ children }: PropsWithChildren) {
+  // Needs to reordered properly
+  const getDefaultLang = () => {
+    return localStorage.getItem('language') ? localStorage.getItem('language') : 'en';
+  }
+
   const [saveRequest, setSaveRequest] = useState({ cmd: '' });
   const [clearPageRequest, setClearPageRequest] = useState({ cmd: '' });
   const [newWidgetRequest, setNewWidgetRequest] = useState<newWidgetRequest>();
@@ -20,7 +25,7 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [isFilesSidebarOpen, setIsFilesSidebarOpen] = useState(false);
   const [isMathSidebarOpen, setIsMathSidebarOpen] = useState(false);
   const [isRtl, setIsRtl] = useState(true);
-  const [language, setLanguage] = useState('en');
+  const [language, setLanguage] = useState(getDefaultLang());
   const [darkTheme, setDarkTheme] = useState(true);
   const [colorTheme, setColorTheme] = useState('');
   const [currentOS, setCurrentOS] = useState('');
@@ -227,7 +232,7 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
     setColorTheme(localStorage.getItem('color'));
 
     if (!localStorage.getItem('language'))
-      localStorage.setItem('language', 'he');
+      localStorage.setItem('language', 'en');
     setLanguage(localStorage.getItem('language'));
   }, []);
 
