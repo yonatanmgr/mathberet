@@ -9,7 +9,6 @@ import {
   TreeItem,
   DraggingPositionBetweenItems,
   TreeItemIndex,
-  DraggingPosition,
 } from 'react-complex-tree';
 import './FileSystem.scss';
 import {
@@ -33,7 +32,7 @@ declare global {
   }
 }
 function FileSystem() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { setSelectedFile } = useGeneralContext();
 
   const [errorModalContent, setErrorModalContent] = useState('');
@@ -204,7 +203,7 @@ function FileSystem() {
           canDropOnNonFolder={true}
           getItemTitle={(item) => item.data}
           viewState={{
-            ['tree-2']: {
+            ['fileSystem']: {
               focusedItem,
               expandedItems,
               selectedItems,
@@ -231,7 +230,17 @@ function FileSystem() {
           onSelectItems={setSelectedItems}
           onRenameItem={handleRenameItem}
         >
-          <Tree treeId='tree-2' rootItem='root' treeLabel='Tree Example' />
+          <Tree treeId='fileSystem' rootItem='root' treeLabel='File System' />
+          <div>
+            <p className='instruction-p'>
+              {t('Click')} <span className='button-text'>Delete</span>{' '}
+              {t('Delete Item')}
+            </p>
+            <p className='instruction-p'>
+              {t('Click')} <span className='button-text'>R</span>{' '}
+              {t('Rename Item')}
+            </p>
+          </div>
         </ControlledTreeEnvironment>
       </div>
       <ErrorModal open={errorModalOpen} onClose={handleErrorModalClose}>

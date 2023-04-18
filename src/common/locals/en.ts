@@ -51,4 +51,7 @@ export const EN_TRANSLATION = {
   Saved: 'File saved!',
   'Save Error': 'Error while saving file',
   'Text Placeholder': 'Insert text...',
+  Click: 'Click',
+  'Delete Item': 'on item to delete it',
+  'Rename Item': 'on item to rename it',
 };
