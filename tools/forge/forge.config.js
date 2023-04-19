@@ -21,7 +21,7 @@ module.exports = {
       // Windows applications and is therefore the most user friendly you can get.
       name: '@electron-forge/maker-squirrel',
       config: {
-        name: 'electron-react-typescript-webpack-2022',
+        name: 'mathberet',
       },
     },
     {

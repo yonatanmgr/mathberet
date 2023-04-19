@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-typescript-webpack-2023",
-  "productName": "ERWT Boilerplate",
-  "version": "7.3.0",
-  "description": "Custom boilerplate for writing Desktop Applications using Electron, React, Webpack, TypeScript in 2023",
+  "name": "mathberet",
+  "productName": "Mathberet",
+  "version": "1.0.0",
+  "description": "Digital Mathematics Notebook",
   "main": ".webpack/main",
   "scripts": {
     "start": "cross-env NODE_ENV=development electron-forge start",
@@ -12,29 +12,35 @@
     "lint": "eslint src/ --ext .ts,.js,.tsx,.jsx"
   },
   "keywords": [
-    "electron boilerplate",
-    "minimal",
-    "electron-webpack",
-    "electron-react",
-    "electron-typescript",
-    "hmr",
-    "boilerplate",
-    "2023",
-    "ERWT"
+    "react",
+    "javascript",
+    "typescript",
+    "math",
+    "mathematics",
+    "notebook",
+    "notes"
   ],
   "author": {
-    "name": "codesbiome",
-    "url": "https://github.com/codesbiome"
+    "name": "yonatanmgr",
+    "url": "https://github.com/yonatanmgr"
   },
   "contributors": [
     {
-      "name": "guasam",
-      "url": "https://github.com/guasam"
+      "name": "Erez Birenholz",
+      "url": "https://github.com/ErezBiren"
+    },
+    {
+      "name": "Ziv Nadel",
+      "url": "https://github.com/zivnadel"
+    },
+    {
+      "name": "Nadav Magier",
+      "url": "https://github.com/Nadav0077"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/codesbiome/electron-react-webpack-typescript-2022"
+    "url": "https://github.com/yonatanmgr/mathberet"
   },
   "license": "MIT",
   "config": {
