@@ -22,6 +22,7 @@ import {
   itemExistsInParent,
   getFileNameFromPath,
   deleteItemFromItsPreviousParent,
+  getParent,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 import { useTranslation } from 'react-i18next';
@@ -66,7 +67,6 @@ function FileSystem() {
     draggedItems: TreeItem[],
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
-    let movePath;
     setItems((prev) => {
       // Handle D&D intentionally only for one item
       const draggedItem = draggedItems[0];
@@ -84,7 +84,10 @@ function FileSystem() {
       }
       if (dest) {
         for (const item of items[dest].children) {
-          if (getFileNameFromPath(item as string) === draggedItem.data) {
+          if (
+            getFileNameFromPath(item as string) === draggedItem.data &&
+            items[item].isFolder === draggedItem.isFolder
+          ) {
             setErrorModalContent(t('Modal 5'));
             setErrorModalOpen(true);
             return prev;
@@ -114,55 +117,50 @@ function FileSystem() {
   };
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
-    if (items[name]) {
+    if (
+      itemExistsInParent(
+        name,
+        getParent(items, item.index).index,
+        items,
+        item.isFolder,
+      )
+    ) {
       setErrorModalContent(t('Modal 4'));
       setErrorModalOpen(true);
     } else {
-      let newPath: string;
-
-      if (item.isFolder) {
-        const split = item.path.split('\\');
-        split.pop();
-        split.push(name);
-        newPath = split.join('\\');
-      } else {
-        const index = item.path.length - (item.data + '.json').length;
-        const dirName = item.path.slice(0, index);
-        newPath = dirName + name + '.json';
-      }
-      // changeItemPath(item, newPath);
-
       setItems((prev) => {
-        const oldIndex = item.index;
+        let newPath: string;
+        const oldPath = item.index;
 
-        const newState = {
-          ...prev,
-          [newPath]: {
-            ...prev[item.index],
-            index: newPath,
-            data: name,
-            path: newPath,
-          },
-        };
+        if (item.isFolder) {
+          const split = item.path.split('\\');
+          split.pop();
+          split.push(name);
+          newPath = split.join('\\');
+        } else {
+          const index = item.path.length - (item.data + '.json').length;
+          const dirName = item.path.slice(0, index);
+          newPath = dirName + name + '.json';
+        }
 
-        delete newState[oldIndex];
+        let newItems = { ...prev };
 
-        for (const [, value] of Object.entries(newState)) {
+        newItems = changeItemPath(newItems, item, newPath);
+
+        for (const [, value] of Object.entries(newItems)) {
           const mathTreeItem = value as MathTreeItem;
-          if (mathTreeItem.children.includes(oldIndex)) {
+          if (mathTreeItem.children.includes(oldPath)) {
             mathTreeItem.children = mathTreeItem.children.filter(
-              (child) => child !== oldIndex,
+              (child) => child !== oldPath,
             );
-            mathTreeItem.children.push(name);
+            mathTreeItem.children.push(newPath);
           }
         }
 
-        return newState;
+        return newItems;
       });
     }
   };
-
-  const handleErrorModalClose = () => setErrorModalOpen(false);
 
   const handleClickedOutsideItem = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -268,7 +266,10 @@ function FileSystem() {
           </div>
         </ControlledTreeEnvironment>
       </div>
-      <ErrorModal open={errorModalOpen} onClose={handleErrorModalClose}>
+      <ErrorModal
+        open={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+      >
         {errorModalContent}
       </ErrorModal>
     </div>

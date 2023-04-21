@@ -30,7 +30,7 @@ export const changeItemPath = (prev: TreeItemsObj, item: MathTreeItem, newPath: 
 
   const { [oldPath]: _, ...rest } = prev;
   
-  prev = {
+  const newState = {
     ...rest,
     [newPath]: {
       ...item,
@@ -38,6 +38,8 @@ export const changeItemPath = (prev: TreeItemsObj, item: MathTreeItem, newPath: 
       path: newPath,
     },
   }
+
+  return newState;
 };
 
 export const addItemToNewParent = (
@@ -46,44 +48,36 @@ export const addItemToNewParent = (
   item: MathTreeItem,
 ) => {
   if (target.targetType != 'item') {
-    prev[target.parentItem].children.push(item.index);
-    changeItemPath(
-      prev,
-      item,
-      prev[target.parentItem].path +
-        '\\' +
-        item.data +
-        (item.isFolder ? '' : '.json'),
-    );
+    const newPath = prev[target.parentItem].path +
+    '\\' +
+    item.data +
+    (item.isFolder ? '' : '.json');
+    prev = changeItemPath(prev, item, newPath);
+    prev[target.parentItem].children.push(newPath);
   } else {
     if (prev[target.targetItem].isFolder) {
-      prev[target.targetItem].children.push(item.index);
-      changeItemPath(
-        prev,
-        item,
-        prev[target.targetItem].path +
-          '\\' +
-          item.data +
-          (item.isFolder ? '' : '.json'),
-      );
+      const newPath = prev[target.targetItem].path +
+      '\\' +
+      item.data +
+      (item.isFolder ? '' : '.json');
+      prev = changeItemPath(prev, item, newPath);
+      prev[target.targetItem].children.push(newPath);
     } else {
       for (const [, value] of Object.entries(prev)) {
         const mathTreeItem = value as MathTreeItem;
 
         if (mathTreeItem.children.includes(target.targetItem)) {
-          mathTreeItem.children.push(item.index);
-          changeItemPath(
-            prev,
-            item,
-            mathTreeItem.path +
-              '\\' +
-              item.data +
-              (item.isFolder ? '' : '.json'),
-          );
+          const newPath = mathTreeItem.path +
+          '\\' +
+          item.data +
+          (item.isFolder ? '' : '.json');
+          prev = changeItemPath(prev, item, newPath);
+          mathTreeItem.children.push(newPath);
         }
       }
     }
   }
+  return prev;
 };
 
 export const updateItemsPosition = (
@@ -93,8 +87,7 @@ export const updateItemsPosition = (
 ) => {
   deleteItemFromItsPreviousParent(prev, item);
   if ((target as DraggingPositionItem).targetItem == 'root') return prev;
-  addItemToNewParent(target, prev, item as MathTreeItem);
-  return prev;
+  return addItemToNewParent(target, prev, item as MathTreeItem);
 };
 
 export const deleteItemFromItsPreviousParent = (
@@ -212,4 +205,13 @@ export function itemExistsInParent(
 export const getFileNameFromPath = (path: string) => {
   // TODO: format \\ and / correctly
   return path.split('\\').pop().split('.')[0];
+}
+
+export const getParent = (items: TreeItemsObj, childIndex: TreeItemIndex) => {
+  for (const [, value] of Object.entries(items)) {
+    const mathItemTree = value as MathTreeItem;
+    if (mathItemTree.children.includes(childIndex)) {
+      return mathItemTree;
+    }
+  }
 }
