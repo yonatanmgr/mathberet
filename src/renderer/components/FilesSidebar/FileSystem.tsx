@@ -21,6 +21,7 @@ import {
   newFileName,
   itemExistsInParent,
   getFileNameFromPath,
+  deleteItemFromItsPreviousParent,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 import { useTranslation } from 'react-i18next';
@@ -35,14 +36,6 @@ function FileSystem() {
   const { t } = useTranslation();
   const { setSelectedFile } = useGeneralContext();
 
-  const [errorModalContent, setErrorModalContent] = useState('');
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [expandedItems, setExpandedItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedDirectory, setSelectedDirectory] =
-    useState<TreeItemIndex>('root');
-  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
-
   const [items, setItems] = useState<TreeItemsObj>({
     root: {
       index: 'root',
@@ -50,6 +43,14 @@ function FileSystem() {
       path: '',
     },
   });
+
+  const [errorModalContent, setErrorModalContent] = useState('');
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [expandedItems, setExpandedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedDirectory, setSelectedDirectory] =
+    useState<TreeItemIndex>('root');
+  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
 
   useEffect(() => {
     window.api.getNotebooks();
@@ -65,6 +66,7 @@ function FileSystem() {
     draggedItems: TreeItem[],
     target: DraggingPositionItem | DraggingPositionBetweenItems,
   ) => {
+    let movePath;
     setItems((prev) => {
       // Handle D&D intentionally only for one item
       const draggedItem = draggedItems[0];
@@ -128,16 +130,16 @@ function FileSystem() {
         const dirName = item.path.slice(0, index);
         newPath = dirName + name + '.json';
       }
-      changeItemPath(item, newPath);
+      // changeItemPath(item, newPath);
 
       setItems((prev) => {
         const oldIndex = item.index;
 
         const newState = {
           ...prev,
-          [name]: {
+          [newPath]: {
             ...prev[item.index],
-            index: name,
+            index: newPath,
             data: name,
             path: newPath,
           },
@@ -174,8 +176,29 @@ function FileSystem() {
     }
   };
 
+  const handleDeleteItem = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Delete' && focusedItem != -1) {
+      window.api.delete(focusedItem, items[focusedItem].isFolder);
+      setItems((prev) => {
+        const newItems = { ...prev };
+        const item = newItems[focusedItem];
+        deleteItemFromItsPreviousParent(newItems, item);
+        if (item.isFolder) {
+          for (const [key] of Object.entries(newItems)) {
+            if (key.startsWith(focusedItem as string)) {
+              delete newItems[key];
+            }
+          }
+        }
+        return newItems;
+      });
+      setFocusedItem(-1);
+      setSelectedDirectory('root');
+    }
+  };
+
   return (
-    <div className='file-system'>
+    <div className='file-system' onKeyUp={handleDeleteItem}>
       <div className='file-system-header'>
         <span
           data-tooltip={t('Notebooks Tooltip')}
@@ -202,6 +225,8 @@ function FileSystem() {
           canDropOnFolder={true}
           canDropOnNonFolder={true}
           getItemTitle={(item) => item.data}
+          canSearch={false}
+          keyboardBindings={{ renameItem: ['R'] }}
           viewState={{
             ['fileSystem']: {
               focusedItem,

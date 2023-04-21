@@ -14,24 +14,30 @@ export const draggedToTheSameParent = (
 ): boolean => {
   let draggedToSameParent;
 
-  if (prev[target.parentItem].data != 'root') {
-    const idx = 'targetItem' in target ? target.targetItem : target.parentItem;
-    draggedToSameParent = prev[idx].children.includes(item.index);
-  } else if ('targetItem' in target && target.targetItem == 'root') {
-    draggedToSameParent = prev[
-      (target as DraggingPositionItem).targetItem
-    ].children.includes(item.index);
-  } else if (target.parentItem == 'root') {
-    draggedToSameParent = prev[
-      (target as DraggingPositionItem).parentItem
-    ].children.includes(item.index);
+  if (target.targetType === "item" && prev[target.targetItem].isFolder) {
+    draggedToSameParent = prev[target.targetItem].children.includes(item.index);
+  } else {
+    draggedToSameParent = prev[target.parentItem].children.includes(item.index);
   }
+
   return draggedToSameParent;
 };
 
-export const changeItemPath = (item: MathTreeItem, newPath: string) => {
-  window.api.move(item.path, newPath);
-  item.path = newPath;
+export const changeItemPath = (prev: TreeItemsObj, item: MathTreeItem, newPath: string) => { 
+  const oldPath = item.path;
+
+  window.api.move(oldPath, newPath)
+
+  const { [oldPath]: _, ...rest } = prev;
+  
+  prev = {
+    ...rest,
+    [newPath]: {
+      ...item,
+      index: newPath,
+      path: newPath,
+    },
+  }
 };
 
 export const addItemToNewParent = (
@@ -42,6 +48,7 @@ export const addItemToNewParent = (
   if (target.targetType != 'item') {
     prev[target.parentItem].children.push(item.index);
     changeItemPath(
+      prev,
       item,
       prev[target.parentItem].path +
         '\\' +
@@ -52,6 +59,7 @@ export const addItemToNewParent = (
     if (prev[target.targetItem].isFolder) {
       prev[target.targetItem].children.push(item.index);
       changeItemPath(
+        prev,
         item,
         prev[target.targetItem].path +
           '\\' +
@@ -65,6 +73,7 @@ export const addItemToNewParent = (
         if (mathTreeItem.children.includes(target.targetItem)) {
           mathTreeItem.children.push(item.index);
           changeItemPath(
+            prev,
             item,
             mathTreeItem.path +
               '\\' +
