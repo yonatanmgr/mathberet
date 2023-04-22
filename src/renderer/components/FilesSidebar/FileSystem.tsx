@@ -55,7 +55,7 @@ function FileSystem() {
 
   useEffect(() => {
     window.api.getNotebooks();
-  }, []);
+  }, [items]);
 
   useEffect(() => {
     window.api.receive('gotNotebooks', (data: receivedProps) => {
@@ -224,7 +224,7 @@ function FileSystem() {
           canDropOnNonFolder={true}
           getItemTitle={(item) => item.data}
           canSearch={false}
-          keyboardBindings={{ renameItem: ['R'] }}
+          keyboardBindings={{ renameItem: ['shift+R'] }}
           viewState={{
             ['fileSystem']: {
               focusedItem,
@@ -254,17 +254,17 @@ function FileSystem() {
           onRenameItem={handleRenameItem}
         >
           <Tree treeId='fileSystem' rootItem='root' treeLabel='File System' />
-          <div>
-            <p className='instruction-p'>
-              {t('Click')} <span className='button-text'>Delete</span>{' '}
-              {t('Delete Item')}
-            </p>
-            <p className='instruction-p'>
-              {t('Click')} <span className='button-text'>R</span>{' '}
-              {t('Rename Item')}
-            </p>
-          </div>
         </ControlledTreeEnvironment>
+        <div>
+          <p className='instruction-p'>
+            {t('Press')} <span className='button-text'>Delete</span>{' '}
+            {t('Delete Item')}
+          </p>
+          <p className='instruction-p'>
+            {t('Press')} <span className='button-text'>Shift+R</span>{' '}
+            {t('Rename Item')}
+          </p>
+        </div>
       </div>
       <ErrorModal
         open={errorModalOpen}
