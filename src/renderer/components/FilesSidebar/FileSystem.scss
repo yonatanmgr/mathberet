@@ -99,9 +99,8 @@
   }
 
   .files-tree-container {
-    height: 100%;
     width: 100%;
-    flex-grow: 1;
+    
     min-width: inherit;
     max-width: inherit;
 
@@ -243,6 +242,16 @@
             }
           }
         }
+      }
+    }
+
+    .instruction-p {
+      color: hsla(var(--app-text-color), 0.6);
+      font-size: smaller;
+      .button-text {
+        background-color: var(--selected-bgcolor);
+        padding: 2px 6px;
+        border-radius: 15px;
       }
     }
   }

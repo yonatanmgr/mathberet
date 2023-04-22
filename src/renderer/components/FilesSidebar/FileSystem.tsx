@@ -9,7 +9,6 @@ import {
   TreeItem,
   DraggingPositionBetweenItems,
   TreeItemIndex,
-  DraggingPosition,
 } from 'react-complex-tree';
 import './FileSystem.scss';
 import {
@@ -22,6 +21,8 @@ import {
   newFileName,
   itemExistsInParent,
   getFileNameFromPath,
+  deleteItemFromItsPreviousParent,
+  getParent,
 } from './FileSystemHelpers';
 import { MathTreeItem, TreeItemsObj } from './types';
 import { useTranslation } from 'react-i18next';
@@ -33,16 +34,8 @@ declare global {
   }
 }
 function FileSystem() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { setSelectedFile } = useGeneralContext();
-
-  const [errorModalContent, setErrorModalContent] = useState('');
-  const [errorModalOpen, setErrorModalOpen] = useState(false);
-  const [expandedItems, setExpandedItems] = useState([]);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedDirectory, setSelectedDirectory] =
-    useState<TreeItemIndex>('root');
-  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
 
   const [items, setItems] = useState<TreeItemsObj>({
     root: {
@@ -51,6 +44,14 @@ function FileSystem() {
       path: '',
     },
   });
+
+  const [errorModalContent, setErrorModalContent] = useState('');
+  const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [expandedItems, setExpandedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedDirectory, setSelectedDirectory] =
+    useState<TreeItemIndex>('root');
+  const [focusedItem, setFocusedItem] = useState<TreeItemIndex>(-1);
 
   useEffect(() => {
     window.api.getNotebooks();
@@ -83,7 +84,10 @@ function FileSystem() {
       }
       if (dest) {
         for (const item of items[dest].children) {
-          if (getFileNameFromPath(item as string) === draggedItem.data) {
+          if (
+            getFileNameFromPath(item as string) === draggedItem.data &&
+            items[item].isFolder === draggedItem.isFolder
+          ) {
             setErrorModalContent(t('Modal 5'));
             setErrorModalOpen(true);
             return prev;
@@ -113,55 +117,50 @@ function FileSystem() {
   };
 
   const handleRenameItem = (item: MathTreeItem, name: string): void => {
-    if (items[name]) {
+    if (
+      itemExistsInParent(
+        name,
+        getParent(items, item.index).index,
+        items,
+        item.isFolder,
+      )
+    ) {
       setErrorModalContent(t('Modal 4'));
       setErrorModalOpen(true);
     } else {
-      let newPath: string;
-
-      if (item.isFolder) {
-        const split = item.path.split('\\');
-        split.pop();
-        split.push(name);
-        newPath = split.join('\\');
-      } else {
-        const index = item.path.length - (item.data + '.json').length;
-        const dirName = item.path.slice(0, index);
-        newPath = dirName + name + '.json';
-      }
-      changeItemPath(item, newPath);
-
       setItems((prev) => {
-        const oldIndex = item.index;
+        let newPath: string;
+        const oldPath = item.index;
 
-        const newState = {
-          ...prev,
-          [name]: {
-            ...prev[item.index],
-            index: name,
-            data: name,
-            path: newPath,
-          },
-        };
+        if (item.isFolder) {
+          const split = item.path.split('\\');
+          split.pop();
+          split.push(name);
+          newPath = split.join('\\');
+        } else {
+          const index = item.path.length - (item.data + '.json').length;
+          const dirName = item.path.slice(0, index);
+          newPath = dirName + name + '.json';
+        }
 
-        delete newState[oldIndex];
+        let newItems = { ...prev };
 
-        for (const [, value] of Object.entries(newState)) {
+        newItems = changeItemPath(newItems, item, newPath);
+
+        for (const [, value] of Object.entries(newItems)) {
           const mathTreeItem = value as MathTreeItem;
-          if (mathTreeItem.children.includes(oldIndex)) {
+          if (mathTreeItem.children.includes(oldPath)) {
             mathTreeItem.children = mathTreeItem.children.filter(
-              (child) => child !== oldIndex,
+              (child) => child !== oldPath,
             );
-            mathTreeItem.children.push(name);
+            mathTreeItem.children.push(newPath);
           }
         }
 
-        return newState;
+        return newItems;
       });
     }
   };
-
-  const handleErrorModalClose = () => setErrorModalOpen(false);
 
   const handleClickedOutsideItem = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -175,8 +174,29 @@ function FileSystem() {
     }
   };
 
+  const handleDeleteItem = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Delete' && focusedItem != -1) {
+      window.api.delete(focusedItem, items[focusedItem].isFolder);
+      setItems((prev) => {
+        const newItems = { ...prev };
+        const item = newItems[focusedItem];
+        deleteItemFromItsPreviousParent(newItems, item);
+        if (item.isFolder) {
+          for (const [key] of Object.entries(newItems)) {
+            if (key.startsWith(focusedItem as string)) {
+              delete newItems[key];
+            }
+          }
+        }
+        return newItems;
+      });
+      setFocusedItem(-1);
+      setSelectedDirectory('root');
+    }
+  };
+
   return (
-    <div className='file-system'>
+    <div className='file-system' onKeyUp={handleDeleteItem}>
       <div className='file-system-header'>
         <span
           data-tooltip={t('Notebooks Tooltip')}
@@ -203,8 +223,10 @@ function FileSystem() {
           canDropOnFolder={true}
           canDropOnNonFolder={true}
           getItemTitle={(item) => item.data}
+          canSearch={false}
+          keyboardBindings={{ renameItem: ['R'] }}
           viewState={{
-            ['tree-2']: {
+            ['fileSystem']: {
               focusedItem,
               expandedItems,
               selectedItems,
@@ -231,10 +253,23 @@ function FileSystem() {
           onSelectItems={setSelectedItems}
           onRenameItem={handleRenameItem}
         >
-          <Tree treeId='tree-2' rootItem='root' treeLabel='Tree Example' />
+          <Tree treeId='fileSystem' rootItem='root' treeLabel='File System' />
+          <div>
+            <p className='instruction-p'>
+              {t('Click')} <span className='button-text'>Delete</span>{' '}
+              {t('Delete Item')}
+            </p>
+            <p className='instruction-p'>
+              {t('Click')} <span className='button-text'>R</span>{' '}
+              {t('Rename Item')}
+            </p>
+          </div>
         </ControlledTreeEnvironment>
       </div>
-      <ErrorModal open={errorModalOpen} onClose={handleErrorModalClose}>
+      <ErrorModal
+        open={errorModalOpen}
+        onClose={() => setErrorModalOpen(false)}
+      >
         {errorModalContent}
       </ErrorModal>
     </div>

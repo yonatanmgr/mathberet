@@ -45,8 +45,8 @@ contextBridge.exposeInMainWorld('api', {
   getNotebooks: () => {
     ipcRenderer.send('getNotebooks');
   },
-  delete: (file: string) => {
-    ipcRenderer.send('delete', file);
+  delete: (path: string, isFolder: boolean) => {
+    ipcRenderer.send('delete', path, isFolder);
   },
   newFile: (filePath: string) => {
     ipcRenderer.send('newFile', filePath);
@@ -69,7 +69,7 @@ contextBridge.exposeInMainWorld('api', {
   saveX: (data: string, filePath: string) => {
     ipcRenderer.send('saveX', data, filePath);
   },
-  loadX: (filePath:string) => {
+  loadX: (filePath: string) => {
     ipcRenderer.send('loadX',filePath);
   },
   getOS: () => {

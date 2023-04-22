@@ -112,6 +112,10 @@ ipcMain.on('move', (event, oldDir, newDir) => {
   fs.renameSync(oldDir, newDir);
 });
 
+ipcMain.on('delete', (event, path, isFolder) => {
+  isFolder ? fs.rmSync(path, { recursive: true, force: true }) : fs.rmSync(path);
+});
+
 ipcMain.on('load', (event, file) => {
   fs.readFile(file, 'utf-8', (error, data) => {
     appWindow.webContents.send('fromMain', data);

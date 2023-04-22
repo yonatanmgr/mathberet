@@ -14,24 +14,32 @@ export const draggedToTheSameParent = (
 ): boolean => {
   let draggedToSameParent;
 
-  if (prev[target.parentItem].data != 'root') {
-    const idx = 'targetItem' in target ? target.targetItem : target.parentItem;
-    draggedToSameParent = prev[idx].children.includes(item.index);
-  } else if ('targetItem' in target && target.targetItem == 'root') {
-    draggedToSameParent = prev[
-      (target as DraggingPositionItem).targetItem
-    ].children.includes(item.index);
-  } else if (target.parentItem == 'root') {
-    draggedToSameParent = prev[
-      (target as DraggingPositionItem).parentItem
-    ].children.includes(item.index);
+  if (target.targetType === "item" && prev[target.targetItem].isFolder) {
+    draggedToSameParent = prev[target.targetItem].children.includes(item.index);
+  } else {
+    draggedToSameParent = prev[target.parentItem].children.includes(item.index);
   }
+
   return draggedToSameParent;
 };
 
-export const changeItemPath = (item: MathTreeItem, newPath: string) => {
-  window.api.move(item.path, newPath);
-  item.path = newPath;
+export const changeItemPath = (prev: TreeItemsObj, item: MathTreeItem, newPath: string) => { 
+  const oldPath = item.path;
+
+  window.api.move(oldPath, newPath)
+
+  const { [oldPath]: _, ...rest } = prev;
+  
+  const newState = {
+    ...rest,
+    [newPath]: {
+      ...item,
+      index: newPath,
+      path: newPath,
+    },
+  }
+
+  return newState;
 };
 
 export const addItemToNewParent = (
@@ -40,41 +48,36 @@ export const addItemToNewParent = (
   item: MathTreeItem,
 ) => {
   if (target.targetType != 'item') {
-    prev[target.parentItem].children.push(item.index);
-    changeItemPath(
-      item,
-      prev[target.parentItem].path +
-        '\\' +
-        item.data +
-        (item.isFolder ? '' : '.json'),
-    );
+    const newPath = prev[target.parentItem].path +
+    '\\' +
+    item.data +
+    (item.isFolder ? '' : '.json');
+    prev = changeItemPath(prev, item, newPath);
+    prev[target.parentItem].children.push(newPath);
   } else {
     if (prev[target.targetItem].isFolder) {
-      prev[target.targetItem].children.push(item.index);
-      changeItemPath(
-        item,
-        prev[target.targetItem].path +
-          '\\' +
-          item.data +
-          (item.isFolder ? '' : '.json'),
-      );
+      const newPath = prev[target.targetItem].path +
+      '\\' +
+      item.data +
+      (item.isFolder ? '' : '.json');
+      prev = changeItemPath(prev, item, newPath);
+      prev[target.targetItem].children.push(newPath);
     } else {
       for (const [, value] of Object.entries(prev)) {
         const mathTreeItem = value as MathTreeItem;
 
         if (mathTreeItem.children.includes(target.targetItem)) {
-          mathTreeItem.children.push(item.index);
-          changeItemPath(
-            item,
-            mathTreeItem.path +
-              '\\' +
-              item.data +
-              (item.isFolder ? '' : '.json'),
-          );
+          const newPath = mathTreeItem.path +
+          '\\' +
+          item.data +
+          (item.isFolder ? '' : '.json');
+          prev = changeItemPath(prev, item, newPath);
+          mathTreeItem.children.push(newPath);
         }
       }
     }
   }
+  return prev;
 };
 
 export const updateItemsPosition = (
@@ -84,8 +87,7 @@ export const updateItemsPosition = (
 ) => {
   deleteItemFromItsPreviousParent(prev, item);
   if ((target as DraggingPositionItem).targetItem == 'root') return prev;
-  addItemToNewParent(target, prev, item as MathTreeItem);
-  return prev;
+  return addItemToNewParent(target, prev, item as MathTreeItem);
 };
 
 export const deleteItemFromItsPreviousParent = (
@@ -203,4 +205,13 @@ export function itemExistsInParent(
 export const getFileNameFromPath = (path: string) => {
   // TODO: format \\ and / correctly
   return path.split('\\').pop().split('.')[0];
+}
+
+export const getParent = (items: TreeItemsObj, childIndex: TreeItemIndex) => {
+  for (const [, value] of Object.entries(items)) {
+    const mathItemTree = value as MathTreeItem;
+    if (mathItemTree.children.includes(childIndex)) {
+      return mathItemTree;
+    }
+  }
 }
