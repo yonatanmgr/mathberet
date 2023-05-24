@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, Menu, MenuItem } from 'electron';
 import path from 'path';
 import { registerTitlebarIpc } from '@misc/window/titlebarIPC';
 import * as fs from 'fs';
@@ -56,6 +56,79 @@ export function createAppWindow(): BrowserWindow {
 
   return appWindow;
 }
+
+const menu = new Menu()
+
+menu.append(new MenuItem({
+  label: 'Blocks',
+  submenu: [
+    {
+    label: 'Add Text Block',
+    accelerator: 'Ctrl+T',
+    click: () => {appWindow.webContents.send("Text");}
+  },
+    {
+    label: 'Add Math Block',
+    accelerator: 'Ctrl+M',
+    click: () => {appWindow.webContents.send("Math");}
+  },
+    {
+    label: 'Add Graph Block',
+    accelerator: 'Ctrl+G',
+    click: () => {appWindow.webContents.send("Graph");}
+  }
+]
+}))
+
+menu.append(new MenuItem({
+  label: 'Misc',
+  submenu: [
+    {
+    label: 'Open Devtools',
+    accelerator: 'Ctrl+Shift+I',
+    click: () => {appWindow.webContents.openDevTools();}
+  },
+    {
+    label: 'Home',
+    accelerator: 'Ctrl+H',
+    click: () => {appWindow.webContents.send("Home");}
+  },
+  {
+    label: 'Create a new File...',
+    accelerator: 'Ctrl+N',
+    click: () => {appWindow.webContents.send("newFile");}
+  },
+  {
+    label: 'Save',
+    accelerator: 'Ctrl+S',
+    click: () => {appWindow.webContents.send("Save");}
+  },
+  {
+    label: 'Quit',
+    accelerator: 'Ctrl+W',
+    click: () => {appWindow.close()}
+  },
+  {
+    label: 'Refresh',
+    accelerator: 'Ctrl+R',
+    click: () => {appWindow.webContents.reloadIgnoringCache()}
+  }
+]
+}))
+
+menu.append(new MenuItem({
+  label: 'Actions',
+  submenu: [
+    {
+    label: 'Toggle Notebooks',
+    accelerator: 'Ctrl+O',
+    click: () => {appWindow.webContents.send("toggleNotebooks");}
+  }
+]
+}))
+
+Menu.setApplicationMenu(menu)
+
 
 ipcMain.on('getOS', () => {
   let OS = '';

@@ -29,6 +29,7 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
   const [darkTheme, setDarkTheme] = useState(true);
   const [colorTheme, setColorTheme] = useState('');
   const [currentOS, setCurrentOS] = useState('');
+  const [currentVariables, setCurrentVariables] = useState([]);
 
   const setColor = (name: string, hue: number) => {
     localStorage.setItem('color', name);
@@ -309,6 +310,8 @@ function GeneralContextProvider({ children }: PropsWithChildren) {
         setColor,
         actions,
         currentOS,
+        setCurrentVariables,
+        currentVariables,
       }}
     >
       <KBarProvider

@@ -3,15 +3,39 @@ import React, { useEffect, useRef, useState } from 'react';
 import MathView, { MathViewRef } from 'react-math-view';
 import ML_SHORTCUTS from '@common/shortcuts';
 import ML_KEYBINDINGS from '@common/keybindings';
-import { ValueProps } from '@renderer/common/types';
+import { ValueProps, VariableProps } from '@renderer/common/types';
+import { useGeneralContext } from '@components/GeneralContext';
 
 function MathBlockContent({ content, blockStateFunction }: ValueProps) {
   const defaultValue = '';
   const ref = useRef<MathViewRef>(null);
   const [value, setValue] = useState(defaultValue);
+  const { currentVariables, setCurrentVariables } = useGeneralContext();
 
   useEffect(() => {
     blockStateFunction(value);
+    if (value.split("\\coloneq").length != 1 &&
+      value.split("\\coloneq")[1] != '' &&
+      value.split("\\coloneq")[0] != ''
+    ) {
+      const assignment = { 
+        blockId: ref.current.parentElement.parentElement.id, 
+        definition: { [value.split("\\coloneq")[0]]: value.split("\\coloneq")[1] } 
+      }
+      
+      if (!currentVariables.some((variable: VariableProps) => JSON.stringify(variable) === JSON.stringify(assignment))) {
+        if (currentVariables.find((variable: VariableProps) => variable.blockId == assignment.blockId)) {
+          const updatedVariables = currentVariables.map((variable: VariableProps) => {
+            if (variable.blockId == assignment.blockId) {
+              return { ...variable, definition: assignment.definition };
+            }
+            return variable;
+          });
+          setCurrentVariables(updatedVariables);
+        } else setCurrentVariables([...currentVariables, assignment]);
+      }
+    }
+
   }, [value]);
 
   return (

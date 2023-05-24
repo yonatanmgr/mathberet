@@ -1,28 +1,54 @@
 @import '../Theme.scss';
 
 .actions-group {
-    display: none;
+  display: none;
 }
 
-.math-sidebar.open{
-    min-width: max-content;
+.math-sidebar.open {
+  min-width: max-content;
 
-    .actions-group {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    
-        .actions-group-title {
-            width: 100%;
-            margin: 0;
-            color: hsla(var(--app-text-color), 1);
-            font-size: 22px;
-            opacity: 50%;
-        }
-    
-        .actions-group-content{
-            width: 100%;
-            min-height: 100px;
-        }
+  .actions-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .actions-group-title {
+      width: 100%;
+      margin: 0;
+      color: hsla(var(--app-text-color), 1);
+      font-size: 22px;
+      opacity: 50%;
     }
+
+    .actions-group-content {
+      width: 100%;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .math-field-element {
+        --hue: var(--theme-hue);
+        --selection-background-color: var(--math-block-selection-bg);
+        --selection-color: var(--math-block-selection);
+        font-size: 25px;
+        color: hsla(var(--app-text-color), 1);
+        width: 100%;
+        height: min-content;
+        min-height: 70px;
+        border-radius: 12px;
+        outline: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--math-block-bgcolor);
+        cursor: default;
+        transition: all 0.2s;
+
+        &:hover {
+            filter: brightness(110%);
+        }
+      }
+    }
+  }
 }

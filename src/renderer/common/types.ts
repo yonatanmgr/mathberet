@@ -48,3 +48,10 @@ export type PageGridState = {
   breakpoint: string;
   cols: number;
 };
+
+export type VariableProps = {
+  blockId: string,
+  definition: {
+    [key: string]: string
+  }
+}
