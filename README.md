@@ -1,7 +1,12 @@
+
 <div align="center">
-<img width=500 src="https://i.imgur.com/M4tds7u.png" alt="mathberet logo">
-<p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A self-hosted digital mathematics notebook, written in React and built with Electron</p>
-<p><b>🚧 In active development, open for contributions! 🚧</b></p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://github.com/yonatanmgr/mathberet/assets/31913495/380ecf5e-5449-4646-ab4d-ac305bc96286">
+    <source media="(prefers-color-scheme: light)" srcset="https://github.com/yonatanmgr/mathberet/assets/31913495/557554da-7617-4b1b-b34b-79d4e34b4c78">
+    <img width=500 src="https://github.com/yonatanmgr/mathberet/assets/31913495/380ecf5e-5449-4646-ab4d-ac305bc96286" alt="mathberet logo">
+  </picture>
+  <p><b>📝 Mathberet (Hebrew: מַתְבֶּרֶת)</b> - A self-hosted digital mathematics notebook, written in React and built with Electron</p>
+  <p><b>🚧 In active development, open for contributions! 🚧</b></p>
 </div>
 
 ---
